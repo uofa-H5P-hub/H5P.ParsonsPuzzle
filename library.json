@@ -1,31 +1,40 @@
 {
     "title": "ParsonsQuiz",
     "description": "Create a quiz of Parsons Puzzle",
-    "majorVersion": 1,
+    "majorVersion": 0,
     "minorVersion": 1,
     "patchVersion": 7,
     "runnable": 1,
-    "author": "UniAdelaide_Team27",
+    "author": "cs@Adelaide",
     "license": "MIT",
     "machineName": "H5P.ParsonsQuiz",
-    "embedTypes": ["div"],
+    "embedTypes": [
+        "div"
+    ],
     "fullscreen": 1,
     "coreAPI": {
         "majorVersion": 1,
         "minorVersion": 9
     },
     "preloadedCss": [
-
-        { "path": "style/parsons.css" },
-        { "path": "style/prettify.css" },
-        { "path": "style/h5p-jquery-ui.css" }
+        {
+            "path": "style/parsons.css"
+        },
+        {
+            "path": "style/prettify.css"
+        },
+        {
+            "path": "style/h5p-jquery-ui.css"
+        }
     ],
-    "preloadedJs": [{
+    "preloadedJs": [
+        {
             "path": "./lib/prettify.js"
         },
         {
             "path": "./lib/h5p-jquery-ui.js"
-        }, {
+        },
+        {
             "path": "./lib/require.js"
         },
         {
@@ -34,8 +43,6 @@
         {
             "path": "./lib/jquery.ui.touch-punch.min.js"
         },
-
-
         {
             "path": "./lib/underscore-min.js"
         },
@@ -55,12 +62,13 @@
             "path": "./lib/skulpt-stdlib.js"
         }
     ],
-
-    "preloadedDependencies": [{
+    "preloadedDependencies": [
+        {
             "machineName": "EmbeddedJS",
             "majorVersion": 1,
             "minorVersion": 0
-        }, {
+        },
+        {
             "machineName": "H5P.AdvancedText",
             "majorVersion": "1",
             "minorVersion": "1"
@@ -84,13 +92,15 @@
             "machineName": "Tether",
             "majorVersion": "1",
             "minorVersion": "0"
-        }, {
+        },
+        {
             "machineName": "H5P.Question",
             "majorVersion": "1",
             "minorVersion": "4"
         }
     ],
-    "editorDependencies": [{
+    "editorDependencies": [
+        {
             "machineName": "H5PEditor.RangeList",
             "majorVersion": 1,
             "minorVersion": 0
@@ -106,5 +116,4 @@
             "minorVersion": 2
         }
     ]
-
 }
