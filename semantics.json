@@ -17,17 +17,33 @@
       "type": "group",
       "fields": [
         {
+          "name": "puzzleTitle",
           "label": "Puzzle Title",
           "optional": true,
-          "name": "puzzleTitle",
           "type": "text",
           "default": "Parsons Puzzle"
         },
         {
-          "label": "Puzzle Instructions",
           "name": "puzzleInstructions",
+          "label": "Puzzle Instructions",
           "type": "text",
           "default": "Drag the code lines from the left box into the right box to create a program.  Don't forget to indent the code blocks by dragging them into the right position!"
+        },
+        {
+          "name": "trashLabel",
+          "type": "text",
+          "label": "Given code label",
+          "description": "Label that student will see above given code fragments",
+          "default": "Drag from here",
+          "common": true
+        },
+        {
+          "name": "solutionLabel",
+          "type": "text",
+          "label": "Solution space label",
+          "description": "Label that student will see above block where they construct their solution",
+          "default": "Construct your solution here",
+          "common": true
         },
         {
           "label": "Puzzle Content",
@@ -71,10 +87,11 @@
     }
   },
   {
-    "name": "endGame",
+    "name": "behaviour",
     "type": "group",
-    "label": "Quiz finished",
-    "importance": "medium",
+    "label": "Behavioural Options",
+    "description": "These options allow you to control extra features the user can access"
+    "importance": "low",
     "fields": [
       {
         "name": "showSolutionButton",
@@ -82,12 +99,110 @@
         "label": "Display solution button",
         "default": true
       },
+
+      },
       {
+        "name": "showRetryButton",
+        "type": "boolean",
+        "label": "Display retry button",
+        "default": true
+      },
+
+// Text fields
+      {
+        "name": "feedbackHeader",
+        "type": "text",
+        "label": "Feedback heading",
+        "importance": "low",
+        "default": "Your result:",
+        "description": "This heading will be displayed at the end of the quiz when the user has answered all questions.",
+        "tags": [
+          "strong",
+          "em",
+          "code"
+        ],
+        "optional": true
+      },
+      {
+        "name": "successComment",
+        "type": "text",
+        "label": "Passed comment",
+        "widget": "html",
+        "importance": "low",
+        "optional": true,
+        "description": "This comment will be displayed after the score if the user has successfully passed the quiz.",
+        "tags": [
+          "sub",
+          "sup",
+          "strong",
+          "em",
+          "a",
+          "p",
+          "code"
+        ]
+      },
+      {
+        "name": "failComment",
+        "type": "text",
+        "label": "Failed comment",
+        "widget": "html",
+        "importance": "low",
+        "optional": true,
+        "description": "This comment will be displayed after the score if the user has failed the quiz.",
+        "tags": [
+          "sub",
+          "sup",
+          "strong",
+          "em",
+          "a",
+          "p",
+          "code"
+        ],
+        "optional": true
+      },
+      {
+        "name": "scoreBarLabel",
+        "type": "text",
+        "label": "Textual representation of the score bar for those using a readspeaker",
+        "default": "You got :num out of :total points",
+        "importance": "low",
+        "common": true,
+        "optional": true
+      }
+    ]
+    {
+      "name": "correctText",
+      "type": "text",
+      "label": "correct answer",
+      "importance": "low",
+      "default": "Correct!",
+      "common": true,
+      "widget": "showWhen",
+      "showWhen": {
+        "rules": [
+          "field": "checkAnswer",
+          "equals": true
+        ]
+      }
+    },
+    {
+      "name": "incorrectText",
+      "type": "text",
+      "label": "incorrect answer",
+      "importance": "low",
+      "default": "Incorrect!",
+      "common": true
+    },
+
+  ]
+},
+
+
+{
         "name": "solutionButtonText",
         "type": "text",
         "label": "Text for \"Show Solution\" button",
         "importance": "low",
-
         "default": "Show solution",
         "common": true,
         "widget": "showWhen",
@@ -97,14 +212,7 @@
             "equals": true
           ]
         }
-      },
-      {
-        "name": "showRetryButton",
-        "type": "boolean",
-        "label": "Display retry button",
-        "default": true
-      },
-      {
+              {
         "name": "tryAgain",
         "type": "text",
         "label": "Text for \"Retry\" button",
@@ -119,98 +227,60 @@
           ]
         }
       },
-      {
+            {
         "name": "checkAnswer",
         "type": "text",
         "label": "Text for \"Check\" button",
-        "importance": "low",
         "default": "Check",
         "common": true
       },
-      {
-        "name": "correctText",
-        "type": "text",
-        "label": "correct answer",
-        "importance": "low",
-        "default": "Correct!",
-        "common": true,
-        "widget": "showWhen",
-        "showWhen": {
-          "rules": [
-            "field": "checkAnswer",
-            "equals": true
-          ]
-        }
-      },
-      {
-        "name": "incorrectText",
-        "type": "text",
-        "label": "incorrect answer",
-        "importance": "low",
-        "default": "Incorrect!",
-        "common": true
-      },
+{
+  "name": "feedbackLabels",
+  "type": "group",
+  "label": "Feedback Labels",
+  "importance": "medium",
+  "fields": [
+    {
+      "name": "order",
+      "type": "text",
+      "importance":"low",
+      "default":"Code fragments in your program are wrong, or in wrong order. This can be fixed by moving, removing, or replacing highlighted fragments.",
+    },
+    {
+      "name": "linesMissing",
+      "type": "text",
+      "importance":"low",
+      "default":"Your program has too few code fragments."
+    },
+    {
+      "name": "linesTooMany",
+      "type": "text",
+      "importance":"low",
+      "default":"Your program has too many code fragments."
+    },
+    {
+      "name": "linesNoMatching",
+      "type": "text",
+      "importance":"low",
+      "default":"Based on language syntax, the highlighted fragment is not correctly indented."
+    },
+    {
+      "name": "noMatchingOpen",
+      "type": "text",
+      "importance":"low",
+      "default":"Missing start of code block."
+    },
+    {
+      "name": "noMatchingClose",
+      "type": "text",
+      "importance":"low",
+      "default":"Missing end of code block."
+    },
+    {
+      "name": "blockCloseMismatch",
+      "type": "text",
+      "importance":"low",
+      "default":"Can not end block while still inside a nested block."
+    }
+  ]
 
-    ]
-  },
-  {
-    "name": "feedbackHeader",
-    "type": "text",
-    "label": "Feedback heading",
-    "importance": "low",
-    "default": "Your result:",
-    "description": "This heading will be displayed at the end of the quiz when the user has answered all questions.",
-    "tags": [
-      "strong",
-      "em",
-      "code"
-    ],
-    "optional": true
-  },
-  {
-    "name": "successComment",
-    "type": "text",
-    "label": "Passed comment",
-    "widget": "html",
-    "importance": "low",
-    "optional": true,
-    "description": "This comment will be displayed after the score if the user has successfully passed the quiz.",
-    "tags": [
-      "sub",
-      "sup",
-      "strong",
-      "em",
-      "a",
-      "p",
-      "code"
-    ]
-  },
-  {
-    "name": "failComment",
-    "type": "text",
-    "label": "Failed comment",
-    "widget": "html",
-    "importance": "low",
-    "optional": true,
-    "description": "This comment will be displayed after the score if the user has failed the quiz.",
-    "tags": [
-      "sub",
-      "sup",
-      "strong",
-      "em",
-      "a",
-      "p",
-      "code"
-    ],
-    "optional": true
-  },
-  {
-    "name": "scoreBarLabel",
-    "type": "text",
-    "label": "Textual representation of the score bar for those using a readspeaker",
-    "default": "You got :num out of :total points",
-    "importance": "low",
-    "common": true,
-    "optional": true
-  }
-]

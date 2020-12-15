@@ -1,7 +1,7 @@
-H5P.ParsonsPuzzle = (function ($) { // wrap in anonymous function to not show some helper variables
+H5P.ParsonsPuzzleContent = (function ($) { // wrap in anonymous function to not show some helper variables
 
   /**
-   * @class H5P.ParsonsPuzzle
+   * @class H5P.ParsonsPuzzleContent
    * @param {Object} params
    */
    function ParsonsPuzzle(params) {

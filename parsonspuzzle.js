@@ -1,39 +1,23 @@
 var H5P = H5P || {};
 
 H5P.ParsonsPuzzle = (function ($, ParsonsJS) {
-  function displayErrors(fb) {
-    console.log(fb);
-    console.log("----------->")
-    if (fb.errors.length > 0) {
-      alert(fb.errors[0]);
-    }
-  }
 
     /**
-     * StepByStepMath constructor
-     * @param       {object} options Object with current data and configurations
+     * @class H5P.ParsonsPuzzle
+     * @param       {Object} options  Object with current data and configurations
      * @param       {integer} id      Unique identifier
-     * @constructor
+     * @param       {Ojbject} data    Task data
+     *
+     * @returns {Object} ParsonsPuzzle instance of a ParsonsPuzzle
      */
-     function ParsonsQuiz(options, id, data) {
-        // Inheritance
-        // Question.call(self, 'parsons');
+     function ParsonsPuzzle(options, id, data) {
+        this.$ = $(this);
+        this.id = id;
         this.data = data;
+
         var defaults = {
           passPercentage: 50,
-          texts: {
-            finishButton: 'Finish'
-          },
-          endGame: {
-            showResultPage: true,
-            noResultMessage: 'Finished',
-            message: 'Your result:',
-            oldFeedback: {
-              successGreeting: '',
-              successComment: '',
-              failGreeting: '',
-              failComment: ''
-            },
+
             overallFeedback: [],
             finishButtonText: 'Finish',
             solutionButtonText: 'Show solution'
@@ -43,7 +27,6 @@ H5P.ParsonsPuzzle = (function ($, ParsonsJS) {
         };
         this.options = $.extend(true, {}, defaults, options); // defined in semantics.json
         this.parsonList = [];
-        this.id = id;
         // this.quiz = this.options.quiz;
         this.$startQ = $('<button/>', { 'class': "startQuiz", 'text': "	Start Quiz ?" });
         this.$inner = $('<div/>', {

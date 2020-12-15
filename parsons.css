@@ -25,14 +25,12 @@ p {
 .h5p-parsons .h5p-inner {
     position: absolute;
     width: 100%;
-    /* background-color: blue; */
 }
 
 .h5p-parsonswidget {
     height: auto;
     display: flex;
     flex-wrap: wrap;
-    /* background-color: #555555; */
 }
 
 
@@ -40,7 +38,6 @@ p {
 
 #taskDescription {
     color: #000;
-    /*font-family: 'Source Sans Pro', sans-serif;*/
     font-size: 26px;
     line-height: 32px;
     margin: 0 0 24px;
@@ -77,32 +74,18 @@ p.language {
     border-bottom-color: #333;
     border-bottom-color: rgba(0, 0, 0, 0.4);
     color: #fff;
-    /* -moz-box-shadow: inset 0 0.08em 0 rgba(255, 255, 255, 0.4), inset 0 0 0.1em rgba(255, 255, 255, 0.9);
-    -webkit-box-shadow: inset 0 0.08em 0 rgba(255, 255, 255, 0.4), inset 0 0 0.1em rgba(255, 255, 255, 0.9); */
     box-shadow: inset 0 0.08em 0 rgba(255, 255, 255, 0.4), inset 0 0 0.1em rgba(255, 255, 255, 0.9);
-    /* cursor: pointer; */
     display: inline-block;
-    /*font: bold 100%/2.1 "Lucida Grande", Tahoma, sans-serif;*/
     padding: 0 .95em 0 0;
     text-align: center;
     text-decoration: none;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
     white-space: nowrap;
-    /* -moz-user-select: none;
-    -webkit-user-select: none; */
     user-select: none;
     position: relative;
-    /* -moz-border-radius: .3em;
-    -webkit-border-radius: .3em; */
     border-radius: .3em;
     background-color: #000;
 }
-
-
-/* p.language:before {
-    content: "Language: ";
-} */
-
 
 /** Stylesheet for the puzzles */
 
@@ -121,68 +104,6 @@ p.language {
 .h5p-parsonswidget #sortable {
     width: 56%;
 }
-
-
-/* #ul-sortableTrash {
-    border: 4px solid black;
-    border-radius: 10px;
-    height: auto;
-}
-
-#ul-sortable {
-    padding: 2px;
-    border: 1px solid #888
-}
-
-.prettyprint {
-    padding: 2px;
-    border: 1px solid #888
-}
-
-#sortable ul,
-#sortableTrash ul {
-    font-size: 120%;
-    font-family: monospace;
-    list-style: none;
-    background-color: #efefff;
-    padding-bottom: 10px;
-    padding-left: 0;
-    margin-left: 0;
-    border: 1px solid #efefff;
-    ;
-}
-
-#sortable ul:empty,
-#sortableTrash ul:empty {
-    padding-bottom: 30px;
-}
-
-#sortableTrash li,
-#sortableTrash li:before,
-#sortableTrash li:after {
-    box-sizing: content-box;
-}
-
-ul.output {
-    background-color: #FFA;
-}
-
-#sortable li,
-#sortableTrash li {
-    border-radius: 10px;
-    background-color: #EFEFEF;
-    border: 1px solid lightgray;
-    padding: 10px;
-    margin-top: 5px;
-    white-space: nowrap;
-    overflow: hidden;
-    cursor: grab;
-}
-
-#sortable li:hover,
-#sortableTrash li:hover {
-    overflow: visible;
-} */
 
 ul.incorrect {
     border: 1px solid red;
@@ -274,11 +195,6 @@ li.correctPosition,
     color: red;
 }
 
-
-/* p#buttons {
-    margin-top: 2%;
-} */
-
 #buttons a {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -293,10 +209,6 @@ li.correctPosition,
     cursor: pointer;
     margin-left: 2%;
 }
-
-
-/**end old stylesheet **/
-
 
 /** Stylesheet for the puzzles */
 
@@ -546,7 +458,6 @@ li.incorrectPosition:Before {
     content: "\f00d";
     color: #b71c1c;
 }
-
 
 li.incorrectIndent:Before {
     position: absolute;
