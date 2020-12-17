@@ -1,87 +1,45 @@
 [
   {
-    "label": "Parsons Puzzle",
     "name": "parsonsPuzzle",
+    "label": "Parsons Puzzle",
     "importance": "high",
-    "type": "list",
-    "widgets": [
-      {
-        "name": "VerticalTabs",
-        "label": "Default"
-      }
-    ],
-    "min": 1,
-    "entity": "parsons puzzle",
+    "type": "group",
     "field": {
       "name": "puzzle",
       "type": "group",
       "fields": [
         {
-          "name": "puzzleTitle",
-          "label": "Puzzle Title",
+          "label": "Language",
+          "name": "codeLanguage",
           "optional": true,
-          "type": "text",
-          "default": "Parsons Puzzle"
-        },
-        {
-          "name": "puzzleInstructions",
-          "label": "Puzzle Instructions",
-          "type": "text",
-          "default": "Drag the code lines from the left box into the right box to create a program.  Don't forget to indent the code blocks by dragging them into the right position!"
-        },
-        {
-          "name": "trashLabel",
-          "type": "text",
-          "label": "Given code label",
-          "description": "Label that student will see above given code fragments",
-          "default": "Drag from here",
-          "common": true
-        },
-        {
-          "name": "solutionLabel",
-          "type": "text",
-          "label": "Solution space label",
-          "description": "Label that student will see above block where they construct their solution",
-          "default": "Construct your solution here",
-          "common": true
-        },
-        {
-          "label": "Puzzle Content",
-          "name": "code",
-          "type": "group",
-          "fields": [
+          "type": "select",
+          "options": [
             {
-              "label": "Language",
-              "name": "codeLanguage",
-              "optional": true,
-              "type": "select",
-              "options": [
-                {
-                  "value": "C",
-                  "label": "C"
-                },
-                {
-                  "value": "Java",
-                  "label": "Java"
-                },
-                {
-                  "value": "Python",
-                  "label": "Python"
-                },
-                {
-                  "value": "Pseudocode",
-                  "label": "Pseudocode"
-                }
-              ]
+              "value": "C",
+              "label": "C"
             },
             {
-              "label": "Code Block",
-              "name": "codeBlock",
-              "type": "text",
-              "widget": "textarea",
-              "description": "Enter the correct code here. Distractor lines can be added by typing #distractor at the end of the line."
+              "value": "Java",
+              "label": "Java"
+            },
+            {
+              "value": "Python",
+              "label": "Python"
+            },
+            {
+              "value": "Pseudocode",
+              "label": "Pseudocode"
             }
           ]
+        },
+
+        // once a code editor widget becomes available this should be replaced with a code editor
+        {
+          "label": "Code Block",
+          "name": "codeBlock",
+          "type": "text",
+          "widget": "textarea",
+          "description": "Enter the correct code here. Distractor lines can be added by typing #distractor at the end of the line."
         }
       ]
     }
@@ -90,86 +48,101 @@
     "name": "behaviour",
     "type": "group",
     "label": "Behavioural Options",
-    "description": "These options allow you to control extra features the user can access"
+    "description": "These options allow you to control which features the user can access",
     "importance": "low",
+    "optional": "true",
     "fields": [
       {
-        "name": "showSolutionButton",
+        "name": "enableSolutionButton",
         "type": "boolean",
         "label": "Display solution button",
         "default": true
       },
-
+      {
+        "name": "requireAttempt",
+        "type": "boolean",
+        "label": "Require attempt before the solution can be viewed",
+        "default": true,
+        "widget": "showWhen",
+        "ShowWhen": {
+          "rules": [
+            {
+              "field": "enableSolutionButton",
+              "equals": true
+            }
+          ]
+        }
       },
       {
-        "name": "showRetryButton",
+        "name": "enableRetryButton",
         "type": "boolean",
         "label": "Display retry button",
         "default": true
       },
+      {
+        "name": "enableCheckButton",
+        "type": "boolean",
+        "label": "Display check button",
+        "default": true
+      },
 
 // Text fields
-      {
-        "name": "feedbackHeader",
-        "type": "text",
-        "label": "Feedback heading",
-        "importance": "low",
-        "default": "Your result:",
-        "description": "This heading will be displayed at the end of the quiz when the user has answered all questions.",
-        "tags": [
-          "strong",
-          "em",
-          "code"
-        ],
-        "optional": true
-      },
-      {
-        "name": "successComment",
-        "type": "text",
-        "label": "Passed comment",
-        "widget": "html",
-        "importance": "low",
-        "optional": true,
-        "description": "This comment will be displayed after the score if the user has successfully passed the quiz.",
-        "tags": [
-          "sub",
-          "sup",
-          "strong",
-          "em",
-          "a",
-          "p",
-          "code"
-        ]
-      },
-      {
-        "name": "failComment",
-        "type": "text",
-        "label": "Failed comment",
-        "widget": "html",
-        "importance": "low",
-        "optional": true,
-        "description": "This comment will be displayed after the score if the user has failed the quiz.",
-        "tags": [
-          "sub",
-          "sup",
-          "strong",
-          "em",
-          "a",
-          "p",
-          "code"
-        ],
-        "optional": true
-      },
-      {
-        "name": "scoreBarLabel",
-        "type": "text",
-        "label": "Textual representation of the score bar for those using a readspeaker",
-        "default": "You got :num out of :total points",
-        "importance": "low",
-        "common": true,
-        "optional": true
-      }
-    ]
+
+// puzzle text fields
+{
+
+  "name": "puzzleInstructions",
+  "label": "Puzzle Instructions",
+  "type": "text",
+  "default": "Drag the code lines from the left box into the right box to create a program.  Don't forget to indent the code blocks by dragging them into the right position!"
+},
+{
+  "name": "piecesLabel",
+  "type": "text",
+  "label": "Given code label",
+  "description": "Label that student will see above given code fragments",
+  "default": "Drag from here",
+  "common": true
+},
+{
+  "name": "solutionLabel",
+  "type": "text",
+  "label": "Solution space label",
+  "description": "Label that student will see above block where they construct their solution",
+  "default": "Construct your solution here",
+  "common": true
+},
+
+// feedback text
+{
+  "name": "feedbackLabels",
+  "type": "group",
+  "label": "Feedback Labels",
+  "importance": "medium",
+  "fields": [
+    {
+      "name": "feedbackHeader",
+      "type": "text",
+      "label": "Feedback heading",
+      "importance": "low",
+      "default": "Your result:",
+      "description": "This heading will be displayed at the end of the quiz when the user has answered all questions.",
+      "tags": [
+        "strong",
+        "em",
+        "code"
+      ],
+      "optional": true
+    },
+    {
+      "name": "scoreBarLabel",
+      "type": "text",
+      "label": "Textual representation of the score bar for those using a readspeaker",
+      "default": "You got :num out of :total points",
+      "importance": "low",
+      "common": true,
+      "optional": true
+    },
     {
       "name": "correctText",
       "type": "text",
@@ -191,55 +164,15 @@
       "label": "incorrect answer",
       "importance": "low",
       "default": "Incorrect!",
-      "common": true
+      "common": true,
+      "widget": "showWhen",
+      "showWhen": {
+        "rules": [
+          "field": "checkAnswer",
+          "equals": true
+        ]
+      }
     },
-
-  ]
-},
-
-
-{
-        "name": "solutionButtonText",
-        "type": "text",
-        "label": "Text for \"Show Solution\" button",
-        "importance": "low",
-        "default": "Show solution",
-        "common": true,
-        "widget": "showWhen",
-        "showWhen": {
-          "rules":[
-            "field": "showSolutionButton",
-            "equals": true
-          ]
-        }
-              {
-        "name": "tryAgain",
-        "type": "text",
-        "label": "Text for \"Retry\" button",
-        "importance": "low",
-        "default": "Retry",
-        "common": true,
-        "widget": "showWhen",
-        "showWhen": {
-          "rules": [
-            "field": "showRetryButton",
-            "equals": true
-          ]
-        }
-      },
-            {
-        "name": "checkAnswer",
-        "type": "text",
-        "label": "Text for \"Check\" button",
-        "default": "Check",
-        "common": true
-      },
-{
-  "name": "feedbackLabels",
-  "type": "group",
-  "label": "Feedback Labels",
-  "importance": "medium",
-  "fields": [
     {
       "name": "order",
       "type": "text",
@@ -283,4 +216,51 @@
       "default":"Can not end block while still inside a nested block."
     }
   ]
+},
+
+// text for buttons
+{
+  "name": "solutionButtonText",
+  "type": "text",
+  "label": "Text for \"Show Solution\" button",
+  "importance": "low",
+  "default": "Show solution",
+  "common": true,
+  "widget": "showWhen",
+  "showWhen": {
+    "rules":[
+      "field": "enableSolutionButton",
+      "equals": true
+    ]
+  }
+},
+{
+  "name": "tryAgain",
+  "type": "text",
+  "label": "Text for \"Retry\" button",
+  "importance": "low",
+  "default": "Retry",
+  "common": true,
+  "widget": "showWhen",
+  "showWhen": {
+    "rules": [
+      "field": "enableRetryButton",
+      "equals": true
+    ]
+  }
+},
+{
+  "name": "checkAnswer",
+  "type": "text",
+  "label": "Text for \"Check\" button",
+  "default": "Check",
+  "common": true,
+  "showWhen": {
+    "rules":[
+      "field": "enableCheckButton",
+      "equals": true
+    ]
+  }
+}
+]
 
