@@ -1,6 +1,6 @@
 {
   "title": "Parsons Puzzle",
-  "description": "Displays a Parsons Puzzle",
+  "description": "A programming puzzle: code lines are scrambled, user must drag and drop to re-order AND correctly indent",
   "majorVersion": 1,
   "minorVersion": 0,
   "patchVersion": 0,
@@ -19,101 +19,16 @@
   "preloadedCss": [
     {
       "path": "style/parsons.css"
-    },
-    {
-      "path": "style/prettify.css"
-    },
-    {
-      "path": "style/h5p-jquery-ui.css"
     }
   ],
   "preloadedJs": [
     {
-      "path": "./lib/prettify.js"
+      "path": "./parsons-puzzle.js"
     },
     {
-      "path": "./lib/h5p-jquery-ui.js"
-    },
-    {
-      "path": "./lib/require.js"
-    },
-    {
-      "path": "./lib/jquery-ui.min.js"
-    },
-    {
-      "path": "./lib/jquery.ui.touch-punch.min.js"
-    },
-    {
-      "path": "./lib/underscore-min.js"
-    },
-    {
-      "path": "./lib/lis.js"
-    },
-    {
-      "path": "./parsons.js"
-    },
-    {
-      "path": "./index.js"
-    },
-    {
-      "path": "./lib/skulpt.js"
-    },
-    {
-      "path": "./lib/skulpt-stdlib.js"
+      "path": "./scripts/parsons_lib.js"
     }
   ],
   "preloadedDependencies": [
-    {
-      "machineName": "EmbeddedJS",
-      "majorVersion": 1,
-      "minorVersion": 0
-    },
-    {
-      "machineName": "H5P.AdvancedText",
-      "majorVersion": "1",
-      "minorVersion": "1"
-    },
-    {
-      "machineName": "jQuery.ui",
-      "majorVersion": "1",
-      "minorVersion": "10"
-    },
-    {
-      "machineName": "FontAwesome",
-      "majorVersion": "4",
-      "minorVersion": "5"
-    },
-    {
-      "machineName": "H5P.JoubelUI",
-      "majorVersion": "1",
-      "minorVersion": "3"
-    },
-    {
-      "machineName": "Tether",
-      "majorVersion": "1",
-      "minorVersion": "0"
-    },
-    {
-      "machineName": "H5P.Question",
-      "majorVersion": "1",
-      "minorVersion": "4"
-    }
-  ],
-  "editorDependencies": [
-    {
-      "machineName": "H5PEditor.RangeList",
-      "majorVersion": 1,
-      "minorVersion": 0
-    },
-    {
-      "machineName": "H5PEditor.VerticalTabs",
-      "majorVersion": 1,
-      "minorVersion": 3
-    },
-    {
-      "machineName": "H5PEditor.Wizard",
-      "majorVersion": 1,
-      "minorVersion": 2
-    }
-  ]
+]
 }
