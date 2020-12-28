@@ -1,32 +1,30 @@
 var H5P = H5P || {};
 
+import ParsonsLib from './scripts/parsons_lib.js';
+
 /**
-     * @class H5P.ParsonsPuzzle
-     * @param       {Object} options  Object with current data and configurations
-     * @param       {integer} id      Unique identifier
-     * @param       {Ojbject} data    Task data
-     *
-     * @returns {Object} ParsonsPuzzle instance of a ParsonsPuzzle
-     */
-     H5P.ParsonsPuzzle = function (options, id) {
+ * @class H5P.ParsonsPuzzle
+ * @param       {Object} options  Object with current data and configurations
+ * @param       {integer} id      Unique identifier
+ * @param       {Ojbject} data    Task data
+ *
+ * @returns {Object} ParsonsPuzzle instance of a ParsonsPuzzle
+ */
+ H5P.ParsonsPuzzle = (function ($, Event, Question) {
 
 
-       var $ = H5P.jQuery;
-       var self = this;
+  function ParsonsPuzzle(options, id, data)
+  var self = this;
+  self.id = id;
+  self.data = data;
 
-       if (!(this instanceof H5P.ParsonsPuzzle)) {
-        return new H5P.ParsonsPuzzle(options, id);
-      }
-
-      self.id = id;
-
-      var defaults = {
-        overallFeedback: [],
-      },
-      disableBackwardsNavigation: false
-    };
-
-        self.options = $.extend(true, {}, defaults, options); // defined in semantics.json
+  var defaults = {
+    overallFeedback: [],
+  },
+  disableBackwardsNavigation: false
+};
+ // defined in semantics.json
+ self.options = $.extend(true, {}, defaults, options);
 
 
         //score create
@@ -36,12 +34,12 @@ var H5P = H5P || {};
         self.scoreString = "";
         self.success;
         self.scoreBar;
-  
+
         self.createResultTemplate();
       }
 
 
-      /**add templates  */
+      /** create templates  */
       ParsonsQuiz.prototype.createResultTemplate = function () {
         var resulttemplate =
         '<div class="questionset-results">' +
@@ -90,11 +88,11 @@ var H5P = H5P || {};
            '<div class="actions">' +
            '    <button type="button" role="button" class="h5p-joubelui-button submit endQuiz" id="submitLink-<%= index %>"><%= buttonSubmit %></button>' +
            ' <% if (problem.code.enableRetryButton) { %> ' +
-                  '<button type="button" role="button" class="h5p-joubelui-button newInstance" id="newInstanceLink-<%= index %>"><%= button1Title %></button>' +
-            '  <% } %> ' +
-             ' <% if (problem.code.enableSolutionButton) { %> ' +
+           '<button type="button" role="button" class="h5p-joubelui-button newInstance" id="newInstanceLink-<%= index %>"><%= button1Title %></button>' +
+           '  <% } %> ' +
+           ' <% if (problem.code.enableSolutionButton) { %> ' +
            '    <button type="button" role="button" class="h5p-joubelui-button feedback" id="feedbackLink-<%= index %>"><%= button2Title %></button>' +
-            '  <% } %> ' +
+           '  <% } %> ' +
            '</div>' 
 
            var ejs_template = new EJS({ text: template });
@@ -174,20 +172,20 @@ var H5P = H5P || {};
 
             // Show result page.
             self.$container.append(self.endTemplate.render(eparams));
-              scoreBar = self.scoreBar;
-              if (scoreBar === undefined) {
-                scoreBar = H5P.JoubelUI.createScoreBar(self.totals);
-              }
-              scoreBar.appendTo($('.feedback-scorebar', self.$container));
-              $('.feedback-text', self.$container).html(self.scoreString);
+            scoreBar = self.scoreBar;
+            if (scoreBar === undefined) {
+              scoreBar = H5P.JoubelUI.createScoreBar(self.totals);
+            }
+            scoreBar.appendTo($('.feedback-scorebar', self.$container));
+            $('.feedback-text', self.$container).html(self.scoreString);
 
 
-              self.trigger('resize');
-            };
-            /**end display result setting */
+            self.trigger('resize');
+          };
+          /**end display result setting */
 
-          }
+        }
 
-          return ParsonsQuiz;
+        return ParsonsQuiz;
 
-        })(H5P.jQuery, H5P.ParsonsJS);
+      })(H5P.jQuery, H5P.EventDispatcher, H5P.ParsonsJS);
