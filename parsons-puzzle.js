@@ -1,6 +1,6 @@
 var H5P = H5P || {};
 
-import ParsonsLib from './scripts/parsons_lib.js';
+import ParsonsLib from './scripts/parsons_lib.js'
 
 /**
  * @class H5P.ParsonsPuzzle
@@ -36,7 +36,7 @@ import ParsonsLib from './scripts/parsons_lib.js';
     self.scoreBar;
 
     self.createResultTemplate();
-  };
+  }
 
 
   /** create templates  */
@@ -71,10 +71,10 @@ import ParsonsLib from './scripts/parsons_lib.js';
         self.$container = $container;
         $container.addClass('h5p-parsons');
 
-        // add quiz title and description
+           // add meta data of the question
         $('<div/>', { class: "h5p-inner", "text": self.data.metadata.title, "id": "title" }).appendTo($container);
 
-           // add meta data of the question
+        // add quiz title and description
            var template =
            '<p class="problemDescription"><%= problemDescription %></p>' +
            '<p class="codeLanguage" id="language-<%= index %>">' +
@@ -147,8 +147,6 @@ import ParsonsLib from './scripts/parsons_lib.js';
               self.score += 1;
             }
           });
-        //submit button to submit the quiz form
-        // self.$endQ.appendTo(self.$inner);
         $(".endQuiz").click(function () {
           /**attach result page */
             // Trigger finished event.
@@ -186,6 +184,6 @@ import ParsonsLib from './scripts/parsons_lib.js';
 
         }
 
-        return ParsonsQuiz;
+        return ParsonsPuzzle;
 
       })(H5P.jQuery, H5P.EventDispatcher, H5P.ParsonsJS);
