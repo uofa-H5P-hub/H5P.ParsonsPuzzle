@@ -13,50 +13,50 @@ import ParsonsLib from './scripts/parsons_lib.js';
  H5P.ParsonsPuzzle = (function ($, Event, Question) {
 
 
-  function ParsonsPuzzle(options, id, data)
-  var self = this;
-  self.id = id;
-  self.data = data;
+  function ParsonsPuzzle(options, id, data) {
+    var self = this;
+    self.id = id;
+    self.data = data;
 
-  var defaults = {
-    overallFeedback: [],
-  },
-  disableBackwardsNavigation: false
-};
- // defined in semantics.json
- self.options = $.extend(true, {}, defaults, options);
+    var defaults = {
+      overallFeedback: []
+    };
+    disableBackwardsNavigation: false;
 
-
-        //score create
-        self.score = 0;
-        self.finals;
-        self.totals;
-        self.scoreString = "";
-        self.success;
-        self.scoreBar;
-
-        self.createResultTemplate();
-      }
+    // defined in semantics.json
+    self.options = $.extend(true, {}, defaults, options);
 
 
-      /** create templates  */
-      ParsonsQuiz.prototype.createResultTemplate = function () {
-        var resulttemplate =
-        '<div class="questionset-results">' +
-        '  <div class="greeting"><%= message %></div>' +
-        '  <div class="feedback-section">' +
-        '    <div class="feedback-scorebar"></div>' +
-        '    <div class="feedback-text"></div>' +
-        '  </div>' +
-        '  <% if (comment) { %>' +
-        '  <div class="result-header"><%= comment %></div>' +
-        '  <% } %>' +
-        '  <% if (resulttext) { %>' +
-        '  <div class="result-text"><%= resulttext %></div>' +
-        '  <% } %>' +
-        '</div>';
-        self.endTemplate = new EJS({ text: resulttemplate });
-      }
+    //score create
+    self.score = 0;
+    self.finals;
+    self.totals;
+    self.scoreString = "";
+    self.success;
+    self.scoreBar;
+
+    self.createResultTemplate();
+  };
+
+
+  /** create templates  */
+  ParsonsQuiz.prototype.createResultTemplate = function () {
+    var resulttemplate =
+    '<div class="questionset-results">' +
+    '  <div class="greeting"><%= message %></div>' +
+    '  <div class="feedback-section">' +
+    '    <div class="feedback-scorebar"></div>' +
+    '    <div class="feedback-text"></div>' +
+    '  </div>' +
+    '  <% if (comment) { %>' +
+    '  <div class="result-header"><%= comment %></div>' +
+    '  <% } %>' +
+    '  <% if (resulttext) { %>' +
+    '  <div class="result-text"><%= resulttext %></div>' +
+    '  <% } %>' +
+    '</div>';
+    self.endTemplate = new EJS({ text: resulttemplate });
+  }
 
 
     /**
