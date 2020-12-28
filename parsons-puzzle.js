@@ -59,131 +59,130 @@ import ParsonsLib from './scripts/parsons_lib.js'
   }
 
 
-    /**
-     * Creates and fills container with content
-     * @param  {object} $container Container node
-     * @return {void}
-     */
+  /**
+   * Creates and fills container with content
+   * @param  {object} $container Container node
+   * @return {void}
+   */
 
-     ParsonsQuiz.prototype.attach = function ($container) {
+   ParsonsQuiz.prototype.attach = function ($container) {
 
-        // set container
-        self.$container = $container;
-        $container.addClass('h5p-parsons');
+    // set container
+    self.$container = $container;
+    $container.addClass('h5p-parsons');
 
-           // add meta data of the question
-        $('<div/>', { class: "h5p-inner", "text": self.data.metadata.title, "id": "title" }).appendTo($container);
+    // add meta data of the question
+    $('<div/>', { class: "h5p-inner", "text": self.data.metadata.title, "id": "title" }).appendTo($container);
 
-        // add quiz title and description
-           var template =
-           '<p class="problemDescription"><%= problemDescription %></p>' +
-           '<p class="codeLanguage" id="language-<%= index %>">' +
-           '    <i class="fas fa-globe-asia"> language: </i>' +
-           '    <%= codeLanguage %> ' +
-           '</p>' +
-           '<div class="sortable-code" id="sortableTrash"> </div>' +
-           '<div class="sortable-code" id="sortable"> </div>' +
-           '<div style="clear:both;"></div>' +
-           '' +
-           '<div class="actions">' +
-           '    <button type="button" role="button" class="h5p-joubelui-button submit endQuiz" id="submitLink-<%= index %>"><%= buttonSubmit %></button>' +
-           ' <% if (problem.code.enableRetryButton) { %> ' +
-           '<button type="button" role="button" class="h5p-joubelui-button newInstance" id="newInstanceLink-<%= index %>"><%= button1Title %></button>' +
-           '  <% } %> ' +
-           ' <% if (problem.code.enableSolutionButton) { %> ' +
-           '    <button type="button" role="button" class="h5p-joubelui-button feedback" id="feedbackLink-<%= index %>"><%= button2Title %></button>' +
-           '  <% } %> ' +
-           '</div>' 
+    // add quiz title and description
+    var template =
+    '<p class="problemDescription"><%= problemDescription %></p>' +
+    '<p class="codeLanguage" id="language-<%= index %>">' +
+    '    <i class="fas fa-globe-asia"> language: </i>' +
+    '    <%= codeLanguage %> ' +
+    '</p>' +
+    '<div class="sortable-code" id="sortableTrash"> </div>' +
+    '<div class="sortable-code" id="sortable"> </div>' +
+    '<div style="clear:both;"></div>' +
+    '' +
+    '<div class="actions">' +
+    '    <button type="button" role="button" class="h5p-joubelui-button submit endQuiz" id="submitLink-<%= index %>"><%= buttonSubmit %></button>' +
+    ' <% if (problem.code.enableRetryButton) { %> ' +
+    '<button type="button" role="button" class="h5p-joubelui-button newInstance" id="newInstanceLink-<%= index %>"><%= button1Title %></button>' +
+    '  <% } %> ' +
+    ' <% if (problem.code.enableSolutionButton) { %> ' +
+    '    <button type="button" role="button" class="h5p-joubelui-button feedback" id="feedbackLink-<%= index %>"><%= button2Title %></button>' +
+    '  <% } %> ' +
+    '</div>' 
 
-           var ejs_template = new EJS({ text: template });
-           let html = ejs_template.render({
-            problemDescription: puzzleInstructions,
-            codeLanguage: problem.code.code_language,
-            button1Title: problem.code.tryAgain,
-            button2Title: problem.code.solutionButtonText,
-            buttonSubmit: problem.code.checkAnswer,
-          });
-           console.log(html);
-           $(html).appendTo(parsonsjs.$question);
-
-
-            //
-            // question content
-
-            var code_line = problem.code.code_block;
-            var final_param = {};
-            var default_setting = {
-              'sortableId': 'sortable',
-              'trashId': 'sortableTrash',
-            };
-            var normal = { 'feedback_cb': displayErrors };
-
-            var parson = new ParsonsJS.ParsonsWidget(final_param, i)
-            self.parsonList.push(parson);
-
-            parson.init(code_line);
-            parson.shuffleLines();
-
-            // newInstance and feedback buttons
-            $("<div/>", { "style": "clear:both;" }).appendTo(parsonsjs.$question);
-            $("<div/>", { "css": "clear:both;" }).appendTo(parsonsjs.$question);
-            $('<div/>', { "id": "unittest-" + i }).appendTo(parsonsjs.$question);
-          }
-          $(".newInstance").on('click', function (event) {
-            var currentId = $(self).attr('id');
-            var currentIndex = currentId.substr(currentId.length - 1);
-            event.preventDefault();
-            self.parsonList[currentIndex].shuffleLines();
-          });
-          $(".feedback").on('click', function (event) {
-            var currentId = $(self).attr('id');
-            var currentIndex = currentId.substr(currentId.length - 1);
-            console.log("feedback : " + currentIndex + "is ongoing");
-            event.preventDefault();
-            var fb = self.parsonList[currentIndex].getFeedback();
-            console.log(fb.html);
-            $("#question-" + currentIndex).find("#unittest-" + currentIndex).html(fb.feedback);
-            if (self.parsonList[currentIndex].correct == true) {
-              self.score += 1;
-            }
-          });
-        $(".endQuiz").click(function () {
-          /**attach result page */
-            // Trigger finished event.
-            self.finals = self.score;
-            self.scoreString = H5P.Question.determineOverallFeedback(self.options.endGame.overallFeedback, self.finals / self.totals);
-
-            self.displayResults();
-            self.trigger('resize');
-            /**end attach result page */
-          });
-        /**start display result setting */
-        self.displayResults = function () {
-          self.triggerXAPICompleted(self.finals, self.totals, self.success);
-
-          var eparams = {
-            message: self.options.endGame.showResultPage ? self.options.endGame.message : self.options.endGame.noResultMessage,
-            comment: self.options.endGame.showResultPage ? (self.success ? self.options.endGame.oldFeedback.successGreeting : self.options.endGame.oldFeedback.failGreeting) : undefined,
-            resulttext: self.options.endGame.showResultPage ? (self.success ? self.options.endGame.oldFeedback.successComment : self.options.endGame.oldFeedback.failComment) : undefined,
-            finishButtonText: self.options.endGame.finishButtonText,
-          };
-
-            // Show result page.
-            self.$container.append(self.endTemplate.render(eparams));
-            scoreBar = self.scoreBar;
-            if (scoreBar === undefined) {
-              scoreBar = H5P.JoubelUI.createScoreBar(self.totals);
-            }
-            scoreBar.appendTo($('.feedback-scorebar', self.$container));
-            $('.feedback-text', self.$container).html(self.scoreString);
+    var ejs_template = new EJS({ text: template });
+    let html = ejs_template.render({
+      problemDescription: puzzleInstructions,
+      codeLanguage: problem.code.code_language,
+      button1Title: problem.code.tryAgain,
+      button2Title: problem.code.solutionButtonText,
+      buttonSubmit: problem.code.checkAnswer,
+    });
+    console.log(html);
+    $(html).appendTo(parsonsjs.$question);
 
 
-            self.trigger('resize');
-          };
-          /**end display result setting */
+    // question content
 
-        }
+    var code_line = problem.code.code_block;
+    var final_param = {};
+    var default_setting = {
+      'sortableId': 'sortable',
+      'trashId': 'sortableTrash',
+    };
+    var normal = { 'feedback_cb': displayErrors };
 
-        return ParsonsPuzzle;
+    var parson = new ParsonsJS.ParsonsWidget(final_param, i);
+    self.parsonList.push(parson);
 
-      })(H5P.jQuery, H5P.EventDispatcher, H5P.ParsonsJS);
+    parson.init(code_line);
+    parson.shuffleLines();
+
+    // newInstance and feedback buttons
+    $("<div/>", { "style": "clear:both;" }).appendTo(parsonsjs.$question);
+    $("<div/>", { "css": "clear:both;" }).appendTo(parsonsjs.$question);
+    $('<div/>', { "id": "unittest-" + i }).appendTo(parsonsjs.$question);
+
+    $(".newInstance").on('click', function (event) {
+      var currentId = $(self).attr('id');
+      var currentIndex = currentId.substr(currentId.length - 1);
+      event.preventDefault();
+      self.parsonList[currentIndex].shuffleLines();
+    });
+
+    $(".feedback").on('click', function (event) {
+      var currentId = $(self).attr('id');
+      var currentIndex = currentId.substr(currentId.length - 1);
+      console.log("feedback : " + currentIndex + "is ongoing");
+      event.preventDefault();
+      var fb = self.parsonList[currentIndex].getFeedback();
+      console.log(fb.html);
+      $("#question-" + currentIndex).find("#unittest-" + currentIndex).html(fb.feedback);
+      if (self.parsonList[currentIndex].correct == true) {
+        self.score += 1;
+      }
+    });
+
+    $(".endQuiz").click(function () {
+      /**attach result page */
+    // Trigger finished event.
+    self.finals = self.score;
+    self.scoreString = H5P.Question.determineOverallFeedback(self.options.endGame.overallFeedback, self.finals / self.totals);
+
+    self.displayResults();
+    self.trigger('resize');
+    /**end attach result page */
+
+    /**start display result setting */
+    self.displayResults = function () {
+      self.triggerXAPICompleted(self.finals, self.totals, self.success);
+
+      var eparams = {
+        message: self.options.endGame.showResultPage ? self.options.endGame.message : self.options.endGame.noResultMessage,
+        comment: self.options.endGame.showResultPage ? (self.success ? self.options.endGame.oldFeedback.successGreeting : self.options.endGame.oldFeedback.failGreeting) : undefined,
+        resulttext: self.options.endGame.showResultPage ? (self.success ? self.options.endGame.oldFeedback.successComment : self.options.endGame.oldFeedback.failComment) : undefined,
+        finishButtonText: self.options.endGame.finishButtonText,
+      };
+
+    // Show result page.
+    self.$container.append(self.endTemplate.render(eparams));
+    scoreBar = self.scoreBar;
+    if (scoreBar === undefined) {
+      scoreBar = H5P.JoubelUI.createScoreBar(self.totals);
+    }
+    scoreBar.appendTo($('.feedback-scorebar', self.$container));
+    $('.feedback-text', self.$container).html(self.scoreString);
+
+
+    self.trigger('resize');
+  }
+  /**end display result setting */
+
+  return ParsonsPuzzle;
+
+})(H5P.jQuery, H5P.EventDispatcher, H5P.ParsonsJS);
