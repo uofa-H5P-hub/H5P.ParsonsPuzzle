@@ -2,11 +2,9 @@ var H5P = H5P || {};
 
 /**
  * @param    {Object}   $         Jquery object
- * @param    {Object}   Content   H5P parsons puzzle content - The drag and drop puzzle
- * @param    {Object}   Question  H5P Question content type containing buttons and Puzzle Content
  * @param    {Object}   Event     H5P Event dispatcher for event handling
  */
-H5P.ParsonsPuzzle = (function ($, Content, Question, Event) {
+H5P.ParsonsPuzzle = (function ($, Question) {
 
 /**
  * @class H5P.ParsonsPuzzle
@@ -45,54 +43,33 @@ function ParsonsPuzzle(options, id, data) {
    */
   ParsonsPuzzle.prototype.registerDomElements = function () {
     var self this;
-    var content = new H5P.ParsonsPuzzleContent();
+    var content = new H5P.ParsonsPuzzleContent(self.options);
 
     self.setIntroduction(self.options.textFields.puzzleInstructions)
 
     self.setContent(content);
 
-    self.registerButtons();
+    self.registerButtons(puzzle);
   }
 
   /**
    * Create Buttons
    */
-  ParsonsPuzzle.prototype.registerButtons = function () {
+  ParsonsPuzzle.prototype.registerButtons = function (puzzle) {
     var self this;
 
-    self.addButton('checkButton', self.options.textFields.checkAnswer);
+    self.addButton('checkButton', self.options.textFields.checkAnswer, puzzle.);
 
     if (self.params.behaviour.enableRetryButton) {
-      self.addButton('retryButton', self.options.textFields.tryAgain);
+      self.addButton('retryButton', self.options.textFields.tryAgain, puzzle.);
     }
     if (self.params.behaviour.enableSolutionButton) {
-      self.addButton('solutionButton', self.options.textFields.solutionButtonText);
+      self.addButton('solutionButton', self.options.textFields.solutionButtonText, puzzle.);
     }
   }
-
 
   ParsonsPuzzle.prototype.Object.create(Question.prototype);
   ParsonsPuzzle.prototype.constructor = ParsonsPuzzle;
-
-  /** create templates  */
-  ParsonsPuzzle.prototype.createResultTemplate = function () {
-    var resulttemplate =
-    '<div class="questionset-results">' +
-    '  <div class="greeting"><%= message %></div>' +
-    '  <div class="feedback-section">' +
-    '    <div class="feedback-scorebar"></div>' +
-    '    <div class="feedback-text"></div>' +
-    '  </div>' +
-    '  <% if (comment) { %>' +
-    '  <div class="result-header"><%= comment %></div>' +
-    '  <% } %>' +
-    '  <% if (resulttext) { %>' +
-    '  <div class="result-text"><%= resulttext %></div>' +
-    '  <% } %>' +
-    '</div>';
-    self.endTemplate = new EJS({ text: resulttemplate });
-  }
-
 
   /**
    * Creates and fills container with content
@@ -213,4 +190,4 @@ function ParsonsPuzzle(options, id, data) {
 
   return ParsonsPuzzle;
 
-})(H5P.jQuery, H5P.ParsonsPuzzleContent, H5P.Question, H5P.EventDispatcher);
+})(H5P.jQuery, H5P.Question);
