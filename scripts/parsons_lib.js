@@ -1,3 +1,5 @@
+import _ from './scripts/underscore-min.js'
+
 H5P.ParsonsPuzzleContent = (function ($) { // wrap in anonymous function to not show some helper variables
 
   /**

@@ -1,36 +1,38 @@
 var H5P = H5P || {};
 
-import ParsonsLib from './scripts/parsons_lib.js'
+/**
+ * @param    {Object}   $         Jquery object
+ * @param    {Object}   Content   H5P parsons puzzle content - The drag and drop puzzle
+ * @param    {Object}   Question  H5P Question content type containing buttons and Puzzle Content
+ * @param    {Object}   Event     H5P Event dispatcher for event handling
+ */
+H5P.ParsonsPuzzle = (function ($, Content, Question, Event) {
 
 /**
  * @class H5P.ParsonsPuzzle
+ * @extends H5P.Question
  * @param       {Object} options  Object with current data and configurations
  * @param       {integer} id      Unique identifier
- * @param       {Ojbject} data    Task data
+ * @param       {Object} data    Task data
  *
  * @returns {Object} ParsonsPuzzle instance of a ParsonsPuzzle
  */
- H5P.ParsonsPuzzle = (function ($, Event, Question) {
+function ParsonsPuzzle(options, id, data) {
 
-
-  function ParsonsPuzzle(options, id, data) {
     var self = this;
     self.id = id;
     self.data = data;
+    Question.call(self, 'parsons-puzzle');
 
     var defaults = {
       overallFeedback: []
     };
-    disableBackwardsNavigation: false;
 
     // defined in semantics.json
     self.options = $.extend(true, {}, defaults, options);
 
-
     //score create
     self.score = 0;
-    self.finals;
-    self.totals;
     self.scoreString = "";
     self.success;
     self.scoreBar;
@@ -38,9 +40,42 @@ import ParsonsLib from './scripts/parsons_lib.js'
     self.createResultTemplate();
   }
 
+  /** 
+   * Register DOM elements
+   */
+  ParsonsPuzzle.prototype.registerDomElements = function () {
+    var self this;
+    var content = new H5P.ParsonsPuzzleContent();
+
+    self.setIntroduction(self.options.textFields.puzzleInstructions)
+
+    self.setContent(content);
+
+    self.registerButtons();
+  }
+
+  /**
+   * Create Buttons
+   */
+  ParsonsPuzzle.prototype.registerButtons = function () {
+    var self this;
+
+    self.addButton('checkButton', self.options.textFields.checkAnswer);
+
+    if (self.params.behaviour.enableRetryButton) {
+      self.addButton('retryButton', self.options.textFields.tryAgain);
+    }
+    if (self.params.behaviour.enableSolutionButton) {
+      self.addButton('solutionButton', self.options.textFields.solutionButtonText);
+    }
+  }
+
+
+  ParsonsPuzzle.prototype.Object.create(Question.prototype);
+  ParsonsPuzzle.prototype.constructor = ParsonsPuzzle;
 
   /** create templates  */
-  ParsonsQuiz.prototype.createResultTemplate = function () {
+  ParsonsPuzzle.prototype.createResultTemplate = function () {
     var resulttemplate =
     '<div class="questionset-results">' +
     '  <div class="greeting"><%= message %></div>' +
@@ -95,14 +130,7 @@ import ParsonsLib from './scripts/parsons_lib.js'
     '  <% } %> ' +
     '</div>' 
 
-    var ejs_template = new EJS({ text: template });
-    let html = ejs_template.render({
-      problemDescription: puzzleInstructions,
-      codeLanguage: problem.code.code_language,
-      button1Title: problem.code.tryAgain,
-      button2Title: problem.code.solutionButtonText,
-      buttonSubmit: problem.code.checkAnswer,
-    });
+    
     console.log(html);
     $(html).appendTo(parsonsjs.$question);
 
@@ -185,4 +213,4 @@ import ParsonsLib from './scripts/parsons_lib.js'
 
   return ParsonsPuzzle;
 
-})(H5P.jQuery, H5P.EventDispatcher, H5P.ParsonsJS);
+})(H5P.jQuery, H5P.ParsonsPuzzleContent, H5P.Question, H5P.EventDispatcher);
