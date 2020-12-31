@@ -2,7 +2,7 @@ var H5P = H5P || {};
 
 /**
  * @param    {Object}   $         Jquery object
- * @param    {Object}   Event     H5P Event dispatcher for event handling
+ * @param    {Object}   Question  H5P.Question to contain puzzle parts
  */
 H5P.ParsonsPuzzle = (function ($, Question) {
 
