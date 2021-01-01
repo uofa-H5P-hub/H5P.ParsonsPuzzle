@@ -1,61 +1,259 @@
 [
   {
-    "name": "parsonsPuzzle",
-    "label": "Parsons Puzzle",
+
+    "name": "puzzleInstructions",
+    "label": "Puzzle Instructions",
     "importance": "high",
+    "type": "text",
+    "widget": "html",
+    "description": "Describe how the user should solve the puzzle",
+    "default": "Drag the code lines from the left to the correct order on the right" +
+    " to create a working program." +
+    "  Indent the code lines by dragging them into the correct position."
+  },
+  { "label": "Language",
+    "name": "codeLanguage",
+    "optional": true,
+    "type": "select",
+    "options": [
+      {
+        "value": "C",
+        "label": "C"
+      },
+      {
+        "value": "Java",
+        "label": "Java"
+      },
+      {
+        "value": "Python",
+        "label": "Python"
+      },
+      {
+        "value": "Pseudocode",
+        "label": "Pseudocode"
+      }
+    ]
+  },
+
+  // once a code editor widget becomes available this should be replaced with a code editor
+  {
+    "label": "Code Block",
+    "name": "codeBlock",
+    "type": "text",
+    "widget": "textarea",
+    "description": "Enter the correct code here. Distractor lines can be added by typing #distractor at the end of the line."
+  },
+  {
+    "name": "overallFeedback",
     "type": "group",
-    "field": {
-      "name": "puzzle",
-      "type": "group",
-      "fields": [
-        {
-          "label": "Language",
-          "name": "codeLanguage",
-          "optional": true,
-          "type": "select",
-          "options": [
+    "label": "Overall Feedback",
+    "importance": "low",
+    "expanded": true,
+    "fields": [
+      {
+        "name": "overallFeedback",
+        "type": "list",
+        "widgets": [
+          {
+            "name": "RangeList",
+            "label": "Default"
+          }
+        ],
+        "importance": "high",
+        "label": "Define custom feedback for any score range",
+        "description": "Click the \"Add range\" button to add as many ranges as you need. Example: 0-20% Bad score, 21-91% Average Score, 91-100% Great Score!",
+        "entity": "range",
+        "min": 1,
+        "defaultNum": 1,
+        "optional": true,
+        "field": {
+          "name": "overallFeedback",
+          "type": "group",
+          "importance": "low",
+          "fields": [
             {
-              "value": "C",
-              "label": "C"
+              "name": "from",
+              "type": "number",
+              "label": "Score Range",
+              "min": 0,
+              "max": 100,
+              "default": 0,
+              "unit": "%"
             },
             {
-              "value": "Java",
-              "label": "Java"
+              "name": "to",
+              "type": "number",
+              "min": 0,
+              "max": 100,
+              "default": 100,
+              "unit": "%"
             },
             {
-              "value": "Python",
-              "label": "Python"
-            },
-            {
-              "value": "Pseudocode",
-              "label": "Pseudocode"
+              "name": "feedback",
+              "type": "text",
+              "label": "Feedback for defined score range",
+              "importance": "low",
+              "placeholder": "Fill in the feedback",
+              "optional": true
             }
           ]
-        },
-
-        // once a code editor widget becomes available this should be replaced with a code editor
-        {
-          "label": "Code Block",
-          "name": "codeBlock",
-          "type": "text",
-          "widget": "textarea",
-          "description": "Enter the correct code here. Distractor lines can be added by typing #distractor at the end of the line."
         }
-      ]
-    }
+      }
+    ]
+  },
+  {
+    "label": "Text for \"Check\" button",
+    "importance": "low",
+    "name": "checkAnswer",
+    "type": "text",
+    "default": "Check",
+    "common": true
+  },
+  {
+    "label": "Text for \"Retry\" button",
+    "importance": "low",
+    "name": "tryAgain",
+    "type": "text",
+    "default": "Retry",
+    "common": true
+  },
+  {
+    "label": "Text for \"Show Solution\" button",
+    "importance": "low",
+    "name": "showSolution",
+    "type": "text",
+    "default": "Show solution",
+    "common": true
+  },
+  {
+    "label": "Numbered Drop zone label",
+    "importance": "low",
+    "name": "dropZoneIndex",
+    "type": "text",
+    "default": "Drop Zone @index.",
+    "description": "Label used for accessibility, where the Read speaker will read the index of a drop zone. Variable available: @index",
+    "common": true
+  },
+  {
+    "label": "Empty Drop Zone label",
+    "importance": "low",
+    "name": "empty",
+    "type": "text",
+    "default": "Drop Zone @index is empty.",
+    "description": "Label used for accessibility, where the Read speaker will read that the drop zone is empty",
+    "common": true
+  },
+  {
+    "label": "Contains Drop Zone label",
+    "importance": "low",
+    "name": "contains",
+    "type": "text",
+    "default": "Drop Zone @index contains draggable @draggable.",
+    "description": "Label used for accessibility, where the Read speaker will read that the drop zone contains a draggable",
+    "common": true
+  },
+  {
+    "label": "Draggable elements label",
+    "importance": "low",
+    "name": "ariaDraggableIndex",
+    "type": "text",
+    "default": "@index of @count draggables.",
+    "description": "Label used for accessibility, where the Read speaker reads that this is a draggable element. Variable available: @index, @count",
+    "common": true
+  },
+  {
+    "label": "Label for show tip button",
+    "importance": "low",
+    "name": "tipLabel",
+    "type": "text",
+    "default": "Show tip",
+    "description": "Label used for accessibility, where the Read speaker reads it before the tip is read out",
+    "common": true
+  },
+  {
+    "name": "correctText",
+    "type": "text",
+    "label": "Readspeaker text for correct answer",
+    "importance": "low",
+    "default": "Correct!",
+    "common": true
+  },
+  {
+    "name": "incorrectText",
+    "type": "text",
+    "label": "Readspeaker text for incorrect answer",
+    "importance": "low",
+    "default": "Incorrect!",
+    "common": true
+  },
+  {
+    "name": "resetDropTitle",
+    "type": "text",
+    "label": "Confirmation dialog title that user wants to reset a droppable",
+    "importance": "low",
+    "default": "Reset drop",
+    "common": true
+  },
+  {
+    "name": "resetDropDescription",
+    "type": "text",
+    "label": "Confirmation dialog description that user wants to reset a droppable",
+    "importance": "low",
+    "default": "Are you sure you want to reset this drop zone?",
+    "common": true
+  },
+  {
+    "name": "grabbed",
+    "type": "text",
+    "label": "Label used for accessibility, where the read speaker indicates that dragging is initiated",
+    "importance": "low",
+    "default": "Draggable is grabbed.",
+    "common": true
+  },
+  {
+    "name": "cancelledDragging",
+    "type": "text",
+    "label": "Label used for accessibility, where the read speaker indicates that dragging is canceled",
+    "importance": "low",
+    "default": "Cancelled dragging.",
+    "common": true
+  },
+  {
+    "name": "correctAnswer",
+    "type": "text",
+    "label": "Label used for accessibility, where the read speaker indicates that a text is the correct answer",
+    "importance": "low",
+    "default": "Correct answer:",
+    "common": true
+  },
+  {
+    "name": "feedbackHeader",
+    "type": "text",
+    "label": "Header for panel containing feedback for correct/incorrect answers",
+    "importance": "low",
+    "default": "Feedback",
+    "common": true
   },
   {
     "name": "behaviour",
     "type": "group",
-    "label": "Behavioural Options",
-    "description": "These options allow you to control which features the user can access",
+    "label": "Behavioural settings.",
     "importance": "low",
-    "optional": "true",
+    "description": "These options will let you control how the task behaves.",
+    "optional": true,
     "fields": [
       {
-        "name": "enableSolutionButton",
+        "label": "Enable \"Retry\"",
+        "importance": "low",
+        "name": "enableRetry",
         "type": "boolean",
-        "label": "Display solution button",
+        "default": true
+      },
+      {
+        "label": "Enable \"Show Solution\" button",
+        "importance": "low",
+        "name": "enableSolutionsButton",
+        "type": "boolean",
         "default": true
       },
       {
@@ -74,193 +272,101 @@
         }
       },
       {
-        "name": "enableRetryButton",
-        "type": "boolean",
-        "label": "Display retry button",
-        "default": true
-      },
-      {
         "name": "enableCheckButton",
         "type": "boolean",
-        "label": "Display check button",
-        "default": true
+        "label": "Enable \"Check\" button",
+        "widget": "none",
+        "importance": "low",
+        "default": true,
+        "optional": true
       },
-
-// Text fields
-
-// puzzle text fields
-{
-
-  "name": "puzzleInstructions",
-  "label": "Puzzle Instructions",
-  "type": "text",
-  "default": "Drag the code lines from the left box into the right box to create a program.  Don't forget to indent the code blocks by dragging them into the right position!"
-},
-{
-  "name": "piecesLabel",
-  "type": "text",
-  "label": "Given code label",
-  "description": "Label that student will see above given code fragments",
-  "default": "Drag from here",
-  "common": true
-},
-{
-  "name": "solutionLabel",
-  "type": "text",
-  "label": "Solution space label",
-  "description": "Label that student will see above block where they construct their solution",
-  "default": "Construct your solution here",
-  "common": true
-},
-
-// feedback text
-{
-  "name": "feedbackLabels",
-  "type": "group",
-  "label": "Feedback Labels",
-  "importance": "medium",
-  "fields": [
-    {
-      "name": "feedbackHeader",
-      "type": "text",
-      "label": "Feedback heading",
-      "importance": "low",
-      "default": "Your result:",
-      "description": "This heading will be displayed at the end of the quiz when the user has answered all questions.",
-      "tags": [
-        "strong",
-        "em",
-        "code"
-      ],
-      "optional": true
-    },
-    {
-      "name": "scoreBarLabel",
-      "type": "text",
-      "label": "Textual representation of the score bar for those using a readspeaker",
-      "default": "You got :num out of :total points",
-      "importance": "low",
-      "common": true,
-      "optional": true
-    },
-    {
-      "name": "correctText",
-      "type": "text",
-      "label": "correct answer",
-      "importance": "low",
-      "default": "Correct!",
-      "common": true,
-      "widget": "showWhen",
-      "showWhen": {
-        "rules": [
-          "field": "checkAnswer",
-          "equals": true
-        ]
+      {
+        "label": "Instant feedback",
+        "importance": "low",
+        "name": "instantFeedback",
+        "type": "boolean",
+        "default": false,
+        "optional": true
       }
-    },
-    {
-      "name": "incorrectText",
-      "type": "text",
-      "label": "incorrect answer",
-      "importance": "low",
-      "default": "Incorrect!",
-      "common": true,
-      "widget": "showWhen",
-      "showWhen": {
-        "rules": [
-          "field": "checkAnswer",
-          "equals": true
-        ]
-      }
-    },
-    {
-      "name": "order",
-      "type": "text",
-      "importance":"low",
-      "default":"Code fragments in your program are wrong, or in wrong order. This can be fixed by moving, removing, or replacing highlighted fragments.",
-    },
-    {
-      "name": "linesMissing",
-      "type": "text",
-      "importance":"low",
-      "default":"Your program has too few code fragments."
-    },
-    {
-      "name": "linesTooMany",
-      "type": "text",
-      "importance":"low",
-      "default":"Your program has too many code fragments."
-    },
-    {
-      "name": "linesNoMatching",
-      "type": "text",
-      "importance":"low",
-      "default":"Based on language syntax, the highlighted fragment is not correctly indented."
-    },
-    {
-      "name": "noMatchingOpen",
-      "type": "text",
-      "importance":"low",
-      "default":"Missing start of code block."
-    },
-    {
-      "name": "noMatchingClose",
-      "type": "text",
-      "importance":"low",
-      "default":"Missing end of code block."
-    },
-    {
-      "name": "blockCloseMismatch",
-      "type": "text",
-      "importance":"low",
-      "default":"Can not end block while still inside a nested block."
-    }
-  ]
-},
+    ]
+  },
+  {
+    "name": "scoreBarLabel",
+    "type": "text",
+    "label": "Textual representation of the score bar for those using a readspeaker",
+    "default": "You got :num out of :total points",
+    "importance": "low",
+    "common": true
+  },
+  {
+    "name": "a11yCheck",
+    "type": "text",
+    "label": "Assistive technology label for \"Check\" button",
+    "default": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+    "importance": "low",
+    "common": true
+  },
+  {
+    "name": "a11yShowSolution",
+    "type": "text",
+    "label": "Assistive technology label for \"Show Solution\" button",
+    "default": "Show the solution. The task will be marked with its correct solution.",
+    "importance": "low",
+    "common": true
+  },
+  {
+    "name": "a11yRetry",
+    "type": "text",
+    "label": "Assistive technology label for \"Retry\" button",
+    "default": "Retry the task. Reset all responses and start the task over again.",
+    "importance": "low",
+    "common": true
+  }
 
-// text for buttons
-{
-  "name": "solutionButtonText",
-  "type": "text",
-  "label": "Text for \"Show Solution\" button",
-  "importance": "low",
-  "default": "Show solution",
-  "common": true,
-  "widget": "showWhen",
-  "showWhen": {
-    "rules":[
-      "field": "enableSolutionButton",
-      "equals": true
-    ]
+  // advanced feedback
+
+  {
+    "name": "order",
+    "type": "text",
+    "importance":"low",
+    "default":"Code fragments in your program are wrong, or in wrong order. This can be fixed by moving, removing, or replacing highlighted fragments.",
+  },
+  {
+    "name": "linesMissing",
+    "type": "text",
+    "importance":"low",
+    "default":"Your program has too few code fragments."
+  },
+  {
+    "name": "linesTooMany",
+    "type": "text",
+    "importance":"low",
+    "default":"Your program has too many code fragments."
+  },
+  {
+    "name": "linesNoMatching",
+    "type": "text",
+    "importance":"low",
+    "default":"Based on language syntax, the highlighted fragment is not correctly indented."
+  },
+  {
+    "name": "noMatchingOpen",
+    "type": "text",
+    "importance":"low",
+    "default":"Missing start of code block."
+  },
+  {
+    "name": "noMatchingClose",
+    "type": "text",
+    "importance":"low",
+    "default":"Missing end of code block."
+  },
+  {
+    "name": "blockCloseMismatch",
+    "type": "text",
+    "importance":"low",
+    "default":"Can not end block while still inside a nested block."
   }
-},
-{
-  "name": "tryAgain",
-  "type": "text",
-  "label": "Text for \"Retry\" button",
-  "importance": "low",
-  "default": "Retry",
-  "common": true,
-  "widget": "showWhen",
-  "showWhen": {
-    "rules": [
-      "field": "enableRetryButton",
-      "equals": true
-    ]
-  }
-},
-{
-  "name": "checkAnswer",
-  "type": "text",
-  "label": "Text for \"Check\" button",
-  "default": "Check",
-  "common": true,
-  "showWhen": {
-    "rules":[
-      "field": "enableCheckButton",
-      "equals": true
-    ]
-  }
-}
 ]
+
 
