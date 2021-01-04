@@ -1,0 +1,62 @@
+{
+  "name": "h5p-drag-text",
+  "version": "1.5.7",
+  "private": true,
+  "description": "Drag the Words allows content designers to create textual expressions with missing pieces of text. The end user drags a missing piece of text to its correct place, to form a complete expression.",
+  "scripts": {
+    "test": "ava",
+    "build": "cross-env NODE_ENV='production' webpack -p",
+    "watch": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/h5p/h5p-drag-text.git"
+  },
+  "author": "Joubel",
+  "license": "MIT",
+  "homepage": "https://github.com/h5p/h5p-drag-text",
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-json-strings": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-syntax-import-meta": "^7.0.0",
+    "@babel/plugin-syntax-jsx": "^7.12.1",
+    "@babel/plugin-transform-object-assign": "^7.0.0",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.0.0",
+    "ava": "^2.2.0",
+    "babel-loader": "^8.0.0",
+    "browser-env": "^2.0.30",
+    "cross-env": "^4.0.0",
+    "css-loader": "^3.0.0",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "h5p-lib-controls": "0.0.15",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.13.2",
+    "timer-machine": "^1.1.0",
+    "url-loader": "^2.0.1",
+    "webpack": "^2.2.1"
+  },
+  "ava": {
+    "babel": {
+      "testOptions": {
+        "plugins": [
+          "@babel/plugin-syntax-jsx",
+          "@babel/plugin-syntax-dynamic-import",
+          "@babel/plugin-syntax-import-meta",
+          "@babel/plugin-proposal-class-properties",
+          "@babel/plugin-proposal-json-strings"
+        ],
+        "presets": []
+      }
+    },
+    "require": [
+      "esm",
+      "@babel/polyfill",
+      "./tests/helpers/setup.js"
+    ]
+  }
+}

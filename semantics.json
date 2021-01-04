@@ -1,17 +1,41 @@
 [
   {
-
-    "name": "puzzleInstructions",
     "label": "Puzzle Instructions",
     "importance": "high",
+    "name": "puzzleInstructions",
     "type": "text",
     "widget": "html",
     "description": "Describe how the user should solve the puzzle",
-    "default": "Drag the code lines from the left to the correct order on the right" +
-    " to create a working program." +
-    "  Indent the code lines by dragging them into the correct position."
+    "default": "Drag the code lines from the left to the correct order on the right to create a working program. Indent the code lines by dragging them into the correct position.",
+    "enterMode": "p",
+    "tags": [
+      "strong",
+      "em",
+      "u",
+      "a",
+      "ul",
+      "ol",
+      "h2",
+      "h3",
+      "hr",
+      "pre",
+      "code"
+    ]
   },
-  { "label": "Language",
+  {
+    "label": "Code Block",
+    "name": "codeBlock",
+    "type": "text",
+    "widget": "textarea",
+    "description": "Enter the correct code here. Distractor lines can be added by typing #distractor at the end of the line.",
+    "placeholder": "def is_true(boolean_value):\n  if boolean_value:\n    return True\n  return False\n  return true #distractor\n",
+    "important": {
+      "description": "<ul><li>Droppable words are added with an asterisk (*) in front and behind the correct word/phrase.</li><li>You may add a textual tip, using a colon (:) in front of the tip.</li><li>For every empty spot there is only one correct word.</li><li>You may add feedback to be displayed when a task is completed. Use '\\+' for correct and '\\-' for incorrect feedback.</li></ul>",
+      "example": "def&nbsp;is_true(boolean_value):</br>&nbsp;&nbsp;if&nbsp;boolean_value:</br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;True</br>&nbsp;&nbsp;return&nbsp;False</br>&nbsp;&nbsp;return&nbsp;true&nbsp;#distractor</br>"
+    }
+  },
+  {
+    "label": "Language",
     "name": "codeLanguage",
     "optional": true,
     "type": "select",
@@ -33,15 +57,6 @@
         "label": "Pseudocode"
       }
     ]
-  },
-
-  // once a code editor widget becomes available this should be replaced with a code editor
-  {
-    "label": "Code Block",
-    "name": "codeBlock",
-    "type": "text",
-    "widget": "textarea",
-    "description": "Enter the correct code here. Distractor lines can be added by typing #distractor at the end of the line."
   },
   {
     "name": "overallFeedback",
@@ -257,21 +272,6 @@
         "default": true
       },
       {
-        "name": "requireAttempt",
-        "type": "boolean",
-        "label": "Require attempt before the solution can be viewed",
-        "default": true,
-        "widget": "showWhen",
-        "ShowWhen": {
-          "rules": [
-            {
-              "field": "enableSolutionButton",
-              "equals": true
-            }
-          ]
-        }
-      },
-      {
         "name": "enableCheckButton",
         "type": "boolean",
         "label": "Enable \"Check\" button",
@@ -321,52 +321,55 @@
     "default": "Retry the task. Reset all responses and start the task over again.",
     "importance": "low",
     "common": true
-  }
-
-  // advanced feedback
-
+  },
   {
+    "label": "Order",
     "name": "order",
     "type": "text",
-    "importance":"low",
-    "default":"Code fragments in your program are wrong, or in wrong order. This can be fixed by moving, removing, or replacing highlighted fragments.",
+    "importance": "low",
+    "optional": true,
+    "default": "Code fragments in your program are wrong, or in wrong order. This can be fixed by moving, removing, or replacing highlighted fragments."
   },
   {
     "name": "linesMissing",
     "type": "text",
-    "importance":"low",
-    "default":"Your program has too few code fragments."
+    "importance": "low",
+    "optional": true,
+    "default": "Your program has too few code fragments."
   },
   {
     "name": "linesTooMany",
     "type": "text",
-    "importance":"low",
-    "default":"Your program has too many code fragments."
+    "importance": "low",
+    "optional": true,
+    "default": "Your program has too many code fragments."
   },
   {
     "name": "linesNoMatching",
     "type": "text",
-    "importance":"low",
-    "default":"Based on language syntax, the highlighted fragment is not correctly indented."
+    "importance": "low",
+    "optional": true,
+    "default": "Based on language syntax, the highlighted fragment is not correctly indented."
   },
   {
     "name": "noMatchingOpen",
     "type": "text",
-    "importance":"low",
-    "default":"Missing start of code block."
+    "importance": "low",
+    "optional": true,
+    "default": "Missing start of code block."
   },
   {
     "name": "noMatchingClose",
     "type": "text",
-    "importance":"low",
-    "default":"Missing end of code block."
+    "importance": "low",
+    "optional": true,
+    "default": "Missing end of code block."
   },
   {
     "name": "blockCloseMismatch",
     "type": "text",
-    "importance":"low",
-    "default":"Can not end block while still inside a nested block."
+    "importance": "low",
+    "optional": true,
+    "default": "Can not end block while still inside a nested block."
   }
 ]
-
-

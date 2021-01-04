@@ -1,39 +1,57 @@
 {
-  "title": "Parsons Puzzle",
-  "description": "A programming puzzle: code lines are scrambled, user must drag and drop to re-order AND correctly indent",
+  "title": "My Drag Text",
+  "description": "Drag and drop pieces of text to create complete sentences.",
   "majorVersion": 1,
-  "minorVersion": 0,
-  "patchVersion": 0,
-  "runnable": 1,
-  "author": "cs@Adelaide",
-  "license": "MIT",
-  "machineName": "H5P.ParsonsPuzzle",
-  "embedTypes": [
-    "div"
-  ],
-  "fullscreen": 1,
-  "coreAPI": {
+  "minorVersion": 8,
+  "patchVersion": 14,
+  "coreApi": {
     "majorVersion": 1,
-    "minorVersion": 9
+    "minorVersion": 19
   },
+  "runnable": 1,
+  "embedTypes": [
+    "iframe"
+  ],
+  "author": "Joubel",
+  "license": "MIT",
+  "machineName": "H5P.MyDragText",
   "preloadedCss": [
     {
-      "path": "style/parsons.css"
+      "path": "dist/h5p-drag-text.css"
     }
   ],
   "preloadedJs": [
     {
-      "path": "./parsons-puzzle.js"
-    },
-    {
-      "path": "./scripts/parsons_lib.js"
+      "path": "dist/h5p-drag-text.js"
     }
   ],
   "preloadedDependencies": [
     {
-      "machineName": "EmbeddedJS",
+      "machineName": "FontAwesome",
+      "majorVersion": 4,
+      "minorVersion": 5
+    },
+    {
+      "machineName": "jQuery.ui",
+      "majorVersion": 1,
+      "minorVersion": 10
+    },
+    {
+      "machineName": "H5P.JoubelUI",
+      "majorVersion": 1,
+      "minorVersion": 3
+    },
+    {
+      "machineName": "H5P.Question",
+      "majorVersion": 1,
+      "minorVersion": 4
+    }
+  ],
+  "editorDependencies": [
+    {
+      "machineName": "H5PEditor.RangeList",
       "majorVersion": 1,
       "minorVersion": 0
-    },
-]
+    }
+  ]
 }
