@@ -1,13 +1,9 @@
 {
   "title": "Parsons Puzzle",
-<<<<<<< Updated upstream
-  "description": "Reorder and indent code lines to create a working program.",
-=======
   "description": "Drag and drop pieces of text to create complete sentences.",
->>>>>>> Stashed changes
   "majorVersion": 1,
-  "minorVersion": 0,
-  "patchVersion": 0,
+  "minorVersion": 8,
+  "patchVersion": 14,
   "coreApi": {
     "majorVersion": 1,
     "minorVersion": 19
