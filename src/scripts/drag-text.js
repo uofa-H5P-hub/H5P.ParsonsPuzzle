@@ -76,7 +76,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
 
     // Set default behavior.
     this.params = $.extend(true, {
-      taskDescription: "Set in adjectives in the following sentence",
+      puzzleInstructions: "Drag the code lines from the left to the correct order on the right to create a working program. Indent the code lines by dragging them into the correct position.",
       codeText: "def is_true(boolean_value):\n  if boolean_value:\n    return True\n  return False\n  return true #distractor\n",
       overallFeedback: [],
       checkAnswer: "Check",
@@ -328,7 +328,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    */
   MyDragText.prototype.registerDomElements = function () {
     // Register task introduction text
-    this.$introduction = $('<p id="' + this.introductionId + '">' + this.params.taskDescription + '</p>');
+    this.$introduction = $('<p id="' + this.introductionId + '">' + this.params.puzzleInstructions + '</p>');
     this.setIntroduction(this.$introduction);
     this.$introduction.parent().attr('tabindex', '-1');
 
@@ -468,7 +468,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
       self.hideAllSolutions();
 
       self.stopWatch.reset();
-      self.read(self.params.taskDescription);
+      self.read(self.params.puzzleInstructions);
     }, self.initShowTryAgainButton || false, {
       'aria-label': self.params.a11yRetry,
     });
@@ -1430,11 +1430,11 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
     definition.type = 'http://adlnet.gov/expapi/activities/cmi.interaction';
 
     var question = this.codeTextHtml;
-    var taskDescription = this.params.taskDescription + '<br/>';
+    var puzzleInstructions = this.params.puzzleInstructions + '<br/>';
 
     // Create the description
     definition.description = {
-      'en-US': taskDescription + this.replaceSolutionsWithBlanks(question)
+      'en-US': puzzleInstructions + this.replaceSolutionsWithBlanks(question)
     };
 
     //Create the correct responses pattern
