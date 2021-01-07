@@ -30,7 +30,7 @@
     "description": "Enter the correct code here. Distractor lines can be added by typing #distractor at the end of the line.",
     "placeholder": "def is_true(boolean_value):\n  if boolean_value:\n    return True\n  return False\n  return true #distractor\n",
     "important": {
-      "description": "<ul><li>Droppable words are added with an asterisk (*) in front and behind the correct word/phrase.</li><li>You may add a textual tip, using a colon (:) in front of the tip.</li><li>For every empty spot there is only one correct word.</li><li>You may add feedback to be displayed when a task is completed. Use '\\+' for correct and '\\-' for incorrect feedback.</li></ul>",
+      "description": "<ul><li>Enter the correct code in the box below.</li><li>Distractor lines can be added by typing #distractor at the end of the line.</li>",
       "example": "def&nbsp;is_true(boolean_value):</br>&nbsp;&nbsp;if&nbsp;boolean_value:</br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;True</br>&nbsp;&nbsp;return&nbsp;False</br>&nbsp;&nbsp;return&nbsp;true&nbsp;#distractor</br>"
     }
   },
@@ -327,49 +327,62 @@
     "name": "order",
     "type": "text",
     "importance": "low",
+    "common": true,
     "optional": true,
     "default": "Code fragments in your program are wrong, or in wrong order. This can be fixed by moving, removing, or replacing highlighted fragments."
   },
   {
+    "label": "Feedback for lines missing in solution",
     "name": "linesMissing",
     "type": "text",
     "importance": "low",
     "optional": true,
+    "common": true,
     "default": "Your program has too few code fragments."
   },
   {
     "name": "linesTooMany",
+    "label": "Feedback for solution with distractors included",
     "type": "text",
     "importance": "low",
     "optional": true,
+    "common": true,
     "default": "Your program has too many code fragments."
   },
   {
     "name": "linesNoMatching",
+    "label": "Feedback when indentation is incorrect",
     "type": "text",
     "importance": "low",
     "optional": true,
+    "common": true,
     "default": "Based on language syntax, the highlighted fragment is not correctly indented."
   },
   {
     "name": "noMatchingOpen",
+    "label": "Feedback when code block is closed but not opened",
     "type": "text",
     "importance": "low",
     "optional": true,
+    "common": true,
     "default": "Missing start of code block."
   },
   {
     "name": "noMatchingClose",
+    "label": "Feedback when code block is not closed",
     "type": "text",
     "importance": "low",
     "optional": true,
+    "common": true,
     "default": "Missing end of code block."
   },
   {
     "name": "blockCloseMismatch",
+    "label": "Feedback when code block is closed prematurely",
     "type": "text",
     "importance": "low",
     "optional": true,
+    "common": true,
     "default": "Can not end block while still inside a nested block."
   }
 ]
