@@ -77,7 +77,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
     // Set default behavior.
     this.params = $.extend(true, {
       puzzleInstructions: "Drag the code lines from the left to the correct order on the right to create a working program. Indent the code lines by dragging them into the correct position.",
-      codeText: "def is_true(boolean_value):\n  if boolean_value:\n    return True\n  return False\n  return true #distractor\n",
+      codeBlock: "",
       overallFeedback: [],
       checkAnswer: "Check",
       tryAgain: "Retry",
@@ -116,8 +116,8 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
     this.instantFeedbackEvaluationFilled = false;
 
     // Convert line breaks to HTML
-    this.codeTextHtml = this.params.codeText.replace(/(\r\n|\n|\r)/gm, "<br/>");
-    this.codeText = this.params.codeText;
+    this.codeBlockHtml = this.params.codeBlock.replace(/(\r\n|\n|\r)/gm, "<br/>");
+    this.codeBlock = this.params.codeBlock;
     
     // introduction field id
     this.introductionId = 'h5p-drag-text-' + contentId + '-introduction';
@@ -748,7 +748,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
     self.$wordContainer = $('<div/>', {'class': WORDS_CONTAINER});
 
     const parser = new CodeParser(2);
-    const ret = parser.parse(self.codeText);
+    const ret = parser.parse(self.codeBlock);
 
     // parse text
     ret.modifiedLines.forEach(function (part) {
@@ -1429,7 +1429,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
     definition.interactionType = 'fill-in';
     definition.type = 'http://adlnet.gov/expapi/activities/cmi.interaction';
 
-    var question = this.codeTextHtml;
+    var question = this.codeBlockHtml;
     var puzzleInstructions = this.params.puzzleInstructions + '<br/>';
 
     // Create the description
