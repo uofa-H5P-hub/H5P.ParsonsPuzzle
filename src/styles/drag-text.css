@@ -116,7 +116,6 @@
   cursor: pointer;
   border-radius: 0.25em;
   padding: 0.1em 0.6em;
-  margin: 0.3em;
   vertical-align: top;
   text-align: left;
   display: inline-block;
@@ -193,6 +192,7 @@
 
 .h5p-drag-text .h5p-drag-droppable-words {
   line-height: 1.75;
+  float: right;
 }
 
 .h5p-drag-text [aria-grabbed='true'] {
@@ -207,7 +207,6 @@
 
 /* Wide Screen css : */
 .h5p-drag-text .h5p-drag-wide-screen {
-  float: right;
   padding-top: 0;
 }
 
