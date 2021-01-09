@@ -56,7 +56,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   //Special Sub-containers:
   var DRAGGABLES_WIDE_SCREEN = 'h5p-drag-wide-screen';
   var DRAGGABLE_ELEMENT_WIDE_SCREEN = 'h5p-drag-draggable-wide-screen';
-
+  var WORDS_CONTAINER_WIDE_SCREEN = "h5p-drag-droppable-words-wide-screen";
+ 
   /**
    * Initialize module.
    *
@@ -373,11 +374,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Find ratio of width to em, and make sure it is less than the predefined ratio, make sure widest draggable is less than a third of parent width.
     if ((self.$inner.width() / parseFloat(self.$inner.css("font-size"), 10) > 27) && (self.widestDraggable <= (self.$inner.width() / 2))) {
-      // Adds a class that floats the draggables to the right.
-      self.$draggables.addClass(DRAGGABLES_WIDE_SCREEN);
+    
+      // Adds a class that floats the drop zone to the right.
+      self.$wordContainer.addClass(WORDS_CONTAINER_WIDE_SCREEN);
 
-      // Detach and reappend the wordContainer so it will fill up the remaining space left by draggables.
-      self.$wordContainer.detach().appendTo(self.$taskContainer);
+      // Detach and reappend the draggables so it will fill up the remaining space left by draggables.
+      self.$draggables.detach().appendTo(self.$taskContainer);
 
       // Set all draggables to be blocks
       self.draggables.forEach(function (draggable) {
@@ -389,8 +391,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     } else {
       // Remove the specific wide screen settings.
       self.$wordContainer.css({'margin-right': 0});
-      self.$draggables.removeClass(DRAGGABLES_WIDE_SCREEN);
-      self.$draggables.detach().appendTo(self.$taskContainer);
+      self.$wordContainer.removeClass(WORDS_CONTAINER_WIDE_SCREEN);
+      self.$wordContainer.detach().appendTo(self.$taskContainer);
       self.draggables.forEach(function (draggable) {
         draggable.getDraggableElement().removeClass(DRAGGABLE_ELEMENT_WIDE_SCREEN);
       });
@@ -757,7 +759,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           const draggable = self.createDraggable(solution.code);
           if( !part.distractor) {
             console.log(solution.text);
-            const droppable = self.createDroppable(solution.code, "Tip", solution.correctFeedback, solution.incorrectFeedback);
+            const droppable = self.createDroppable(solution.code, solution.tip, solution.correctFeedback, solution.incorrectFeedback);
   
             // trigger instant feedback
             if (self.params.behaviour.instantFeedback) {
@@ -832,6 +834,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       widest = staticMinimumWidth;
     }
     this.widestDraggable = widestDragagble;
+
     this.widest = widest;
     //Adjust all droppable to widest size.
     this.droppables.forEach(function (droppable) {

@@ -81,7 +81,6 @@
   width: 10em;
   height: 1.25em;
   background-color: #cee0f4;
-  border-radius: 0.25em;
   display: inline-block;
   vertical-align: middle;
   text-align: left;
@@ -114,7 +113,6 @@
 .h5p-drag-text [aria-grabbed] {
   line-height: 1.25;
   cursor: pointer;
-  border-radius: 0.25em;
   padding: 0.1em 0.6em;
   vertical-align: top;
   text-align: left;
@@ -186,13 +184,11 @@
   border: 1px #255c41 dashed;
   background-color: #d4f6e6;
   padding: 0.15em;
-  border-radius: 0.25em;
   margin-left: 0.5em;
 }
 
 .h5p-drag-text .h5p-drag-droppable-words {
   line-height: 1.4;
-  float: right;
 }
 
 .h5p-drag-text [aria-grabbed='true'] {
@@ -213,6 +209,12 @@
 .h5p-drag-text .h5p-drag-draggable-wide-screen {
   display: block;
 }
+
+.h5p-drag-text .h5p-drag-droppable-words-wide-screen {
+  line-height: 1.4;
+  float: right;
+}
+
 
 .h5p-drag-text [aria-dropeffect].ui-droppable.ui-droppable-disabled.ui-state-disabled{
   opacity: 1;
