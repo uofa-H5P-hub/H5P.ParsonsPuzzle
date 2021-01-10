@@ -998,7 +998,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * @fires Question#resize
    */
   ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
-    var left = draggable.$draggable.position().left;
+    var right = draggable.$draggable.position().right;
     var self = this;
     self.answered = true;
 
@@ -1017,9 +1017,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     droppable.setDraggable(draggable);
     draggable.appendDraggableTo(droppable.getDropzone());
-    if( left >= 0 ) {
-      var oldLeft = draggable.$draggable.css("left");
-      draggable.$draggable.css("left", left.toString() + "px");
+    if( right >= 0 ) {
+      var oldRight = draggable.$draggable.css("right");
+      draggable.$draggable.css("right", right.toString() + "px");
     }
 
     if (self.params.behaviour.instantFeedback) {
