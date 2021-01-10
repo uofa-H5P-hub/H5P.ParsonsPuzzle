@@ -1,9 +1,9 @@
 {
-  "title": "My Drag Text",
+  "title": "Parsons Puzzle",
   "description": "Drag and drop pieces of text to create complete sentences.",
   "majorVersion": 1,
-  "minorVersion": 8,
-  "patchVersion": 14,
+  "minorVersion": 0,
+  "patchVersion": 1,
   "coreApi": {
     "majorVersion": 1,
     "minorVersion": 19
@@ -14,7 +14,7 @@
   ],
   "author": "Joubel",
   "license": "MIT",
-  "machineName": "H5P.MyDragText",
+  "machineName": "H5P.ParsonsPuzzle",
   "preloadedCss": [
     {
       "path": "dist/h5p-drag-text.css"
