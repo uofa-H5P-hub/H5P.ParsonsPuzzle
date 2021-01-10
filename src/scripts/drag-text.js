@@ -45,7 +45,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
  * Drag Text module
  * @external {jQuery} $ H5P.jQuery
  */
-H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
+H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   //CSS Main Containers:
   var INNER_CONTAINER = "h5p-drag-inner";
   var TASK_CONTAINER = "h5p-drag-task";
@@ -56,7 +56,8 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   //Special Sub-containers:
   var DRAGGABLES_WIDE_SCREEN = 'h5p-drag-wide-screen';
   var DRAGGABLE_ELEMENT_WIDE_SCREEN = 'h5p-drag-draggable-wide-screen';
-
+  var WORDS_CONTAINER_WIDE_SCREEN = "h5p-drag-droppable-words-wide-screen";
+ 
   /**
    * Initialize module.
    *
@@ -68,7 +69,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Object} DragText Drag Text instance
    */
-  function MyDragText(params, contentId, contentData) {
+  function ParsonsPuzzle(params, contentId, contentData) {
     this.$ = $(this);
     this.contentId = contentId;
     this.contentData = contentData;
@@ -214,15 +215,15 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
     }
   }
 
-  MyDragText.prototype = Object.create(Question.prototype);
-  MyDragText.prototype.constructor = MyDragText;
+  ParsonsPuzzle.prototype = Object.create(Question.prototype);
+  ParsonsPuzzle.prototype.constructor = ParsonsPuzzle;
 
   /**
    * Updates the state of a droppable element
    *
    * @param event
    */
-  MyDragText.prototype.updateDroppableElement = function(event) {
+  ParsonsPuzzle.prototype.updateDroppableElement = function(event) {
     const dropZone = event.data.target;
     const draggable = event.data.element;
     const droppable = this.getDroppableByElement(dropZone);
@@ -238,7 +239,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Remove controls from dropzones if all is empty
    */
-  MyDragText.prototype.removeControlsFromDropZonesIfAllEmpty = function() {
+  ParsonsPuzzle.prototype.removeControlsFromDropZonesIfAllEmpty = function() {
     if (!this.anyDropZoneHasDraggable()) {
       this.removeAllDroppablesFromControls();
     }
@@ -247,7 +248,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Remove controls from dropzones without draggables
    */
-  MyDragText.prototype.removeControlsFromEmptyDropZones = function() {
+  ParsonsPuzzle.prototype.removeControlsFromEmptyDropZones = function() {
     this.droppables
       .filter(droppable => !droppable.hasDraggable())
       .map(droppable => droppable.getElement())
@@ -259,7 +260,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Add all drop zones to drop keyboard controls
    */
-  MyDragText.prototype.addAllDroppablesToControls = function() {
+  ParsonsPuzzle.prototype.addAllDroppablesToControls = function() {
     // to have a clean start, remove all first
     if(this.dropControls.count() > 0){
       this.removeAllDroppablesFromControls();
@@ -274,7 +275,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Remove all drop zones from drop keyboard controls
    */
-  MyDragText.prototype.removeAllDroppablesFromControls = function() {
+  ParsonsPuzzle.prototype.removeAllDroppablesFromControls = function() {
     this.droppables
       .map(droppable => droppable.getElement())
       .forEach(el => this.dropControls.removeElement(el));
@@ -283,7 +284,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Remove all drop zones from drop keyboard controls
    */
-  MyDragText.prototype.anyDropZoneHasDraggable = function() {
+  ParsonsPuzzle.prototype.anyDropZoneHasDraggable = function() {
     return this.droppables.some(droppable => droppable.hasDraggable());
   };
 
@@ -294,7 +295,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * @param {string} text
    * @param {number} index
    */
-  MyDragText.prototype.setDroppableLabel = function(dropZone, text, index) {
+  ParsonsPuzzle.prototype.setDroppableLabel = function(dropZone, text, index) {
     const indexText = this.params.dropZoneIndex.replace('@index', index.toString());
     const correctFeedback = dropZone.classList.contains('h5p-drag-correct-feedback');
     const inCorrectFeedback = dropZone.classList.contains('h5p-drag-wrong-feedback');
@@ -326,7 +327,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * Registers this question type's DOM elements before they are attached.
    * Called from H5P.Question.
    */
-  MyDragText.prototype.registerDomElements = function () {
+  ParsonsPuzzle.prototype.registerDomElements = function () {
     // Register task introduction text
     this.$introduction = $('<p id="' + this.introductionId + '">' + this.params.puzzleInstructions + '</p>');
     this.setIntroduction(this.$introduction);
@@ -342,7 +343,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Initialize drag text task
    */
-  MyDragText.prototype.initDragText = function () {
+  ParsonsPuzzle.prototype.initDragText = function () {
     this.$inner = $('<div/>', {
       'aria-describedby': this.introductionId,
       'class': INNER_CONTAINER
@@ -360,24 +361,25 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Changes layout responsively when resized.
    */
-  MyDragText.prototype.resize = function () {
+  ParsonsPuzzle.prototype.resize = function () {
     this.changeLayoutToFitWidth();
   };
 
   /**
   * Adds the draggables on the right side of the screen if widescreen is detected.
   */
-  MyDragText.prototype.changeLayoutToFitWidth = function () {
+  ParsonsPuzzle.prototype.changeLayoutToFitWidth = function () {
     var self = this;
     self.addDropzoneWidth();
 
     //Find ratio of width to em, and make sure it is less than the predefined ratio, make sure widest draggable is less than a third of parent width.
     if ((self.$inner.width() / parseFloat(self.$inner.css("font-size"), 10) > 27) && (self.widestDraggable <= (self.$inner.width() / 2))) {
-      // Adds a class that floats the draggables to the right.
-      self.$draggables.addClass(DRAGGABLES_WIDE_SCREEN);
+    
+      // Adds a class that floats the drop zone to the right.
+      self.$wordContainer.addClass(WORDS_CONTAINER_WIDE_SCREEN);
 
-      // Detach and reappend the wordContainer so it will fill up the remaining space left by draggables.
-      self.$wordContainer.detach().appendTo(self.$taskContainer);
+      // Detach and reappend the draggables so it will fill up the remaining space left by draggables.
+      self.$draggables.detach().appendTo(self.$taskContainer);
 
       // Set all draggables to be blocks
       self.draggables.forEach(function (draggable) {
@@ -389,8 +391,8 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
     } else {
       // Remove the specific wide screen settings.
       self.$wordContainer.css({'margin-right': 0});
-      self.$draggables.removeClass(DRAGGABLES_WIDE_SCREEN);
-      self.$draggables.detach().appendTo(self.$taskContainer);
+      self.$wordContainer.removeClass(WORDS_CONTAINER_WIDE_SCREEN);
+      self.$wordContainer.detach().appendTo(self.$taskContainer);
       self.draggables.forEach(function (draggable) {
         draggable.getDraggableElement().removeClass(DRAGGABLE_ELEMENT_WIDE_SCREEN);
       });
@@ -400,7 +402,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Add check solution, show solution and retry buttons, and their functionality.
    */
-  MyDragText.prototype.addButtons = function () {
+  ParsonsPuzzle.prototype.addButtons = function () {
     var self = this;
 
     if (self.params.behaviour.enableCheckButton) {
@@ -478,7 +480,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * Removes keyboard support for all elements left in the draggables
    * list.
    */
-  MyDragText.prototype.removeAllElementsFromDragControl = function () {
+  ParsonsPuzzle.prototype.removeAllElementsFromDragControl = function () {
     this.dragControls.elements.forEach(element => this.dragControls.removeElement(element));
   };
 
@@ -489,7 +491,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @fires H5P.DragText#start
    */
-  MyDragText.prototype.keyboardDraggableSelected = function (event) {
+  ParsonsPuzzle.prototype.keyboardDraggableSelected = function (event) {
     var tmp = this.selectedElement;
     var hasSelectedElement = this.selectedElement !== undefined;
     var isSelectedElement = this.selectedElement ===  event.element;
@@ -511,7 +513,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Focuses on the first empty drop zone
    */
-  MyDragText.prototype.focusOnFirstEmptyDropZone = function() {
+  ParsonsPuzzle.prototype.focusOnFirstEmptyDropZone = function() {
     const dropZone = this.droppables
       .filter(droppable => !droppable.hasDraggable())[0];
     const element = dropZone.getElement();
@@ -527,7 +529,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @return {boolean}
    */
-  MyDragText.prototype.isElementDisabled = function (element) {
+  ParsonsPuzzle.prototype.isElementDisabled = function (element) {
     return element.getAttribute('aria-disabled') === 'true';
   };
 
@@ -536,7 +538,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @param {ControlsEvent} event
    */
-  MyDragText.prototype.keyboardDroppableSelected = function (event) {
+  ParsonsPuzzle.prototype.keyboardDroppableSelected = function (event) {
     var self = this;
 
     var droppableElement = event.element;
@@ -572,7 +574,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Initialize drag text task
    */
-  MyDragText.prototype.toggleDraggablesContainer = function () {
+  ParsonsPuzzle.prototype.toggleDraggablesContainer = function () {
     var isEmpty = this.$draggables.children().length === 0;
     this.$draggables.toggleClass('hide', isEmpty);
   };
@@ -585,7 +587,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {ConfirmationDialog}
    */
-  MyDragText.prototype.createConfirmResetDialog = function (callback, scope) {
+  ParsonsPuzzle.prototype.createConfirmResetDialog = function (callback, scope) {
     var self = this;
     var dialog = new ConfirmationDialog({
       headerText: self.params.resetDropTitle,
@@ -601,7 +603,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Shows feedback for dropzones.
    */
-  MyDragText.prototype.showDropzoneFeedback = function () {
+  ParsonsPuzzle.prototype.showDropzoneFeedback = function () {
     this.droppables.forEach(droppable => {
       droppable.addFeedback();
       const draggable = droppable.containedDraggable;
@@ -617,7 +619,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * Generates data that is used to render the explanation container
    * at the bottom of the content type
    */
-  MyDragText.prototype.showExplanation = function () {
+  ParsonsPuzzle.prototype.showExplanation = function () {
     const self = this;
     let explanations = [];
 
@@ -654,7 +656,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Boolean} Returns true if maxScore was achieved.
    */
-  MyDragText.prototype.showEvaluation = function (skipXapi) {
+  ParsonsPuzzle.prototype.showEvaluation = function (skipXapi) {
     this.hideEvaluation();
     this.showDropzoneFeedback();
     this.showExplanation();
@@ -693,7 +695,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {number}
    */
-  MyDragText.prototype.calculateScore = function () {
+  ParsonsPuzzle.prototype.calculateScore = function () {
     return this.droppables.reduce(function (sum, entry) {
       return sum + (entry.isCorrect() ? 1 : 0);
     }, 0);
@@ -702,7 +704,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Clear the evaluation text.
    */
-  MyDragText.prototype.hideEvaluation = function () {
+  ParsonsPuzzle.prototype.hideEvaluation = function () {
     this.removeFeedback();
     this.trigger('resize');
   };
@@ -710,7 +712,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Remove the explanation container
    */
-  MyDragText.prototype.hideExplanation = function () {
+  ParsonsPuzzle.prototype.hideExplanation = function () {
     this.setExplanation();
     this.trigger('resize');
   };
@@ -718,7 +720,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Hides solution text for all dropzones.
    */
-  MyDragText.prototype.hideAllSolutions = function () {
+  ParsonsPuzzle.prototype.hideAllSolutions = function () {
     this.droppables.forEach(function (droppable) {
       droppable.hideSolution();
     });
@@ -730,7 +732,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @param {jQuery} $container The object which our task will attach to.
    */
-  MyDragText.prototype.addTaskTo = function ($container) {
+  ParsonsPuzzle.prototype.addTaskTo = function ($container) {
     var self = this;
     self.widest = 0;
     self.widestDraggable = 0;
@@ -757,7 +759,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
           const draggable = self.createDraggable(solution.code);
           if( !part.distractor) {
             console.log(solution.text);
-            const droppable = self.createDroppable(solution.code, "Tip", solution.correctFeedback, solution.incorrectFeedback);
+            const droppable = self.createDroppable(solution.code, solution.tip, solution.correctFeedback, solution.incorrectFeedback);
   
             // trigger instant feedback
             if (self.params.behaviour.instantFeedback) {
@@ -784,14 +786,14 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {boolean}
    */
-  MyDragText.prototype.isAnswerPart = function(part) {
+  ParsonsPuzzle.prototype.isAnswerPart = function(part) {
     return Util.startsWith('*', part) && Util.endsWith('*', part);
   };
 
   /**
    * Matches the width of all dropzones to the widest draggable, and sets widest class variable.
    */
-  MyDragText.prototype.addDropzoneWidth = function () {
+  ParsonsPuzzle.prototype.addDropzoneWidth = function () {
     var self = this;
     var widest = 0;
     var widestDragagble = 0;
@@ -832,6 +834,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
       widest = staticMinimumWidth;
     }
     this.widestDraggable = widestDragagble;
+
     this.widest = widest;
     //Adjust all droppable to widest size.
     this.droppables.forEach(function (droppable) {
@@ -846,7 +849,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDraggable}
    */
-  MyDragText.prototype.createDraggable = function (answer) {
+  ParsonsPuzzle.prototype.createDraggable = function (answer) {
     var self = this;
 
     //Make the draggable
@@ -901,7 +904,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDroppable}
    */
-  MyDragText.prototype.createDroppable = function (answer, tip, correctFeedback, incorrectFeedback) {
+  ParsonsPuzzle.prototype.createDroppable = function (answer, tip, correctFeedback, incorrectFeedback) {
     var self = this;
 
     var draggableIndex = this.draggables.length;
@@ -960,7 +963,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * @function
    * @returns {boolean}
    */
-  MyDragText.prototype.propagateDragEvent = Util.curry(function(eventName, self, event) {
+  ParsonsPuzzle.prototype.propagateDragEvent = Util.curry(function(eventName, self, event) {
     self.trigger(eventName, {
       element: event.target
     });
@@ -974,7 +977,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * @fires H5P.DragText#revert
    * @fires Question#resize
    */
-  MyDragText.prototype.revert = function (draggable) {
+  ParsonsPuzzle.prototype.revert = function (draggable) {
     var droppable = draggable.removeFromZone();
     var target = droppable ? droppable.getElement() : undefined;
     draggable.revertDraggableTo(this.$draggables);
@@ -994,8 +997,8 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * @fires H5P.DragText#drop
    * @fires Question#resize
    */
-  MyDragText.prototype.drop = function (draggable, droppable) {
-    var left = draggable.$draggable.position().left;
+  ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
+    var right = draggable.$draggable.position().right;
     var self = this;
     self.answered = true;
 
@@ -1014,9 +1017,9 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
 
     droppable.setDraggable(draggable);
     draggable.appendDraggableTo(droppable.getDropzone());
-    if( left >= 0 ) {
-      var oldLeft = draggable.$draggable.css("left");
-      draggable.$draggable.css("left", left.toString() + "px");
+    if( right >= 0 ) {
+      var oldRight = draggable.$draggable.css("right");
+      draggable.$draggable.css("right", right.toString() + "px");
     }
 
     if (self.params.behaviour.instantFeedback) {
@@ -1046,7 +1049,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDraggable[]}
    */
-  MyDragText.prototype.shuffleAndAddDraggables = function ($container) {
+  ParsonsPuzzle.prototype.shuffleAndAddDraggables = function ($container) {
     return Util.shuffle(this.draggables)
       .map((draggable, index) => draggable.setIndex(index))
       .map(draggable => this.addDraggableToContainer($container, draggable))
@@ -1061,7 +1064,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @return {H5P.TextDraggable}
    */
-  MyDragText.prototype.setDraggableAriaLabel = function (draggable) {
+  ParsonsPuzzle.prototype.setDraggableAriaLabel = function (draggable) {
     draggable.updateAriaLabel(this.params.ariaDraggableIndex
       .replace('@index', (draggable.getIndex() + 1).toString())
       .replace('@count', this.draggables.length.toString()));
@@ -1075,7 +1078,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * @param {HTMLElement} element
    * @returns {boolean}
    */
-  MyDragText.prototype.isGrabbed = function (element) {
+  ParsonsPuzzle.prototype.isGrabbed = function (element) {
     return element.getAttribute("aria-grabbed") === 'true';
   };
 
@@ -1087,7 +1090,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDraggable}
    */
-  MyDragText.prototype.addDraggableToContainer = function ($container, draggable) {
+  ParsonsPuzzle.prototype.addDraggableToContainer = function ($container, draggable) {
     draggable.appendDraggableTo($container);
     return draggable;
   };
@@ -1100,7 +1103,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDraggable}
    */
-  MyDragText.prototype.addDraggableToControls = function (controls, draggable) {
+  ParsonsPuzzle.prototype.addDraggableToControls = function (controls, draggable) {
     controls.addElement(draggable.getElement());
     return draggable;
   };
@@ -1108,7 +1111,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Feedback function for checking if all fields are filled, and show evaluation if that is the case.
    */
-  MyDragText.prototype.instantFeedbackEvaluation = function () {
+  ParsonsPuzzle.prototype.instantFeedbackEvaluation = function () {
     var self = this;
     var allFilled = self.isAllAnswersFilled();
 
@@ -1140,7 +1143,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {boolean} allFilled Returns true if all answers are answered
    */
-  MyDragText.prototype.isAllAnswersFilled = function () {
+  ParsonsPuzzle.prototype.isAllAnswersFilled = function () {
     return this.draggables.every(function(draggable){
       return draggable.isInsideDropZone();
     });
@@ -1149,7 +1152,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Enables all dropzones and all draggables.
    */
-  MyDragText.prototype.enableAllDropzonesAndDraggables = function () {
+  ParsonsPuzzle.prototype.enableAllDropzonesAndDraggables = function () {
     this.enableDraggables();
     this.droppables.forEach(function (droppable) {
       droppable.enableDropzone();
@@ -1159,7 +1162,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Disables all draggables, user will not be able to interact with them any more.
    */
-  MyDragText.prototype.disableDraggables = function () {
+  ParsonsPuzzle.prototype.disableDraggables = function () {
     this.draggables.forEach(function (entry) {
       entry.disableDraggable();
     });
@@ -1168,7 +1171,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Enables all draggables, user will be able to interact with them again.
    */
-  MyDragText.prototype.enableDraggables = function () {
+  ParsonsPuzzle.prototype.enableDraggables = function () {
     this.draggables.forEach(function (entry) {
       entry.enableDraggable();
     });
@@ -1180,7 +1183,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Boolean} true
    */
-  MyDragText.prototype.getAnswerGiven = function () {
+  ParsonsPuzzle.prototype.getAnswerGiven = function () {
     return this.answered;
   };
 
@@ -1190,7 +1193,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Number} The current score.
    */
-  MyDragText.prototype.getScore = function () {
+  ParsonsPuzzle.prototype.getScore = function () {
     return this.calculateScore();
   };
 
@@ -1200,7 +1203,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Number} The maximum score.
    */
-  MyDragText.prototype.getMaxScore = function () {
+  ParsonsPuzzle.prototype.getMaxScore = function () {
     return this.droppables.length;
   };
 
@@ -1209,14 +1212,14 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {string} title
    */
-  MyDragText.prototype.getTitle = function () {
+  ParsonsPuzzle.prototype.getTitle = function () {
     return H5P.createTitle((this.contentData && this.contentData.metadata && this.contentData.metadata.title) ? this.contentData.metadata.title : 'Drag the Words');
   };
 
   /**
    * Toogles the drop effect based on if an element is selected
    */
-  MyDragText.prototype.toggleDropEffect = function () {
+  ParsonsPuzzle.prototype.toggleDropEffect = function () {
     var hasSelectedElement = this.selectedElement !== undefined;
     this.ariaDropControls[hasSelectedElement ? 'setAllToMove' : 'setAllToNone']();
   };
@@ -1228,7 +1231,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDraggable}
    */
-  MyDragText.prototype.getDraggableByElement = function (el) {
+  ParsonsPuzzle.prototype.getDraggableByElement = function (el) {
     return this.draggables.filter(function(draggable){
       return draggable.$draggable.get(0) === el;
     }, this)[0];
@@ -1241,7 +1244,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDroppable}
    */
-  MyDragText.prototype.getDroppableByElement = function (el) {
+  ParsonsPuzzle.prototype.getDroppableByElement = function (el) {
     return this.droppables.filter(function(droppable){
       return droppable.$dropzone.get(0) === el;
     }, this)[0];
@@ -1251,7 +1254,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * Used for contracts.
    * Sets feedback on the dropzones.
    */
-  MyDragText.prototype.showSolutions = function () {
+  ParsonsPuzzle.prototype.showSolutions = function () {
     this.showEvaluation(true);
     this.droppables.forEach(function (droppable) {
       droppable.addFeedback();
@@ -1271,7 +1274,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * Used for contracts.
    * Resets the complete task back to its' initial state.
    */
-  MyDragText.prototype.resetTask = function () {
+  ParsonsPuzzle.prototype.resetTask = function () {
     var self = this;
     // Reset task answer
     self.answered = false;
@@ -1296,7 +1299,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Resets the position of all draggables shuffled.
    */
-  MyDragText.prototype.resetDraggables = function () {
+  ParsonsPuzzle.prototype.resetDraggables = function () {
     Util.shuffle(this.draggables).forEach(this.revert, this);
   };
 
@@ -1305,7 +1308,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {object} containing indexes of dropped words
    */
-  MyDragText.prototype.getCurrentState = function () {
+  ParsonsPuzzle.prototype.getCurrentState = function () {
     // Return undefined if task is not initialized
     if (this.draggables === undefined) {
       return undefined;
@@ -1322,7 +1325,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
   /**
    * Sets answers to current user state
    */
-  MyDragText.prototype.setH5PUserState = function () {
+  ParsonsPuzzle.prototype.setH5PUserState = function () {
     const self = this;
 
     // Do nothing if user state is undefined
@@ -1377,7 +1380,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * @param {number} index
    * @return {boolean}
    */
-  MyDragText.prototype.isValidIndex = function(index) {
+  ParsonsPuzzle.prototype.isValidIndex = function(index) {
     return !isNaN(index) && (index < this.draggables.length) && (index >= 0);
   };
 
@@ -1387,7 +1390,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * @param {number} initialIndex
    * @return {Draggable}
    */
-  MyDragText.prototype.getDraggableByInitialIndex = function(initialIndex) {
+  ParsonsPuzzle.prototype.getDraggableByInitialIndex = function(initialIndex) {
     return this.draggables.filter(draggable => draggable.hasInitialIndex(initialIndex))[0];
   };
 
@@ -1399,7 +1402,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
 	 *
    * @returns {Object} xAPI data
    */
-  MyDragText.prototype.getXAPIData = function () {
+  ParsonsPuzzle.prototype.getXAPIData = function () {
     var xAPIEvent = this.createXAPIEventTemplate('answered');
     this.addQuestionToXAPI(xAPIEvent);
     this.addResponseToXAPI(xAPIEvent);
@@ -1414,7 +1417,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @param xAPIEvent
    */
-  MyDragText.prototype.addQuestionToXAPI = function (xAPIEvent) {
+  ParsonsPuzzle.prototype.addQuestionToXAPI = function (xAPIEvent) {
     var definition = xAPIEvent.getVerifiedStatementValue(['object','definition']);
     $.extend(definition, this.getxAPIDefinition());
   };
@@ -1424,7 +1427,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Object}
    */
-  MyDragText.prototype.getxAPIDefinition = function () {
+  ParsonsPuzzle.prototype.getxAPIDefinition = function () {
     var definition = {};
     definition.interactionType = 'fill-in';
     definition.type = 'http://adlnet.gov/expapi/activities/cmi.interaction';
@@ -1449,7 +1452,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    * @param {H5P.XAPIEvent} xAPIEvent
    *  The xAPI event we will add a response to
    */
-  MyDragText.prototype.addResponseToXAPI = function (xAPIEvent) {
+  ParsonsPuzzle.prototype.addResponseToXAPI = function (xAPIEvent) {
     var self = this;
     var currentScore = self.getScore();
     var maxScore = self.droppables.length;
@@ -1481,7 +1484,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {string} User answers separated by the "[,]" pattern
    */
-  MyDragText.prototype.getXAPIResponse = function () {
+  ParsonsPuzzle.prototype.getXAPIResponse = function () {
      return this.droppables
       .map(droppable => droppable.hasDraggable() ? droppable.containedDraggable.text : '')
       .join('[,]');
@@ -1493,7 +1496,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
 	 * @param {string} question
 	 * @returns {string}
 	 */
-  MyDragText.prototype.replaceSolutionsWithBlanks = function (question) {
+  ParsonsPuzzle.prototype.replaceSolutionsWithBlanks = function (question) {
     return parseText(question)
       .map(part => this.isAnswerPart(part) ? '__________' : part)
       .join('');
@@ -1505,7 +1508,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
 	 * @param {string} question
 	 * @returns {string} Array with a string containing solutions of a question
 	 */
-  MyDragText.prototype.getSolutionsFromQuestion = function (question) {
+  ParsonsPuzzle.prototype.getSolutionsFromQuestion = function (question) {
     return parseText(question)
       .filter(this.isAnswerPart)
       .map(part => lex(part))
@@ -1513,7 +1516,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
       .join('[,]');
   };
 
-  return MyDragText;
+  return ParsonsPuzzle;
 
 }(H5P.jQuery, H5P.Question, H5P.ConfirmationDialog));
 
@@ -1547,7 +1550,7 @@ H5P.MyDragText = (function ($, Question, ConfirmationDialog) {
  * 
  * @param {string} question Question text for an H5P.DragText content item
  */
-H5P.MyDragText.parseText = function (question) {
+H5P.ParsonsPuzzle.parseText = function (question) {
   const isAnswerPart = function (part) {
     return Util.startsWith('*', part) && Util.endsWith('*', part);
   };
@@ -1564,4 +1567,4 @@ H5P.MyDragText.parseText = function (question) {
     );
 };
 
-export default H5P.MyDragText;
+export default H5P.ParsonsPuzzle;
