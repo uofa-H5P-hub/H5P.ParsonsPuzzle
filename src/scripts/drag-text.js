@@ -57,7 +57,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var DRAGGABLES_WIDE_SCREEN = 'h5p-drag-wide-screen';
   var DRAGGABLE_ELEMENT_WIDE_SCREEN = 'h5p-drag-draggable-wide-screen';
   var WORDS_CONTAINER_WIDE_SCREEN = "h5p-drag-droppable-words-wide-screen";
- 
+
   /**
    * Initialize module.
    *
@@ -119,7 +119,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     // Convert line breaks to HTML
     this.codeBlockHtml = this.params.codeBlock.replace(/(\r\n|\n|\r)/gm, "<br/>");
     this.codeBlock = this.params.codeBlock;
-    
+
     // introduction field id
     this.introductionId = 'h5p-drag-text-' + contentId + '-introduction';
 
@@ -128,13 +128,72 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
      */
     this.selectedElement = undefined;
 
+    this.oldBoundHandleKeyDown1 = undefined;
+    this.oldBoundHandleKeyDown2 = undefined;
+    var self = this;
+
+    function myHandleKeyDown(event) {
+      var ret = true;
+      switch (event.which) {
+        case 37: // Left Arrow
+            // move to right
+          if(!this.hasChromevoxModifiers(event)) {
+            var ele = self.getDroppableByElement(event.srcElement).containedDraggable.$draggable
+            var oldLeft = parseInt(ele.css("left").replace("px",""));
+            if( oldLeft >=7){
+              ele.css("left", (oldLeft - 7).toString() + "px");
+            } else {
+              ele.css("left", "0px");
+            }
+            this.previousElement(event.target);
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          break;
+        case 39: // Right Arrow
+          if(!this.hasChromevoxModifiers(event)) {
+            var ele = self.getDroppableByElement(event.srcElement).containedDraggable.$draggable
+            var oldLeft = parseInt(ele.css("left").replace("px",""));
+            ele.css("left", ( oldLeft + 7).toString() + "px");
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          break;
+        default:
+          ret = false;
+      }
+      return ret;
+    }
+    function myHandleKeyDown1(event) {
+      if( !myHandleKeyDown.apply(this, [event])){
+        self.oldBoundHandleKeyDown1(event);
+      }
+    }
+
+    function myHandleKeyDown2(event) {
+      if( !myHandleKeyDown.apply(this, [event])){
+        self.oldBoundHandleKeyDown2( event);
+      }
+    }
+
     // Init keyboard navigation
     this.ariaDragControls = new AriaDrag();
     this.ariaDropControls = new AriaDrop();
-    this.dragControls = new Controls([new UIKeyboard(), new Mouse(), this.ariaDragControls]);
+
+    var keyboard1 = new UIKeyboard();
+    var keyboard2 = new UIKeyboard();
+
+    this.dragControls = new Controls([keyboard1, new Mouse(), this.ariaDragControls]);
     this.dragControls.useNegativeTabIndex();
-    this.dropControls = new Controls([new UIKeyboard(), new Mouse(), this.ariaDropControls]);
+
+    this.dropControls = new Controls([keyboard2, new Mouse(), this.ariaDropControls]);
     this.dropControls.useNegativeTabIndex();
+
+    this.oldBoundHandleKeyDown1 = keyboard1.boundHandleKeyDown;
+    this.oldBoundHandleKeyDown2 = keyboard2.boundHandleKeyDown;
+
+    keyboard1.boundHandleKeyDown = myHandleKeyDown1.bind(keyboard1);
+    keyboard2.boundHandleKeyDown = myHandleKeyDown2.bind(keyboard2);
 
     // return false to prevent select from happening when draggable is disabled
     this.dragControls.on('before-select', event => !this.isElementDisabled(event.element));
@@ -374,7 +433,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Find ratio of width to em, and make sure it is less than the predefined ratio, make sure widest draggable is less than a third of parent width.
     if ((self.$inner.width() / parseFloat(self.$inner.css("font-size"), 10) > 27) && (self.widestDraggable <= (self.$inner.width() / 2))) {
-    
+
       // Adds a class that floats the drop zone to the right.
       self.$wordContainer.addClass(WORDS_CONTAINER_WIDE_SCREEN);
 
@@ -760,7 +819,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           if( !part.distractor) {
             console.log(solution.text);
             const droppable = self.createDroppable(solution.code, solution.tip, solution.correctFeedback, solution.incorrectFeedback);
-  
+
             // trigger instant feedback
             if (self.params.behaviour.instantFeedback) {
               draggable.getDraggableElement().on('dragstop', function() {
@@ -999,6 +1058,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    */
   ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
     var right = draggable.$draggable.position().right;
+    right = parseInt(right / 7) * 7;
     var self = this;
     self.answered = true;
 
@@ -1523,16 +1583,16 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 /**
  * Static helper method to enable parsing of question text into a format useful
  * for generating reports.
- * 
+ *
  * PS: The leading backslash for the correct and incorrect feedback within
  * answer parts must be escaped appropriately:
- * 
+ *
  * Example:
- * 
+ *
  * question: 'H5P content is *interactive\\+Correct! \\-Incorrect, try again!*.'
- * 
+ *
  * produces the following:
- * 
+ *
  * [
  *   {
  *     type: 'text',
@@ -1540,14 +1600,14 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
  *   },
  *   {
  *     type: 'answer',
- *     correct: 'interactive'  
+ *     correct: 'interactive'
  *   },
  *   {
  *     type: 'text',
  *     content: '.'
  *   }
  * ]
- * 
+ *
  * @param {string} question Question text for an H5P.DragText content item
  */
 H5P.ParsonsPuzzle.parseText = function (question) {
