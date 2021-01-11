@@ -140,8 +140,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           if(!this.hasChromevoxModifiers(event)) {
             var ele = self.getDroppableByElement(event.srcElement).containedDraggable.$draggable
             var oldLeft = parseInt(ele.css("left").replace("px",""));
-            if( oldLeft >32){
-              ele.css("left", (oldLeft - 32).toString() + "px");
+            if( oldLeft >16){
+              ele.css("left", (oldLeft - 16).toString() + "px");
             } else {
               ele.css("left", "0px");
             }
@@ -154,7 +154,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           if(!this.hasChromevoxModifiers(event)) {
             var ele = self.getDroppableByElement(event.srcElement).containedDraggable.$draggable
             var oldLeft = parseInt(ele.css("left").replace("px",""));
-            ele.css("left", ( oldLeft + 32).toString() + "px");
+            ele.css("left", ( oldLeft + 16).toString() + "px");
             event.preventDefault();
             event.stopPropagation();
           }
@@ -1058,7 +1058,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    */
   ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
     var left = draggable.getDraggableElement().position().left;
-    left = parseInt(left / 32) * 32;
+    left = parseInt(left / 16) * 16;
     var self = this;
     self.answered = true;
 
