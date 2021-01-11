@@ -77,7 +77,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     // Set default behavior.
     this.params = $.extend(true, {
-      puzzleInstructions: "Drag the code lines from the left to the correct order on the right to create a working program. Indent the code lines by dragging them into the correct position.",
+      puzzleInstructions: "Drag the code lines to the solutions box to create a working program. Indent the code lines by dragging them into the correct position.",
       codeBlock: "",
       overallFeedback: [],
       checkAnswer: "Check",
@@ -140,8 +140,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           if(!this.hasChromevoxModifiers(event)) {
             var ele = self.getDroppableByElement(event.srcElement).containedDraggable.$draggable
             var oldLeft = parseInt(ele.css("left").replace("px",""));
-            if( oldLeft >=7){
-              ele.css("left", (oldLeft - 7).toString() + "px");
+            if( oldLeft >32){
+              ele.css("left", (oldLeft - 32).toString() + "px");
             } else {
               ele.css("left", "0px");
             }
@@ -154,7 +154,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           if(!this.hasChromevoxModifiers(event)) {
             var ele = self.getDroppableByElement(event.srcElement).containedDraggable.$draggable
             var oldLeft = parseInt(ele.css("left").replace("px",""));
-            ele.css("left", ( oldLeft + 7).toString() + "px");
+            ele.css("left", ( oldLeft + 32).toString() + "px");
             event.preventDefault();
             event.stopPropagation();
           }
@@ -1058,7 +1058,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    */
   ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
     var left = draggable.getDraggableElement().position().left;
-    left = parseInt(left / 7) * 7;
+    left = parseInt(left / 32) * 32;
     var self = this;
     self.answered = true;
 
