@@ -6,7 +6,7 @@
     "type": "text",
     "widget": "html",
     "description": "Describe how the user should solve the puzzle",
-    "default": "Drag the code lines from the left to the correct order on the right to create a working program. Indent the code lines by dragging them into the correct position.",
+    "default": "Drag the code lines to the solutions box to create a working program. Indent the code lines by dragging them into the correct position.",
     "enterMode": "p",
     "tags": [
       "strong",

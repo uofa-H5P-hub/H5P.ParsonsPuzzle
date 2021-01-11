@@ -425,11 +425,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   };
 
   /**
-  * Adds the draggables on the right side of the screen if widescreen is detected.
+  * Adds the words container (drop zones) on the right side of the screen if widescreen is detected.
   */
   ParsonsPuzzle.prototype.changeLayoutToFitWidth = function () {
     var self = this;
-    self.addDropzoneWidth();
+   // self.addDropzoneWidth();
 
     //Find ratio of width to em, and make sure it is less than the predefined ratio, make sure widest draggable is less than a third of parent width.
     if ((self.$inner.width() / parseFloat(self.$inner.css("font-size"), 10) > 27) && (self.widestDraggable <= (self.$inner.width() / 2))) {
@@ -437,8 +437,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       // Adds a class that floats the drop zone to the right.
       self.$wordContainer.addClass(WORDS_CONTAINER_WIDE_SCREEN);
 
-      // Detach and reappend the draggables so it will fill up the remaining space left by draggables.
-      self.$draggables.detach().appendTo(self.$taskContainer);
+      // Detach and reappend the word container so it will fill up the remaining space left by draggables.
+      self.$wordContainer.detach().appendTo(self.$taskContainer);
 
       // Set all draggables to be blocks
       self.draggables.forEach(function (draggable) {
@@ -446,10 +446,10 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       });
 
       // Set margin so the wordContainer does not expand when there are no more draggables left.
-      self.$wordContainer.css({'margin-right': self.$draggables.width()});
+      self.$wordContainer.css({'margin-left': self.$draggables.width()});
     } else {
       // Remove the specific wide screen settings.
-      self.$wordContainer.css({'margin-right': 0});
+      self.$wordContainer.css({'margin-left': 0});
       self.$wordContainer.removeClass(WORDS_CONTAINER_WIDE_SCREEN);
       self.$wordContainer.detach().appendTo(self.$taskContainer);
       self.draggables.forEach(function (draggable) {
