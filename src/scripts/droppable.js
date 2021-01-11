@@ -25,6 +25,8 @@ H5P.TextDroppable = (function ($) {
   function Droppable(text, tip, correctFeedback, incorrectFeedback, dropzone, dropzoneContainer, index, params) {
     var self = this;
     self.text = text;
+    self.indent = 0;
+    self.newLeft = 0xffffffff;
     self.tip = tip;
     self.correctFeedback = correctFeedback;
     self.incorrectFeedback = incorrectFeedback;
@@ -34,6 +36,7 @@ H5P.TextDroppable = (function ($) {
      * @type {H5P.TextDraggable}
      */
     self.containedDraggable = null;
+    self.lastContainedDraggable = null;
     self.$dropzone = $(dropzone);
     self.$dropzoneContainer = $(dropzoneContainer);
 
@@ -136,9 +139,15 @@ H5P.TextDroppable = (function ($) {
    */
   Droppable.prototype.setDraggable = function (droppedDraggable) {
     var self = this;
+    if (self.lastContainedDraggable === droppedDraggable) {
+      this.newLeft = droppedDraggable.getDraggableElement().position().left;
+      this.lastContainedDraggable = null;
+    }
+
     if (self.containedDraggable === droppedDraggable) {
       return;
     }
+
     if (self.containedDraggable !== null) {
       self.containedDraggable.removeFromZone();
     }
@@ -160,6 +169,7 @@ H5P.TextDroppable = (function ($) {
    */
   Droppable.prototype.removeDraggable = function () {
     if (this.containedDraggable !== null) {
+      this.lastContainedDraggable = this.containedDraggable;
       this.containedDraggable = null;
     }
   };
@@ -173,9 +183,44 @@ H5P.TextDroppable = (function ($) {
     if (this.containedDraggable === null) {
       return false;
     }
-    return this.containedDraggable.getAnswerText() === this.text;
+    var answerCodeLine = this.containedDraggable.getCodeLine();
+    var answerIndentation = answerCodeLine.indent;
+    return answerCodeLine.code === this.text && answerIndentation == this.indent;
   };
 
+
+  Droppable.prototype.layout = function() {
+    if( this.newLeft != 0xffffffff) {
+      this.shiftTo(this.newLeft);
+      this.newLeft = 0xffffffff;
+    }
+  }
+  Droppable.prototype.shiftTo = function(pos) {
+    this.indent = parseInt(pos / 7);
+    pos = this.indent * 7;
+    if( pos >= 0 ) {
+      this.containedDraggable.getDraggableElement().css("left", pos.toString() + "px");
+    }
+  }
+
+  Droppable.prototype.shiftLeft = function() {
+    var draggable = this.containedDraggable.getDraggableElement();
+    var oldLeft = parseInt(draggable.css("left").replace("px",""));
+    if( oldLeft >=7 ){
+      this.indent = this.indent - 1;
+      draggable.css("left", (oldLeft - 7).toString() + "px");
+    } else {
+      this.indent = 0;
+      draggable.css("left", "0px");
+    }
+  }
+
+  Droppable.prototype.shiftRight = function() {
+    var draggable = this.containedDraggable.getDraggableElement();
+    var oldLeft = parseInt(draggable.css("left").replace("px",""));
+    this.indent = this.indent + 1;
+    draggable.css("left", ( oldLeft + 7).toString() + "px");
+  }
   /**
    * Sets CSS styling feedback for this drop box.
    */

@@ -9,17 +9,17 @@ H5P.TextDraggable = (function ($) {
    * @param {jQuery} draggable Draggable object.
    * @param {number} index
    */
-  function Draggable(text, draggable, index) {
+  function Draggable(codeLine, draggable, index) {
     H5P.EventDispatcher.call(this);
     var self = this;
-    self.text = text;
+    self.codeLine = codeLine;
     self.insideDropzone = null;
     self.$draggable = $(draggable);
     self.$ariaLabel = self.$draggable.find('.h5p-hidden-read');
     self.index = index;
     self.initialIndex = index;
 
-    self.shortFormat = self.text;
+    self.shortFormat = self.codeLine.code;
     //Shortens the draggable string if inside a dropbox.
     if (self.shortFormat.length > 20) {
       self.shortFormat = self.shortFormat.slice(0, 17) + '...';
@@ -185,12 +185,21 @@ H5P.TextDraggable = (function ($) {
   };
 
   /**
+   * Gets the code line for this draggable.
+   *
+   * @returns {String} The code line object in this draggable.
+   */
+  Draggable.prototype.getCodeLine = function () {
+    return this.codeLine;
+  };
+
+  /**
    * Gets the answer text for this draggable.
    *
    * @returns {String} The answer text in this draggable.
    */
   Draggable.prototype.getAnswerText = function () {
-    return this.text;
+    return this.codeLine.code;
   };
 
   /**
@@ -213,7 +222,7 @@ H5P.TextDraggable = (function ($) {
    * Removes the short format of draggable when it is outside a dropbox.
    */
   Draggable.prototype.removeShortFormat = function () {
-    this.$draggable.html(this.text);
+    this.$draggable.html(this.codeLine.code);
   };
 
   /**

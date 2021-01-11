@@ -138,23 +138,16 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         case 37: // Left Arrow
             // move to right
           if(!this.hasChromevoxModifiers(event)) {
-            var ele = self.getDroppableByElement(event.srcElement).containedDraggable.$draggable
-            var oldLeft = parseInt(ele.css("left").replace("px",""));
-            if( oldLeft >=7){
-              ele.css("left", (oldLeft - 7).toString() + "px");
-            } else {
-              ele.css("left", "0px");
-            }
-            this.previousElement(event.target);
+            var droppable = self.getDroppableByElement(event.srcElement);
+            droppable.shiftLeft();
             event.preventDefault();
             event.stopPropagation();
           }
           break;
         case 39: // Right Arrow
           if(!this.hasChromevoxModifiers(event)) {
-            var ele = self.getDroppableByElement(event.srcElement).containedDraggable.$draggable
-            var oldLeft = parseInt(ele.css("left").replace("px",""));
-            ele.css("left", ( oldLeft + 7).toString() + "px");
+            var droppable = self.getDroppableByElement(event.srcElement);
+            droppable.shiftRight();
             event.preventDefault();
             event.stopPropagation();
           }
@@ -815,7 +808,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     ret.modifiedLines.forEach(function (part) {
           // is draggable/droppable
           const solution = part;
-          const draggable = self.createDraggable(solution.code);
+          const draggable = self.createDraggable(solution);
           if( !part.distractor) {
             console.log(solution.text);
             const droppable = self.createDroppable(solution.code, solution.tip, solution.correctFeedback, solution.incorrectFeedback);
@@ -908,8 +901,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDraggable}
    */
-  ParsonsPuzzle.prototype.createDraggable = function (answer) {
+  ParsonsPuzzle.prototype.createDraggable = function (codeLine) {
     var self = this;
+    var answer = codeLine.code;
 
     //Make the draggable
     var $draggable = $('<div/>', {
@@ -945,7 +939,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       'class': 'h5p-hidden-read'
     }));
 
-    var draggable = new Draggable(answer, $draggable, self.draggables.length);
+    var draggable = new Draggable(codeLine, $draggable, self.draggables.length);
     draggable.on('addedToZone', function () {
       self.triggerXAPI('interacted');
     });
@@ -1057,8 +1051,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * @fires Question#resize
    */
   ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
-    var left = draggable.getDraggableElement().position().left;
-    left = parseInt(left / 7) * 7;
     var self = this;
     self.answered = true;
 
@@ -1077,9 +1069,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     droppable.setDraggable(draggable);
     draggable.appendDraggableTo(droppable.getDropzone());
-    if( left >= 0 ) {
-      draggable.getDraggableElement().css("left", left.toString() + "px");
-    }
 
     if (self.params.behaviour.instantFeedback) {
       droppable.addFeedback();
@@ -1096,6 +1085,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     });
 
     this.trigger('resize');
+    droppable.layout();
 
     // Resize seems to set focus to the iframe
     droppable.getElement().focus();
