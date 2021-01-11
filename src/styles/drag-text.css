@@ -17,7 +17,7 @@
 }
 
 .h5p-drag-text button.h5p-drag-button:before {
-  font-family: 'H5PFontAwesome4';
+  font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;;
   padding-right: 0.5em;
 }
 
