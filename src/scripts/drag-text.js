@@ -54,7 +54,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var DRAGGABLES_CONTAINER = "h5p-drag-draggables-container";
 
   //Special Sub-containers:
-  var DRAGGABLES_WIDE_SCREEN = 'h5p-drag-wide-screen';
+  var DRAGGABLES_CONTAINER_WIDE_SCREEN = 'h5p-drag-draggables-container-wide-screen';
   var DRAGGABLE_ELEMENT_WIDE_SCREEN = 'h5p-drag-draggable-wide-screen';
   var WORDS_CONTAINER_WIDE_SCREEN = "h5p-drag-droppable-words-wide-screen";
 
@@ -428,10 +428,10 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     if ((self.$inner.width() / parseFloat(self.$inner.css("font-size"), 10) > 27) && (self.widestDraggable <= (self.$inner.width() / 2))) {
 
       // Adds a class that floats the drop zone to the right.
-      self.$wordContainer.addClass(WORDS_CONTAINER_WIDE_SCREEN);
+      self.$draggables.addClass(DRAGGABLES_CONTAINER_WIDE_SCREEN);
 
       // Detach and reappend the word container so it will fill up the remaining space left by draggables.
-      self.$wordContainer.detach().appendTo(self.$taskContainer);
+      self.$draggables.detach().appendTo(self.$taskContainer);
 
       // Set all draggables to be blocks
       self.draggables.forEach(function (draggable) {
@@ -439,12 +439,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       });
 
       // Set margin so the wordContainer does not expand when there are no more draggables left.
-      self.$wordContainer.css({'margin-left': self.$draggables.width()});
+      self.$wordContainer.css({'margin-left': self.$draggables.width() + 50});
     } else {
       // Remove the specific wide screen settings.
       self.$wordContainer.css({'margin-left': 0});
-      self.$wordContainer.removeClass(WORDS_CONTAINER_WIDE_SCREEN);
-      self.$wordContainer.detach().appendTo(self.$taskContainer);
+      self.$draggables.removeClass(DRAGGABLES_CONTAINER_WIDE_SCREEN);
+      self.$draggables.detach().appendTo(self.$taskContainer);
       self.draggables.forEach(function (draggable) {
         draggable.getDraggableElement().removeClass(DRAGGABLE_ELEMENT_WIDE_SCREEN);
       });
@@ -888,6 +888,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.widestDraggable = widestDragagble;
 
     this.widest = widest;
+
+    this.widest = 200;
     //Adjust all droppable to widest size.
     this.droppables.forEach(function (droppable) {
       droppable.getDropzone().width(self.widest);

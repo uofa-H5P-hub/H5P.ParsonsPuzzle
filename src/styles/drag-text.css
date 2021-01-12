@@ -210,11 +210,10 @@
   display: block;
 }
 
-.h5p-drag-text .h5p-drag-droppable-words-wide-screen {
-  line-height: 1.4;
-  float: right;
+.h5p-drag-text .h5p-drag-draggables-container-wide-screen {
+  line-height: 1.5;
+  float: left;
 }
-
 
 .h5p-drag-text [aria-dropeffect].ui-droppable.ui-droppable-disabled.ui-state-disabled{
   opacity: 1;
