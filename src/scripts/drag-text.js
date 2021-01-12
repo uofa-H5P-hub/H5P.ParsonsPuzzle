@@ -52,6 +52,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var WORDS_CONTAINER = "h5p-drag-droppable-words";
   var DROPZONE_CONTAINER = "h5p-drag-dropzone-container";
   var DRAGGABLES_CONTAINER = "h5p-drag-draggables-container";
+  var CODE_LINE = "h5p-drag-code";
 
   //Special Sub-containers:
   var DRAGGABLES_CONTAINER_WIDE_SCREEN = 'h5p-drag-draggables-container-wide-screen';
@@ -1142,6 +1143,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * @returns {H5P.TextDraggable}
    */
   ParsonsPuzzle.prototype.addDraggableToContainer = function ($container, draggable) {
+    draggable.getDraggableElement().addClass(CODE_LINE);
     draggable.appendDraggableTo($container);
     return draggable;
   };
