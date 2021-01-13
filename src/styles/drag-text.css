@@ -203,7 +203,7 @@
 .h5p-drag-text .h5p-drag-task {
   width: 100%;
   position: relative;
-  display: inline-block;
+  display: flex;
 }
 
 /* Wide Screen css : */
