@@ -74,6 +74,7 @@
   position: relative;
   display: inline;
   padding-right: 0.1em;
+  white-space: nowrap;
 }
 .h5p-drag-text [aria-dropeffect] {
   position:relative;
