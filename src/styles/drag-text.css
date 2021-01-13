@@ -17,7 +17,6 @@
 }
 
 .h5p-drag-text button.h5p-drag-button:before {
-  font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
   padding-right: 0.5em;
 }
 
@@ -113,7 +112,6 @@
 
 .h5p-drag-text .h5p-drag-code {
   border-radius: .5em;
-  font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
 }
 
 .h5p-drag-text [aria-grabbed] {
@@ -205,6 +203,7 @@
   width: 100%;
   position: relative;
   display: flex;
+  font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
 }
 
 /* Wide Screen css : */
