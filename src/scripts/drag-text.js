@@ -432,7 +432,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       self.$draggables.addClass(DRAGGABLES_CONTAINER_WIDE_SCREEN);
 
       // Detach and reappend the word container so it will fill up the remaining space left by draggables.
-      self.$draggables.detach().appendTo(self.$taskContainer);
+      self.$draggables.detach().prependTo(self.$taskContainer);
 
       // Set all draggables to be blocks
       self.draggables.forEach(function (draggable) {
@@ -440,12 +440,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       });
 
       // Set margin so the wordContainer does not expand when there are no more draggables left.
-      self.$wordContainer.css({'margin-left': self.$draggables.width() + 50});
+      self.$wordContainer.css({'margin-left': 50});
     } else {
       // Remove the specific wide screen settings.
       self.$wordContainer.css({'margin-left': 0});
       self.$draggables.removeClass(DRAGGABLES_CONTAINER_WIDE_SCREEN);
-      self.$draggables.detach().appendTo(self.$taskContainer);
+      self.$draggables.detach().prependTo(self.$taskContainer);
       self.draggables.forEach(function (draggable) {
         draggable.getDraggableElement().removeClass(DRAGGABLE_ELEMENT_WIDE_SCREEN);
       });
