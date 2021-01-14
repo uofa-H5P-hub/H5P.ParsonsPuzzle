@@ -54,11 +54,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var DRAGGABLES_CONTAINER = "h5p-drag-draggables-container";
   var CODE_LINE = "h5p-drag-code";
 
-  //Special Sub-containers:
-  var DRAGGABLES_CONTAINER_WIDE_SCREEN = 'h5p-drag-draggables-container-wide-screen';
-  var DRAGGABLE_ELEMENT_WIDE_SCREEN = 'h5p-drag-draggable-wide-screen';
-  var WORDS_CONTAINER_WIDE_SCREEN = "h5p-drag-droppable-words-wide-screen";
-
   /**
    * Initialize module.
    *
@@ -249,8 +244,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.stopWatch = new StopWatch();
     this.stopWatch.start();
 
-    this.on('resize', this.resize, this);
-
     // toggle the draggable container
     this.on('revert', this.toggleDraggablesContainer, this);
     this.on('drop', this.toggleDraggablesContainer, this);
@@ -285,9 +278,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       this.setDroppableLabel(dropZone, draggable.textContent, droppable.getIndex());
     }
   };
-
-
-
 
   /**
    * Remove controls from dropzones if all is empty
@@ -409,47 +399,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.setH5PUserState();
 
     return this.$inner;
-  };
-
-  /**
-   * Changes layout responsively when resized.
-   */
-  ParsonsPuzzle.prototype.resize = function () {
-    this.changeLayoutToFitWidth();
-  };
-
-  /**
-  * Adds the words container (drop zones) on the right side of the screen if widescreen is detected.
-  */
-  ParsonsPuzzle.prototype.changeLayoutToFitWidth = function () {
-    var self = this;
-   // self.addDropzoneWidth();
-
-    //Find ratio of width to em, and make sure it is less than the predefined ratio, make sure widest draggable is less than a third of parent width.
-    if ((self.$inner.width() / parseFloat(self.$inner.css("font-size"), 10) > 27) && (self.widestDraggable <= (self.$inner.width() / 2))) {
-
-      // Adds a class that floats the drop zone to the right.
-      self.$draggables.addClass(DRAGGABLES_CONTAINER_WIDE_SCREEN);
-
-      // Detach and reappend the word container so it will fill up the remaining space left by draggables.
-      self.$draggables.detach().prependTo(self.$taskContainer);
-
-      // Set all draggables to be blocks
-      self.draggables.forEach(function (draggable) {
-        draggable.getDraggableElement().addClass(DRAGGABLE_ELEMENT_WIDE_SCREEN);
-      });
-
-      // Set margin so the wordContainer does not expand when there are no more draggables left.
-      self.$wordContainer.css({'margin-left': 50});
-    } else {
-      // Remove the specific wide screen settings.
-      self.$wordContainer.css({'margin-left': 0});
-      self.$draggables.removeClass(DRAGGABLES_CONTAINER_WIDE_SCREEN);
-      self.$draggables.detach().prependTo(self.$taskContainer);
-      self.draggables.forEach(function (draggable) {
-        draggable.getDraggableElement().removeClass(DRAGGABLE_ELEMENT_WIDE_SCREEN);
-      });
-    }
   };
 
   /**
