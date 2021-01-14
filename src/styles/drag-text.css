@@ -79,7 +79,7 @@
   position:relative;
   top: -0.1em;
   width: 10em;
-  height: 1.25em;
+  height: 1.5em;
   background-color: lightyellow;
   display: inline-block;
   vertical-align: middle;
@@ -102,7 +102,6 @@
 /* Draggable styling */
 .h5p-drag-text .h5p-drag-draggables-container {
   position: relative;
-  padding-top: 0.5em;
   display: inline-block;
 }
 
@@ -120,7 +119,7 @@
   padding: 0.1em 0.6em 0.1em 0.1em;
   vertical-align: top;
   text-align: left;
-  display: inline-block;
+  display: block;
   border: 0.1em solid #c6c6c6;
   overflow: hidden;
 
@@ -203,6 +202,8 @@
   width: 100%;
   position: relative;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
 }
 
