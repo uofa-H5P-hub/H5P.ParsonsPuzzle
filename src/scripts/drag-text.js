@@ -442,6 +442,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       });
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
       self.disableDraggables();
+      self.$draggables.css('display','none');
       self.removeAllDroppablesFromControls();
       self.hideButton('show-solution');
     }, self.initShowShowSolutionButton || false, {
@@ -470,6 +471,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         self.enableDraggables();
       }
       self.hideAllSolutions();
+
+      self.$draggables.css('display','inline');
+
 
       self.stopWatch.reset();
       self.read(self.params.puzzleInstructions);
@@ -730,7 +734,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   };
 
   ParsonsPuzzle.prototype.hideDraggables = function() {
-    this.draggables.css("display", "none");
+    this.$draggables.css('display', 'none');
     this.trigger('resize');
   }
 
@@ -1277,9 +1281,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.hideButton('try-again');
     this.hideButton('show-solution');
     this.hideButton('check-answer');
-
-    // hide the unchosen draggables
-    this.hideDraggables()
 
     this.trigger('resize');
   };
