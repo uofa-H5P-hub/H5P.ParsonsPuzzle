@@ -729,6 +729,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.trigger('resize');
   };
 
+  ParsonsPuzzle.prototype.hideDraggables = function() {
+    this.draggables.css("display", "none");
+    this.trigger('resize');
+  }
+
   /**
    * Handle task and add it to container.
    *
@@ -749,7 +754,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       'class': DRAGGABLES_CONTAINER
     });
 
-    self.$wordContainer = $('<div/>', {'class': WORDS_CONTAINER});
+    self.$wordContainer = $('<div/>', {
+      'class': WORDS_CONTAINER
+    });
 
     const parser = new CodeParser(2);
     const ret = parser.parse(self.codeBlock);
@@ -985,6 +992,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   ParsonsPuzzle.prototype.revert = function (draggable) {
     var droppable = draggable.removeFromZone();
     var target = droppable ? droppable.getElement() : undefined;
+
     draggable.revertDraggableTo(this.$draggables);
     this.setDraggableAriaLabel(draggable);
 
@@ -1269,6 +1277,10 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.hideButton('try-again');
     this.hideButton('show-solution');
     this.hideButton('check-answer');
+
+    // hide the unchosen draggables
+    this.hideDraggables()
+
     this.trigger('resize');
   };
 

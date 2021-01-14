@@ -203,22 +203,8 @@
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
   font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
-}
-
-/* Wide Screen css : */
-.h5p-drag-text .h5p-drag-wide-screen {
-  padding-top: 0;
-}
-
-.h5p-drag-text .h5p-drag-draggable-wide-screen {
-  display: block;
-}
-
-.h5p-drag-text .h5p-drag-draggables-container-wide-screen {
-  line-height: 1.5;
-  float: left;
 }
 
 .h5p-drag-text [aria-dropeffect].ui-droppable.ui-droppable-disabled.ui-state-disabled{
