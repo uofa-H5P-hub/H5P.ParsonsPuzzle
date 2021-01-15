@@ -765,14 +765,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     const parser = new CodeParser(2);
     const ret = parser.parse(self.codeBlock);
 
-    // parse text
-    ret.modifiedLines.forEach(function (part) {
-          // is draggable/droppable
-          const solution = part;
-          const draggable = self.createDraggable(solution);
-          if( !part.distractor) {
-            console.log(solution.text);
-            const droppable = self.createDroppable(solution.code, solution.tip, solution.correctFeedback, solution.incorrectFeedback);
+    ret.modifiedLines.forEach(function (codeLine) {
+          const draggable = self.createDraggable(codeLine);
+          if( !codeLine.distractor) {
+            const solution = ret.solutions[codeLine.lineNo];
+            const droppable = self.createDroppable(solution, solution.tip, solution.correctFeedback, solution.incorrectFeedback);
 
             // trigger instant feedback
             if (self.params.behaviour.instantFeedback) {
@@ -894,12 +891,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Creates a Droppable
    *
-   * @param {string} answer
+   * @param {string} solution
    * @param {string} [tip]
    *
    * @returns {H5P.TextDroppable}
    */
-  ParsonsPuzzle.prototype.createDroppable = function (answer, tip, correctFeedback, incorrectFeedback) {
+  ParsonsPuzzle.prototype.createDroppable = function (solution, tip, correctFeedback, incorrectFeedback) {
     var self = this;
 
     var draggableIndex = this.draggables.length;
@@ -940,7 +937,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         }
       });
 
-    var droppable = new Droppable(answer, tip, correctFeedback, incorrectFeedback, $dropzone, $dropzoneContainer, draggableIndex, self.params);
+    var droppable = new Droppable(solution, tip, correctFeedback, incorrectFeedback, $dropzone, $dropzoneContainer, draggableIndex, self.params);
     droppable.appendDroppableTo(self.$wordContainer);
 
     self.droppables.push(droppable);

@@ -22,9 +22,10 @@ H5P.TextDroppable = (function ($) {
    * @param {number} index.
    * @param {Object} params Behavior settings
    */
-  function Droppable(text, tip, correctFeedback, incorrectFeedback, dropzone, dropzoneContainer, index, params) {
+  function Droppable(solution, tip, correctFeedback, incorrectFeedback, dropzone, dropzoneContainer, index, params) {
     var self = this;
-    self.text = text;
+    self.text = solution.code;
+    self.solution = solution;
     self.indent = 0;
     self.newLeft = 0xffffffff;
     self.tip = tip;
@@ -179,9 +180,9 @@ H5P.TextDroppable = (function ($) {
     if (this.containedDraggable === null) {
       return false;
     }
-    var answerCodeLine = this.containedDraggable.getCodeLine();
-    var answerIndentation = answerCodeLine.indent;
-    return answerCodeLine.code === this.text && answerIndentation == this.indent;
+    var solution = this.solution;
+    var answerIndentation = solution.indent;
+    return solution.code === this.text && answerIndentation == this.indent;
   };
 
 

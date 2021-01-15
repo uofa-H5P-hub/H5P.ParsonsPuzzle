@@ -2,12 +2,12 @@ var UofAParsons = UofAParsons || {};
 UofAParsons.CodeLine = (function () {
   // Create a line object skeleton with only code and indentation from
   // a code string of an assignment definition string (see parseCode)
-  var CodeLine = function(codeString) {
+  var CodeLine = function(codeString, lineNo) {
     const trimRegexp = /^\s*(.*?)\s*$/;
 
     this.code = "";
     this.indent = 0;
-    this.orig   = -1;
+    this.lineNo   = lineNo;
     this.distractor = false;
     if (codeString) {
       // Consecutive lines to be dragged as a single block of code have strings "\\n" to
@@ -19,11 +19,12 @@ UofAParsons.CodeLine = (function () {
       }
     }
   };
+  CodeLine.defaultIndentation = 2;
 
   CodeLine.prototype.clone = function() {
     var cl = new CodeLine(this.code);
     cl.indent = this.indent;
-    cl.orig = this.orig;
+    cl.lineNo = this.lineNo;
     cl.distractor = this.distractor;
     return cl;
   };

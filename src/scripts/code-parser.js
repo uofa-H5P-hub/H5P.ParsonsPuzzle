@@ -13,34 +13,19 @@ UofAParsons.CodeParser = (function () {
       codeLines = [],
       lineObject,
       errors = [],
-      that = this,
       lines = codeString.split("\n");
-    // Create line objects out of each codeline and separate
-    // lines belonging to the solution and distractor lines
-    // Fields in line objects:
-    //   code: a string of the code, may include newline characters and
-    //     thus in fact represents a block of consecutive lines
-    //   indent: indentation level, -1 for distractors
-    //   distractor: boolean whether this is a distractor
-    //   orig: the original index of the line in the assignment definition string,
-    //     for distractors this is not meaningful but for lines belonging to the
-    //     solution, this is their expected position
+
     lines.forEach(function(item, index) {
-      lineObject = new CodeLine(item, that);
-      lineObject.orig = index;
+      lineObject = new CodeLine(item, index - distractors.length);
       if (item.search(/#distractor\s*$/) >= 0) {
         // This line is a distractor
         lineObject.indent = -1;
         lineObject.distractor = true;
         if (lineObject.code.length > 0) {
-          // The line is non-empty, not just whitespace
           distractors.push(lineObject);
         }
       } else {
-        // This line is part of the solution
-        // Initialize line object with code and indentation properties
         if (lineObject.code.length > 0) {
-          // The line is non-empty, not just whitespace
           lineObject.distractor = false;
           indented.push(lineObject);
         }
@@ -51,7 +36,7 @@ UofAParsons.CodeParser = (function () {
     normalized.forEach(function(item) {
       if (item.indent < 0) {
         // Indentation error
-        errors.push(this.translations.no_matching(normalized.orig));
+        errors.push(this.translations.no_matching(normalized.lineNo));
       }
       codeLines.push(item);
     });
@@ -75,7 +60,7 @@ UofAParsons.CodeParser = (function () {
 
     return {
       // an array of line objects specifying  the solution
-      solution:  normalized,
+      solutions:  normalized,
       // an array of line objects specifying the requested number
       // of distractors (not all possible alternatives)
       distractors: selectedDistractors,
@@ -113,7 +98,7 @@ UofAParsons.CodeParser = (function () {
   CodeParser.prototype.normalizeIndents = function(lines) {
 
     var normalized = [];
-    var new_line;
+    var newLine;
     var matchIndent = function(index) {
       //return line index from the previous lines with matching indentation
       for (var i = index-1; i >= 0; i--) {
@@ -125,21 +110,21 @@ UofAParsons.CodeParser = (function () {
     };
     for ( var i = 0; i < lines.length; i++ ) {
       //create shallow copy from the line object
-      new_line = lines[i].clone();
+      newLine = lines[i].clone();
       if (i === 0) {
-        new_line.indent = 0;
+        newLine.indent = 0;
         if (lines[i].indent !== 0) {
-          new_line.indent = -1;
+          newLine.indent = -1;
         }
       } else if (lines[i].indent == lines[i-1].indent) {
-        new_line.indent = normalized[i-1].indent;
+        newLine.indent = normalized[i-1].indent;
       } else if (lines[i].indent > lines[i-1].indent) {
-        new_line.indent = normalized[i-1].indent + 1;
+        newLine.indent = normalized[i-1].indent + 1 * CodeLine.defaultIndentation;
       } else {
         // indentation can be -1 if no matching indentation exists, i.e. IndentationError in Python
-        new_line.indent = matchIndent(i);
+        newLine.indent = matchIndent(i);
       }
-      normalized[i] = new_line;
+      normalized[i] = newLine;
     }
     return normalized;
   };
