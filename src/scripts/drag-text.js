@@ -809,51 +809,30 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   ParsonsPuzzle.prototype.addDropzoneWidth = function () {
     var self = this;
     var widest = 0;
-    var widestDragagble = 0;
-    var fontSize = parseInt(this.$inner.css('font-size'), 10);
-    var staticMinimumWidth = 3 * fontSize;
-    var staticPadding = fontSize; // Needed to make room for feedback icons
+    var widestDraggable = 0;
+    var staticMinimumWidth = 3;
 
     //Find widest draggable
     this.draggables.forEach(function (draggable) {
-      var $draggableElement = draggable.getDraggableElement();
+      
+      var nonHTMLCode = draggable.codeLine.code.replace(/&quot;/g, "\"");
+      var width = nonHTMLCode.length + draggable.codeLine.indent;
 
-      //Find the initial natural width of the draggable.
-      var $tmp = $draggableElement.clone().css({
-        'position': 'absolute',
-        'white-space': 'nowrap',
-        'width': 'auto',
-        'padding': 0,
-        'margin': 0
-      }).html(draggable.getAnswerText())
-        .appendTo($draggableElement.parent());
-      var width = $tmp.outerWidth();
+      widestDraggable = width > widestDraggable ? width : widestDraggable; 
+      widest = widestDraggable;
 
-      widestDragagble = width > widestDragagble ? width : widestDragagble;
-
-      // Measure how big truncated draggable should be
-      if ($tmp.text().length >= 20) {
-        $tmp.html(draggable.getShortFormat());
-        width = $tmp.width();
+      if (width + staticMinimumWidth > widest) {
+        widest = width + staticMinimumWidth;
       }
+    }); 
 
-      if (width + staticPadding > widest) {
-        widest = width + staticPadding;
-      }
-      $tmp.remove();
-    });
-    // Set min size
-    if (widest < staticMinimumWidth) {
-      widest = staticMinimumWidth;
-    }
-    this.widestDraggable = widestDragagble;
-
+    this.widestDraggable = widestDraggable;
     this.widest = widest;
 
-    this.widest = 200;
     //Adjust all droppable to widest size.
     this.droppables.forEach(function (droppable) {
-      droppable.getDropzone().width(self.widest);
+      console.log(self.widest+"em");
+      droppable.getDropzone().width(self.widest+"em");
     });
   };
 

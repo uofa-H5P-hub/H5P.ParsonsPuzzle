@@ -20,10 +20,13 @@ H5P.TextDraggable = (function ($) {
     self.initialIndex = index;
 
     self.shortFormat = self.codeLine.code;
+    /* currently we do not shorten code lines, but left as a 
+       possible extension to look at later
     //Shortens the draggable string if inside a dropbox.
     if (self.shortFormat.length > 20) {
       self.shortFormat = self.shortFormat.slice(0, 17) + '...';
     }
+    */
   }
 
   Draggable.prototype = Object.create(H5P.EventDispatcher.prototype);
