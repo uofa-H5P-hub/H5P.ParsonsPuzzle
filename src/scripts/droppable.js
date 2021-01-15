@@ -140,6 +140,10 @@ H5P.TextDroppable = (function ($) {
    */
   Droppable.prototype.setDraggable = function (droppedDraggable) {
     var self = this;
+    if (self.lastContainedDraggable === droppedDraggable) {
+      this.newLeft = droppedDraggable.getDraggableElement().position().left;
+      this.lastContainedDraggable = null;
+    }
 
     if (self.containedDraggable === droppedDraggable) {
       return;
