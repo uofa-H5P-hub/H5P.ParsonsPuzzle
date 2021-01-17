@@ -455,6 +455,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       if (self.answered) {
         // move draggables to original container
         self.resetDraggables();
+        self.resetDroppables();
       }
       self.answered = false;
 
@@ -993,12 +994,16 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
     var self = this;
     self.answered = true;
-
+console.log(draggable);
+console.log(droppable);
     draggable.removeFromZone();
+    console.log('after remove from zone');
+    console.log(draggable);
+console.log(droppable);
 
     // if already contains draggable
     var revertedDraggable = droppable.appendInsideDroppableTo(this.$draggables);
-
+console.log("drop zone clear for draggable: " + revertedDraggable);
     // trigger revert, if revert was performed
     if(revertedDraggable){
       self.trigger('revert', {
@@ -1272,6 +1277,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     self.instantFeedbackEvaluationFilled = false;
     //Reset draggables parameters and position
     self.resetDraggables();
+    self.resetDroppables();
     //Hides solution text and re-enable draggables
     self.hideEvaluation();
     self.hideExplanation();
@@ -1292,6 +1298,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    */
   ParsonsPuzzle.prototype.resetDraggables = function () {
     Util.shuffle(this.draggables).forEach(this.revert, this);
+  };
+
+  ParsonsPuzzle.prototype.resetDroppables = function () {
+    this.droppables.forEach(function (droppable) {
+      droppable.removeDraggable;
+    });
   };
 
   /**
