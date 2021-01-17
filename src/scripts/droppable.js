@@ -140,15 +140,30 @@ H5P.TextDroppable = (function ($) {
   Droppable.prototype.setDraggable = function (droppedDraggable) {
     var self = this;
 
-    if (self.containedDraggable === droppedDraggable) {
-      return;
-    }
-
+console.log('in setDraggable');
+    // if there is already a different element in the dropzone remove it
     if (self.containedDraggable !== null) {
+      self.lastContainedDraggable = self.containedDraggable;
       self.containedDraggable.removeFromZone();
     }
+
+    // dropzone is empty - add the new element
     self.containedDraggable = droppedDraggable;
     droppedDraggable.addToZone(self);
+
+    // if the dropped element was already in the dropzone, indent to new position
+    if (self.lastContainedDraggable === droppedDraggable) {
+      console.log("changing indentation");
+      if (self.newLeft > droppedDraggable.getDraggableElement().position().left) {
+        self.shiftRight();
+      }
+      if (self.newLeft < droppedDraggable.getDraggableElement().position().left) {
+        self.shiftRight();
+      }
+      self.newLeft = droppedDraggable.getDraggableElement().position().left;
+      console.log(droppedDraggable.getDraggableElement().position());
+      console.log(self.newLeft);
+    }
   };
 
   /**
@@ -186,12 +201,16 @@ H5P.TextDroppable = (function ($) {
 
 
   Droppable.prototype.layout = function() {
+    console.log('layout called');
+    console.log(this.newLeft);
     if( this.newLeft != 0xffffffff) {
       this.shiftTo(this.newLeft);
       this.newLeft = 0xffffffff;
     }
   }
   Droppable.prototype.shiftTo = function(pos) {
+    console.log("shifting to ");
+    console.log (pos);
     this.indent = parseInt(pos / 7);
     pos = this.indent * 7;
     if( pos >= 0 ) {
