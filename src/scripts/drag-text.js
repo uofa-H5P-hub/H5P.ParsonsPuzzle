@@ -812,17 +812,17 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Find widest draggable
     this.draggables.forEach(function (draggable) {
-      
+
       var nonHTMLCode = draggable.codeLine.code.replace(/&quot;/g, "\"");
       var width = nonHTMLCode.length + draggable.codeLine.indent;
 
-      widestDraggable = width > widestDraggable ? width : widestDraggable; 
+      widestDraggable = width > widestDraggable ? width : widestDraggable;
       widest = widestDraggable;
 
       if (width + staticMinimumWidth > widest) {
         widest = width + staticMinimumWidth;
       }
-    }); 
+    });
 
     this.widestDraggable = widestDraggable;
     this.widest = widest;
@@ -994,22 +994,22 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
     var self = this;
     self.answered = true;
-console.log(draggable);
-console.log(droppable);
-    draggable.removeFromZone();
-    console.log('after remove from zone');
-    console.log(draggable);
-console.log(droppable);
 
-    // if already contains draggable
-    var revertedDraggable = droppable.appendInsideDroppableTo(this.$draggables);
-console.log("drop zone clear for draggable: " + revertedDraggable);
-    // trigger revert, if revert was performed
-    if(revertedDraggable){
-      self.trigger('revert', {
-        element: revertedDraggable.getElement(),
-        target: droppable.getElement()
-      });
+    draggable.removeFromZone();
+
+    // if this droppable contains a different draggable, revert the contained draggable back to draggables container
+    if (!(droppable.containedDraggable === draggable)) {
+
+      // if the droppable already contains another draggable
+      var revertedDraggable = droppable.appendInsideDroppableTo(this.$draggables);
+      console.log("drop zone clear for draggable: " + revertedDraggable);
+      // trigger revert, if revert was performed
+      if(revertedDraggable){
+        self.trigger('revert', {
+          element: revertedDraggable.getElement(),
+          target: droppable.getElement()
+        });
+      }
     }
 
     droppable.setDraggable(draggable);
