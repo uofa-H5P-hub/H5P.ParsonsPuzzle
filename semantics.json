@@ -35,6 +35,13 @@
     }
   },
   {
+    "label": "2 space Block Indentation",
+    "description": "Default block indentation is 4 spaces.  If your code blocks are indented by 2 spaces select this option.",
+    "name": "indentBy2",
+    "type": "boolean",
+    "default": false
+  },
+  {
     "label": "Language",
     "name": "codeLanguage",
     "optional": true,

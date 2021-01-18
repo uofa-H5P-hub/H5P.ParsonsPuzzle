@@ -141,6 +141,8 @@ H5P.TextDroppable = (function ($) {
   Droppable.prototype.setDraggable = function (droppedDraggable) {
 
     var self = this;
+    console.log(droppedDraggable.getDraggableElement().offset().left);
+    console.log(this.$dropzone.offset().left);
     this.newLeft = Math.max(droppedDraggable.getDraggableElement().offset().left - this.$dropzone.offset().left, 0);
 
     // if there is already a different element in the dropzone remove it
