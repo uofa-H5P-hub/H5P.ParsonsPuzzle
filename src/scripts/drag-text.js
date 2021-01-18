@@ -829,7 +829,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Adjust all droppable to widest size.
     this.droppables.forEach(function (droppable) {
-      console.log(self.widest+"em");
       droppable.getDropzone().width(self.widest+"em");
     });
   };
@@ -1002,7 +1001,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
       // if the droppable already contains another draggable
       var revertedDraggable = droppable.appendInsideDroppableTo(this.$draggables);
-      console.log("drop zone clear for draggable: " + revertedDraggable);
+
       // trigger revert, if revert was performed
       if(revertedDraggable){
         self.trigger('revert', {

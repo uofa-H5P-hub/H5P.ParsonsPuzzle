@@ -141,7 +141,7 @@ H5P.TextDroppable = (function ($) {
   Droppable.prototype.setDraggable = function (droppedDraggable) {
 
     var self = this;
-    var newLeft = Math.max(droppedDraggable.getDraggableElement().offset().left - this.$dropzone.offset().left, 0);
+    this.newLeft = Math.max(droppedDraggable.getDraggableElement().offset().left - this.$dropzone.offset().left, 0);
 
     // if there is already a different element in the dropzone remove it
     if (self.containedDraggable !== null) {
@@ -152,7 +152,7 @@ H5P.TextDroppable = (function ($) {
     // dropzone is empty - add the new element
     self.containedDraggable = droppedDraggable;
     droppedDraggable.addToZone(self);
-    self.shiftTo(newLeft);
+    self.layout();
 
   };
 
@@ -192,7 +192,6 @@ H5P.TextDroppable = (function ($) {
 
 
   Droppable.prototype.layout = function() {
-    console.log('layout called');
     console.log(this.newLeft);
     if( this.newLeft != 0xffffffff) {
       this.shiftTo(this.newLeft);
@@ -200,12 +199,12 @@ H5P.TextDroppable = (function ($) {
     }
   }
   Droppable.prototype.shiftTo = function(pos) {
-    console.log("shifting to ");
-    console.log (pos);
     this.indent = parseInt(pos / 7);
-    pos = this.indent * 7;
+    console.log('indentation level:')
+    pos = this.indent;
+    console.log(pos);
     if( pos >= 0 ) {
-      this.containedDraggable.getDraggableElement().css("left", pos.toString() + "px");
+      this.containedDraggable.getDraggableElement().css("left", pos.toString() + "em");
     }
   }
 
