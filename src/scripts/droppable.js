@@ -139,13 +139,10 @@ H5P.TextDroppable = (function ($) {
    * @param {Draggable} droppedDraggable A draggable that has been dropped on this box.
    */
   Droppable.prototype.setDraggable = function (droppedDraggable) {
-    var self = this;
-    if (self.lastContainedDraggable === droppedDraggable) {
-      this.newLeft = droppedDraggable.getDraggableElement().position().left;
-      this.lastContainedDraggable = null;
-    }
 
-console.log('in setDraggable');
+    var self = this;
+    var newLeft = Math.max(droppedDraggable.getDraggableElement().offset().left - this.$dropzone.offset().left, 0);
+
     // if there is already a different element in the dropzone remove it
     if (self.containedDraggable !== null) {
       self.lastContainedDraggable = self.containedDraggable;
@@ -155,20 +152,8 @@ console.log('in setDraggable');
     // dropzone is empty - add the new element
     self.containedDraggable = droppedDraggable;
     droppedDraggable.addToZone(self);
+    self.shiftTo(newLeft);
 
-    // if the dropped element was already in the dropzone, indent to new position
-    if (self.lastContainedDraggable === droppedDraggable) {
-      console.log("changing indentation");
-      if (self.newLeft > droppedDraggable.getDraggableElement().position().left) {
-        self.shiftRight();
-      }
-      if (self.newLeft < droppedDraggable.getDraggableElement().position().left) {
-        self.shiftRight();
-      }
-      self.newLeft = droppedDraggable.getDraggableElement().position().left;
-      console.log(droppedDraggable.getDraggableElement().position());
-      console.log(self.newLeft);
-    }
   };
 
   /**
@@ -187,6 +172,7 @@ console.log('in setDraggable');
     if (this.containedDraggable !== null) {
       this.lastContainedDraggable = this.containedDraggable;
       this.containedDraggable = null;
+      this.newLeft = 0xffffffff;
     }
   };
 
@@ -224,7 +210,7 @@ console.log('in setDraggable');
   }
 
   Droppable.prototype.shiftLeft = function() {
-    var draggable = this.containedDraggable.getDraggableElement();
+    var draggable = this.lastContainedDraggable.getDraggableElement();
     var oldLeft = parseInt(draggable.css("left").replace("px",""));
     if( oldLeft >=7 ){
       this.indent = this.indent - 1;
@@ -236,7 +222,7 @@ console.log('in setDraggable');
   }
 
   Droppable.prototype.shiftRight = function() {
-    var draggable = this.containedDraggable.getDraggableElement();
+    var draggable = this.lastContainedDraggable.getDraggableElement();
     var oldLeft = parseInt(draggable.css("left").replace("px",""));
     this.indent = this.indent + 1;
     draggable.css("left", ( oldLeft + 7).toString() + "px");
