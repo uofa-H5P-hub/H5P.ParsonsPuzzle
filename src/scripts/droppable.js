@@ -16,6 +16,8 @@ H5P.TextDroppable = (function ($) {
    * @private
    *
    * @param {String} text Correct text string for this drop box.
+   * @param {number} indent the current level of indentation
+   * @param {number} newLeft new css left value for setting changed layout
    * @param {undefined/String} tip Tip for this container, optional.
    * @param {jQuery} dropzone Dropzone object.
    * @param {jQuery} dropzoneContainer Container Container for the dropzone.

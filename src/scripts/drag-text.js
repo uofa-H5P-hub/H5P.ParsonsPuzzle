@@ -116,6 +116,14 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.codeBlockHtml = this.params.codeBlock.replace(/(\r\n|\n|\r)/gm, "<br/>");
     this.codeBlock = this.params.codeBlock;
 
+    // set number of spaces for block indentations
+    if (this.params.indentBy2) {
+      this.defaultIndentation = 2;
+    }
+    else {
+      this.defaultIndentation = 4;
+    }
+
     // introduction field id
     this.introductionId = 'h5p-drag-text-' + contentId + '-introduction';
 
@@ -746,7 +754,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    */
   ParsonsPuzzle.prototype.addTaskTo = function ($container) {
     var self = this;
-    self.widest = 0;
     self.widestDraggable = 0;
     self.droppables = [];
     self.draggables = [];
@@ -764,7 +771,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     });
 
     const parser = new CodeParser(2);
-    const ret = parser.parse(self.codeBlock);
+    const ret = parser.parse(self.codeBlock, self.defaultIndentation);
 
     ret.modifiedLines.forEach(function (codeLine) {
           const draggable = self.createDraggable(codeLine);
@@ -806,30 +813,43 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    */
   ParsonsPuzzle.prototype.addDropzoneWidth = function () {
     var self = this;
-    var widest = 0;
+    var widestField = 0;
     var widestDraggable = 0;
-    var staticMinimumWidth = 3;
 
     //Find widest draggable
-    this.draggables.forEach(function (draggable) {
+    self.draggables.forEach(function (draggable) {
 
-      var nonHTMLCode = draggable.codeLine.code.replace(/&quot;/g, "\"");
-      var width = nonHTMLCode.length + draggable.codeLine.indent;
-
-      widestDraggable = width > widestDraggable ? width : widestDraggable;
-      widest = widestDraggable;
-
-      if (width + staticMinimumWidth > widest) {
-        widest = width + staticMinimumWidth;
+    function decodeHtml(str) {
+      var map =
+        {
+          '&amp;': '&',
+          '&lt;': '<',
+          '&gt;': '>',
+          '&quot;': '"',
+          '&#039;': "'"
+        };
+      return str.replace(/&amp;|&lt;|&gt;|&quot;|&#039;/g, function (m) { return map[m];});
       }
+      var nonHTMLCode = decodeHtml(draggable.codeLine.code);
+      // (/&quot;/g, "\"");
+      var width = nonHTMLCode.length + draggable.codeLine.indent;
+      console.log(nonHTMLCode);
+      console.log("width: " + nonHTMLCode);
+      console.log(width);
+      widestField = width > widestField ? width : widestField;
+      widestDraggable = nonHTMLCode.length > widestDraggable ? nonHTMLCode.length : widestDraggable;
+
     });
 
-    this.widestDraggable = widestDraggable;
-    this.widest = widest;
+    self.widestDraggable = widestDraggable;
+    self.widestField = widestField;
 
-    //Adjust all droppable to widest size.
-    this.droppables.forEach(function (droppable) {
-      droppable.getDropzone().width(self.widest+"em");
+    //Adjust all droppables and draggables to widest size.
+    self.droppables.forEach(function (droppable) {
+      droppable.getDropzone().css('width', self.widestField+"ch");
+    });
+    self.draggables.forEach(function (draggable) {
+      draggable.getDraggableElement().css('width', self.widestDraggable+"ch");
     });
   };
 

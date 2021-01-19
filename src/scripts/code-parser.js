@@ -7,7 +7,7 @@ UofAParsons.CodeParser = (function () {
   var CodeParser = function(maxDistractors) {
     this.maxDistractors = maxDistractors
   }
-  CodeParser.prototype.parse = function(codeString){
+  CodeParser.prototype.parse = function(codeString, defaultIndentation){
     var distractors = [],
       indented = [],
       codeLines = [],
@@ -16,7 +16,7 @@ UofAParsons.CodeParser = (function () {
       lines = codeString.split("\n");
 
     lines.forEach(function(item, index) {
-      lineObject = new CodeLine(item, index - distractors.length);
+      lineObject = new CodeLine(item, index - distractors.length, defaultIndentation);
       if (item.search(/#distractor\s*$/) >= 0) {
         // This line is a distractor
         lineObject.indent = -1;
