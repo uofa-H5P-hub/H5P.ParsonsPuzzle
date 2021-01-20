@@ -54,7 +54,7 @@ UofAParsons.CodeParser = (function () {
     var modifiedLines = [];
     codeLines.forEach(function( item ){
       var cl = item.clone();
-      cl.indent = 0;
+    //  cl.indent = 0;
       modifiedLines.push(cl);
     });
 
@@ -119,7 +119,7 @@ UofAParsons.CodeParser = (function () {
       } else if (lines[i].indent == lines[i-1].indent) {
         newLine.indent = normalized[i-1].indent;
       } else if (lines[i].indent > lines[i-1].indent) {
-        newLine.indent = normalized[i-1].indent + 1 * CodeLine.defaultIndentation;
+        newLine.indent = normalized[i-1].indent + 1;
       } else {
         // indentation can be -1 if no matching indentation exists, i.e. IndentationError in Python
         newLine.indent = matchIndent(i);

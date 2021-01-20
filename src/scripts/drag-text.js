@@ -118,10 +118,10 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     // set number of spaces for block indentations
     if (this.params.indentBy2) {
-      this.defaultIndentation = 2;
+      this.indentationSpacing = 2;
     }
     else {
-      this.defaultIndentation = 4;
+      this.indentationSpacing = 4;
     }
 
     // introduction field id
@@ -771,7 +771,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     });
 
     const parser = new CodeParser(2);
-    const ret = parser.parse(self.codeBlock, self.defaultIndentation);
+    const ret = parser.parse(self.codeBlock, self.indentationSpacing);
 
     ret.modifiedLines.forEach(function (codeLine) {
           const draggable = self.createDraggable(codeLine);
@@ -816,9 +816,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     var widestField = 0;
     var widestDraggable = 0;
 
-    //Find widest draggable
-    self.draggables.forEach(function (draggable) {
-
     function decodeHtml(str) {
       var map =
         {
@@ -829,14 +826,20 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           '&#039;': "'"
         };
       return str.replace(/&amp;|&lt;|&gt;|&quot;|&#039;/g, function (m) { return map[m];});
-      }
+    }
+
+    //Find widest draggable
+    self.draggables.forEach(function (draggable) {
+      
       var nonHTMLCode = decodeHtml(draggable.codeLine.code);
-      // (/&quot;/g, "\"");
-      var width = nonHTMLCode.length + draggable.codeLine.indent;
-      console.log(nonHTMLCode);
+      
+      var fieldWidth = nonHTMLCode.length + (draggable.codeLine.indent * self.indentationSpacing);
+      console.log(draggable.codeLine);
       console.log("width: " + nonHTMLCode);
-      console.log(width);
-      widestField = width > widestField ? width : widestField;
+      console.log(nonHTMLCode.length);
+      console.log('field width');
+      console.log(fieldWidth);
+      widestField = fieldWidth > widestField ? fieldWidth : widestField;
       widestDraggable = nonHTMLCode.length > widestDraggable ? nonHTMLCode.length : widestDraggable;
 
     });
@@ -844,6 +847,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     self.widestDraggable = widestDraggable;
     self.widestField = widestField;
 
+console.log('field and draggable widths');
+console.log(self.widestField);
+console.log(self.widestDraggable);
     //Adjust all droppables and draggables to widest size.
     self.droppables.forEach(function (droppable) {
       droppable.getDropzone().css('width', self.widestField+"ch");
