@@ -26,6 +26,15 @@ UofAParsons.CodeLine = (function () {
     }
   };
 
+  CodeLine.prototype.htmlIndent = function() {
+    var tmp = "";
+    for (let i = 0; i < this.indent * this.defaultIndentation; i++) {
+      // Runs 5 times, with values of step 0 through 4.
+      tmp += "&nbsp;"
+    }
+    return tmp + this.code;
+  }
+
   CodeLine.prototype.clone = function() {
     var cl = new CodeLine(this.code);
     cl.indent = this.indent;
