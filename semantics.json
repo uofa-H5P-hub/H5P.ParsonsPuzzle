@@ -22,6 +22,13 @@
       "code"
     ]
   },
+    {
+    "label": "2-space Block Indentation",
+    "description": "Default block indentation is 4 spaces.  If you want to indent by 2 spaces to save space, select this option.",
+    "name": "indentBy2",
+    "type": "boolean",
+    "default": false
+  },
   {
     "label": "Code Block",
     "name": "codeBlock",

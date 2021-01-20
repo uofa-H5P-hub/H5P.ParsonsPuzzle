@@ -79,9 +79,7 @@ H5P.TextDraggable = (function ($) {
    */
   Draggable.prototype.appendDraggableTo = function ($container) {
     var offset = this.getDraggableElement().position().left - $container.position().left
-    this.$draggable.detach().css({left: offset, top: 0}).appendTo($container);
-
-    //this.$draggable.detach().css({left: 0, top: 0}).appendTo($container);
+    this.$draggable.detach().css({left: 0, top: 0}).appendTo($container);
   };
 
   /**
