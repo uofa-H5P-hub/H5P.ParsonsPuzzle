@@ -75,15 +75,15 @@
   padding-right: 0.1em;
   white-space: nowrap;
 }
+
 .h5p-drag-text [aria-dropeffect] {
   position:relative;
   top: -0.1em;
-  width: 10em;
-  height: 1.5em;
-  background-color: lightyellow;
+ /* width: 10em; */
   display: inline-block;
   vertical-align: middle;
   text-align: left;
+  height: 1.5em;
   padding: 0.1em 1.65em 0.1em 0;
 }
 
@@ -190,7 +190,7 @@
 }
 
 .h5p-drag-text .h5p-drag-droppable-words {
-  line-height: 1.4;
+  background-color: lightyellow;
 }
 
 .h5p-drag-text [aria-grabbed='true'] {
