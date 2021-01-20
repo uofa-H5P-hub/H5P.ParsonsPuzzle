@@ -37,7 +37,7 @@
     "description": "Enter the correct code here. Distractor lines can be added by typing #distractor at the end of the line.",
     "placeholder": "def is_true(boolean_value):\n  if boolean_value:\n    return True\n  return False\n  return true #distractor\n",
     "important": {
-      "description": "<ul><li>Enter the correct code in the box below.</li><li>Distractor lines can be added by typing #distractor at the end of the line.</li>",
+      "description": "<ul><li>Enter the correct code in the box below.</li><li>Distractor lines can be added by typing #distractor at the end of the line.</li><li>Consecutive lines to be dragged as a single block of code should have \\ appended",
       "example": "def&nbsp;is_true(boolean_value):</br>&nbsp;&nbsp;if&nbsp;boolean_value:</br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;True</br>&nbsp;&nbsp;return&nbsp;False</br>&nbsp;&nbsp;return&nbsp;true&nbsp;#distractor</br>"
     }
   },

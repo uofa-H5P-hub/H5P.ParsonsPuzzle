@@ -830,13 +830,15 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Find widest draggable
     self.draggables.forEach(function (draggable) {
-      
+
       var nonHTMLCode = decodeHtml(draggable.codeLine.code);
-      
+
       var fieldWidth = nonHTMLCode.length + (draggable.codeLine.indent * self.indentationSpacing);
       console.log(draggable.codeLine);
       console.log("width: " + nonHTMLCode);
       console.log(nonHTMLCode.length);
+      console.log('draggable codeline');
+      console.log(draggable.codeLine);
       console.log('field width');
       console.log(fieldWidth);
       widestField = fieldWidth > widestField ? fieldWidth : widestField;
@@ -852,11 +854,13 @@ console.log(self.widestField);
 console.log(self.widestDraggable);
     //Adjust all droppables and draggables to widest size.
     self.droppables.forEach(function (droppable) {
-      droppable.getDropzone().css('width', self.widestField+"ch");
+      droppable.getDropzone().css('width', self.widestField+'ch');
     });
+
     self.draggables.forEach(function (draggable) {
-      draggable.getDraggableElement().css('width', self.widestDraggable+"ch");
+      draggable.getDraggableElement().css('width', self.widestDraggable+'ch');
     });
+
   };
 
   /**
