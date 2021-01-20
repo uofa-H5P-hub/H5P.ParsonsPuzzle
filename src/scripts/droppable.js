@@ -182,6 +182,7 @@ H5P.TextDroppable = (function ($) {
       this.lastContainedDraggable = this.containedDraggable;
       this.containedDraggable = null;
       this.newLeft = 0xffffffff;
+      this.indent = 0;
     }
   };
 
