@@ -92,9 +92,13 @@ H5P.TextDroppable = (function ($) {
    * Displays the solution next to the drop box if it is not correct.
    */
   Droppable.prototype.showSolution = function () {
-    const correct = (this.containedDraggable !== null) && (this.containedDraggable.getAnswerText() === this.text);
+    const correct = this.isCorrect();
     if (!correct) {
-      this.$showSolution.html(this.text);
+      this.$showSolution.html(this.solution.htmlIndent());
+      this.$dropzone.css('padding-left',0);
+      this.$dropzone.hide();
+      this.$showSolution.css('padding-left',0);
+      this.$showSolution.css('margin-left',0);
     }
 
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
@@ -183,6 +187,10 @@ H5P.TextDroppable = (function ($) {
       this.containedDraggable = null;
       this.newLeft = 0xffffffff;
     }
+    this.$dropzone.css('padding-left',"");
+    this.$showSolution.css('padding-left',"");
+    this.$showSolution.css('margin-left',"");
+    this.$dropzone.show();
   };
 
   /**

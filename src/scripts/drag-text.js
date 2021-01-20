@@ -1331,7 +1331,7 @@ console.log(self.widestDraggable);
 
   ParsonsPuzzle.prototype.resetDroppables = function () {
     this.droppables.forEach(function (droppable) {
-      droppable.removeDraggable;
+      droppable.removeDraggable();
     });
   };
 
