@@ -4,7 +4,6 @@ UofAParsons.CodeLine = (function () {
   // a code string of an assignment definition string (see parseCode)
   var CodeLine = function(codeString, lineNo, defaultIndentation) {
     const trimRegexp = /^\s*(.*?)\s*$/;
-    // const trimRegexp = /(.*?)\s*$/;
 
     this.code = "";
     this.indent = 0;
@@ -19,10 +18,12 @@ UofAParsons.CodeLine = (function () {
       // represent newlines => replace them with actual new line characters "\n"
       this.indent = parseInt((codeString.length - codeString.replace(/^\s+/, "").length)/this.defaultIndentation);
 
-      this.code = codeString.replace(/#distractor\s*$/, "").replace(trimRegexp, "$1").replace(/\\n/g, "\n");
       if (codeString.search(/#distractor\s*$/) >= 0) {
         this.distractor = true;
+        this.indent = -1;
       }
+
+      this.code = codeString.replace(/#distractor\s*$/, "").replace(trimRegexp, "$1").replace(/\\n/g, "\n");
     }
   };
 
