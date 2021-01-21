@@ -997,6 +997,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     var target = droppable ? droppable.getElement() : undefined;
 
     draggable.revertDraggableTo(this.$draggables);
+    draggable.getDraggableElement().css('width', this.widestDraggable+'ch');
+
     this.setDraggableAriaLabel(draggable);
 
     this.trigger('revert', { element: draggable.getElement(), target: target });
@@ -1327,6 +1329,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    */
   ParsonsPuzzle.prototype.resetDraggables = function () {
     Util.shuffle(this.draggables).forEach(this.revert, this);
+    this.draggables.forEach(function (draggable) {
+      draggable.getDraggableElement().css('width', self.widestDraggable+'ch');
+    });
   };
 
   ParsonsPuzzle.prototype.resetDroppables = function () {
