@@ -216,11 +216,10 @@ H5P.TextDroppable = (function ($) {
       this.containedDraggable.getDraggableElement().css('left',(this.indent * this.indentSpaces)  + 'ch');
 
       while (this.newLeft > this.$dropzone.offset().left + this.containedDraggable.getDraggableElement().position().left) {
-    //     && this.containedDraggable.getDraggableElement().offset().right > this.$dropzoneContainer.offset().right){
         this.shiftRight();
       }
       while (this.newLeft < this.$dropzone.offset().left + this.containedDraggable.getDraggableElement().position().left &&
-           this.indent >= 1) {
+             this.indent >= 1) {
         this.shiftLeft();
       }
       this.newLeft = 0xffffffff;
@@ -228,18 +227,41 @@ H5P.TextDroppable = (function ($) {
   }
 
   Droppable.prototype.shiftLeft = function() {
+
     if( this.indent >= 1 ){
       this.indent = this.indent - 1;
-    var shift = this.indent * this.indentSpaces;
-    this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
+      var shift = this.indent * this.indentSpaces;
+      this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
+
+      // if the draggable does not reach the edge of the drop zone, increase the width of the draggable to fit
+      var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();
+      var containerRightEdge = this.$dropzone.offset().left + this.$dropzone.width();
+
+      if (draggableRightEdge < containerRightEdge) {
+        var currentWidth = parseInt(this.containedDraggable.getDraggableElement().prop('style').width);
+        var newWidth = currentWidth + 4;
+        this.containedDraggable.getDraggableElement().css('width', newWidth + 'ch');
+      }
     }
   }
 
   Droppable.prototype.shiftRight = function() {
-    this.indent = this.indent + 1;
-    var shift = this.indent * this.indentSpaces;
-    this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
+
+      this.indent = this.indent + 1;
+      var shift = this.indent * this.indentSpaces;
+      this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
+
+      // if the draggable extends beyond the edge of the drop zone, reduce the width of the draggable to fit
+      var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();
+      var containerRightEdge = this.$dropzone.offset().left + this.$dropzone.width();
+
+      if (draggableRightEdge > containerRightEdge) {
+        var currentWidth = parseInt(this.containedDraggable.getDraggableElement().prop('style').width);
+        var newWidth = currentWidth - 4;
+        this.containedDraggable.getDraggableElement().css('width', newWidth + 'ch');
+      }
   }
+
   /**
    * Sets CSS styling feedback for this drop box.
    */
