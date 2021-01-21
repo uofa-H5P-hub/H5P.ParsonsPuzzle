@@ -951,6 +951,8 @@ console.log(self.widestDraggable);
           console.log("dropzone event: clientX " + event.clientX.toString() + ",clientY: " + event.clientY.toString());
           console.log("dropzone event: offsetX " + event.offsetX.toString() + ",offsetY: " + event.offsetY.toString());
           console.log("dropzone event: screenX " + event.screenX.toString() + ",screenY: " + event.screenY.toString());
+          console.log("draggable.$draggable.offset():  " + JSON.stringify(draggable.$draggable.offset()));
+          console.log("droppable.$dropzone.offset():  " + JSON.stringify(droppable.$dropzone.offset()));
           console.log("draggable.$draggable.position():  " + JSON.stringify(draggable.$draggable.position()));
           console.log("droppable.$dropzone.position():  " + JSON.stringify(droppable.$dropzone.position()));
           console.log("******************");
@@ -1041,8 +1043,15 @@ console.log(self.widestDraggable);
       }
     }
 
-    droppable.setDraggable(draggable);
+
+    var offset = draggable.getDraggableElement().position().left - droppable.getDropzone().position().left
+
     draggable.appendDraggableTo(droppable.getDropzone());
+
+    // reset left offset as appendDraggableTo sets both left and top to 0
+    draggable.getDraggableElement().css('left', offset);
+
+    droppable.setDraggable(draggable);
 
     if (self.params.behaviour.instantFeedback) {
       droppable.addFeedback();

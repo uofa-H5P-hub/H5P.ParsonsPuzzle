@@ -78,7 +78,6 @@ H5P.TextDraggable = (function ($) {
    * @param {jQuery} $container Container the draggable will append to.
    */
   Draggable.prototype.appendDraggableTo = function ($container) {
-    var offset = this.getDraggableElement().position().left - $container.position().left
     this.$draggable.detach().css({left: 0, top: 0}).appendTo($container);
   };
 
