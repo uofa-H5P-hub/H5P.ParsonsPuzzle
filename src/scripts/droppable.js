@@ -93,7 +93,7 @@ H5P.TextDroppable = (function ($) {
     if (!correct) {
       this.$showSolution.html(this.solution.htmlIndent());
       this.$dropzone.css('padding-left',0);
-      this.$dropzone.hide();
+    //  this.$dropzone.hide();
       this.$showSolution.css('padding-left',0);
       this.$showSolution.css('margin-left',0);
     }
@@ -151,17 +151,24 @@ H5P.TextDroppable = (function ($) {
   Droppable.prototype.setDraggable = function (droppedDraggable) {
 
     var self = this;
+
     self.newLeft = droppedDraggable.getDraggableElement().offset().left;
 
     // if there is already a different element in the dropzone remove it
     if (self.hasDraggable()) {
-      self.lastContainedDraggable = self.containedDraggable;
-      self.containedDraggable.removeFromZone();
+      if (self.containedDraggable != droppedDraggable) {
+       self.lastContainedDraggable = self.containedDraggable;
+        self.containedDraggable.removeFromZone();
+        self.containedDraggable = droppedDraggable;
+        droppedDraggable.addToZone(self);
+      }
+    }
+    // if the dropzone is currently empty add the dropped draggable
+    else {
+      self.containedDraggable = droppedDraggable;
+      droppedDraggable.addToZone(self);
     }
 
-    // dropzone is empty - add the new element
-    self.containedDraggable = droppedDraggable;
-    droppedDraggable.addToZone(self);
     self.layout();
 
   };

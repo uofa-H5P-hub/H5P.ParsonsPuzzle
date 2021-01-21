@@ -1044,12 +1044,12 @@ console.log(self.widestDraggable);
     }
 
 
-    var offset = draggable.getDraggableElement().position().left - droppable.getDropzone().position().left
+    var offset = draggable.getDraggableElement().offset().left;
 
     draggable.appendDraggableTo(droppable.getDropzone());
 
     // reset left offset as appendDraggableTo sets both left and top to 0
-    draggable.getDraggableElement().css('left', offset);
+    draggable.getDraggableElement().offset({'left': offset});
 
     droppable.setDraggable(draggable);
 
