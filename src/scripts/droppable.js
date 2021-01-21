@@ -25,23 +25,20 @@ H5P.TextDroppable = (function ($) {
    * @param {Object} params Behavior settings
    */
   function Droppable(solution, tip, correctFeedback, incorrectFeedback, dropzone, dropzoneContainer, index, params) {
-    console.log("creating droppable");
-    console.log(solution);
-    console.log(tip);
-    console.log(correctFeedback);
-    console.log(incorrectFeedback);
-    console.log(index);
-    console.log(params);
     var self = this;
     self.text = solution.code;
     self.solution = solution;
     self.indent = 0;
+    self.indentSpaces = 4;
     self.newLeft = 0xffffffff;
     self.tip = tip;
     self.correctFeedback = correctFeedback;
     self.incorrectFeedback = incorrectFeedback;
     self.index = index;
     self.params = params;
+    if (self.params.indentBy2) {
+      self.indentSpaces = 2;
+    }
     /**
      * @type {H5P.TextDraggable}
      */
@@ -157,7 +154,7 @@ H5P.TextDroppable = (function ($) {
     self.newLeft = droppedDraggable.getDraggableElement().offset().left;
 
     // if there is already a different element in the dropzone remove it
-    if (self.containedDraggable !== null) {
+    if (self.hasDraggable()) {
       self.lastContainedDraggable = self.containedDraggable;
       self.containedDraggable.removeFromZone();
     }
@@ -211,12 +208,17 @@ H5P.TextDroppable = (function ($) {
 
   Droppable.prototype.layout = function() {
     if( this.newLeft != 0xffffffff) {
+console.log('new left: ' + this.newLeft);
+console.log('current indent: ' + (this.indent * this.indentSpaces))
+      this.containedDraggable.getDraggableElement().css('left',(this.indent * this.indentSpaces)  + 'ch');
+console.log('current offset: ' + this.$dropzone.offset().left)
 
-      while (this.newLeft > this.$dropzone.offset().left) {
+      while (this.newLeft > this.$dropzone.offset().left + this.containedDraggable.getDraggableElement().position().left) {
+    //     && this.containedDraggable.getDraggableElement().offset().right > this.$dropzoneContainer.offset().right){
         this.shiftRight();
       }
-      while (this.newLeft < this.$dropzone.offset().left &&
-             this.$dropzone.offset().left > this.$dropzoneContainer.offset().left) {
+      while (this.newLeft < this.$dropzone.offset().left + this.containedDraggable.getDraggableElement().position().left &&
+           this.indent >= 1) {
         this.shiftLeft();
       }
       this.newLeft = 0xffffffff;
@@ -238,22 +240,18 @@ H5P.TextDroppable = (function ($) {
   Droppable.prototype.shiftLeft = function() {
     if( this.indent >= 1 ){
       this.indent = this.indent - 1;
-
-      var space = 4;
-      if (this.params.indentBy2) {
-       var space = 2;
-      }
-      this.$dropzone.css('left',this.indent * space  + 'ch');
+console.log('shifting left to ' + (this.indent * this.indentSpaces));
+    var shift = this.indent * this.indentSpaces;
+    this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
     }
   }
 
   Droppable.prototype.shiftRight = function() {
     this.indent = this.indent + 1;
-    var space = 4;
-    if (this.params.indentBy2) {
-      var space = 2;
-    }
-    this.$dropzone.css('left',this.indent * space + 'ch');
+  console.log('shifting draggable to ' + (this.indent * this.indentSpaces));
+    // this.$dropzone.css('left',this.indent * space + 'ch');
+    var shift = this.indent * this.indentSpaces;
+    this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
   }
   /**
    * Sets CSS styling feedback for this drop box.
