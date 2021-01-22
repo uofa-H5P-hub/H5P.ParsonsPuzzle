@@ -44,6 +44,7 @@ H5P.TextDroppable = (function ($) {
      */
     self.containedDraggable = null;
     self.lastContainedDraggable = null;
+    self.lastIndent = 0;
     self.$dropzone = $(dropzone);
     self.$dropzoneContainer = $(dropzoneContainer);
 
@@ -151,21 +152,18 @@ H5P.TextDroppable = (function ($) {
 
     var self = this;
 
+    self.containedDraggable = droppedDraggable;
+    self.text = droppedDraggable.codeLine.code;
+
     self.newLeft = droppedDraggable.getDraggableElement().offset().left;
 
-    if (self.containedDraggable === droppedDraggable) {
+    if (self.lastContainedDraggable === droppedDraggable) {
+      self.indent = self.lastIndent;
       self.layout();
       return;
     }
 
-    // if there is already a different element in the dropzone remove it
-    if (self.hasDraggable()) {
-      self.lastContainedDraggable = self.containedDraggable;
-      self.containedDraggable.removeFromZone();
-    }
-    // the dropzone is empty add the dropped draggable
-    self.containedDraggable = droppedDraggable;
-    self.text = droppedDraggable.codeLine.code;
+    // the droppedDraggable was a new draggable add to dropzone
     droppedDraggable.addToZone(self);
     self.layout();
   };
@@ -185,6 +183,7 @@ H5P.TextDroppable = (function ($) {
   Droppable.prototype.removeDraggable = function () {
     if (this.containedDraggable !== null) {
       this.lastContainedDraggable = this.containedDraggable;
+      this.lastIndent = this.indent;
       this.containedDraggable = null;
       this.newLeft = 0xffffffff;
       this.indent = 0;
@@ -218,8 +217,7 @@ H5P.TextDroppable = (function ($) {
       while (this.newLeft > this.$dropzone.offset().left + this.containedDraggable.getDraggableElement().position().left) {
         this.shiftRight();
       }
-      while (this.newLeft < this.$dropzone.offset().left + this.containedDraggable.getDraggableElement().position().left &&
-             this.indent >= 1) {
+      while (this.newLeft < this.$dropzone.offset().left + this.containedDraggable.getDraggableElement().position().left && this.indent > 0) {
         this.shiftLeft();
       }
       this.newLeft = 0xffffffff;
@@ -234,14 +232,7 @@ H5P.TextDroppable = (function ($) {
       this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
 
       // if the draggable does not reach the edge of the drop zone, increase the width of the draggable to fit
-      var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();
-      var containerRightEdge = this.$dropzone.offset().left + this.$dropzone.width();
-
-      if (draggableRightEdge < containerRightEdge) {
-        var currentWidth = parseInt(this.containedDraggable.getDraggableElement().prop('style').width);
-        var newWidth = currentWidth + 4;
-        this.containedDraggable.getDraggableElement().css('width', newWidth + 'ch');
-      }
+      this.resize();
     }
   }
 
@@ -250,16 +241,19 @@ H5P.TextDroppable = (function ($) {
       this.indent = this.indent + 1;
       var shift = this.indent * this.indentSpaces;
       this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
-
+      
       // if the draggable extends beyond the edge of the drop zone, reduce the width of the draggable to fit
-      var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();
-      var containerRightEdge = this.$dropzone.offset().left + this.$dropzone.width();
+      this.resize();
+  }
 
-      if (draggableRightEdge > containerRightEdge) {
-        var currentWidth = parseInt(this.containedDraggable.getDraggableElement().prop('style').width);
-        var newWidth = currentWidth - 4;
-        this.containedDraggable.getDraggableElement().css('width', newWidth + 'ch');
-      }
+  Droppable.prototype.resize = function () {
+
+    var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();
+    var containerRightEdge = this.$dropzone.offset().left + this.$dropzone.width();
+    var variance = containerRightEdge - draggableRightEdge;
+
+    var newWidth = this.containedDraggable.getDraggableElement().width() + variance;
+    this.containedDraggable.getDraggableElement().width(newWidth);
   }
 
   /**
