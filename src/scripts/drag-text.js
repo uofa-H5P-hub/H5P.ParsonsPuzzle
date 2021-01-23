@@ -432,7 +432,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           self.disableDraggables();
         } else {
           self.hideButton('show-solution');
-          self.hideButton('try-again');
           self.hideButton('check-answer');
         }
 
@@ -459,6 +458,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Retry button
     self.addButton('try-again', self.params.tryAgain, function () {
+      /*
       // Reset and shuffle draggables if Question is answered
       if (self.answered) {
         // move draggables to original container
@@ -488,6 +488,10 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       self.read(self.params.puzzleInstructions);
     }, self.initShowTryAgainButton || false, {
       'aria-label': self.params.a11yRetry,
+      */
+      self.resetTask();
+      self.$draggables.css('display','inline');
+
     });
   };
 
