@@ -153,18 +153,15 @@ H5P.TextDroppable = (function ($) {
     var self = this;
 
     self.containedDraggable = droppedDraggable;
+    droppedDraggable.addToZone(self);
     self.text = droppedDraggable.codeLine.code;
 
     self.newLeft = droppedDraggable.getDraggableElement().offset().left;
 
     if (self.lastContainedDraggable === droppedDraggable) {
       self.indent = self.lastIndent;
-      self.layout();
-      return;
     }
 
-    // the droppedDraggable was a new draggable add to dropzone
-    droppedDraggable.addToZone(self);
     self.layout();
   };
 
@@ -260,6 +257,9 @@ H5P.TextDroppable = (function ($) {
    * Sets CSS styling feedback for this drop box.
    */
   Droppable.prototype.addFeedback = function () {
+    // add two characters to width of dropzone to allow space for feedback indicator
+    var newWidth = this.$dropzone.prop('style').width + 2;
+    this.$dropzone.css('width', newWidth + 'ch');
     //Draggable is correct
     if (this.isCorrect()) {
       this.$dropzone.removeClass(WRONG_FEEDBACK).addClass(CORRECT_FEEDBACK);
