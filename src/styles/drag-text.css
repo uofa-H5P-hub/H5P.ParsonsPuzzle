@@ -190,6 +190,7 @@
 
 .h5p-drag-text .h5p-drag-droppable-words {
   background-color: lightyellow;
+  height: fit-content;
 }
 
 .h5p-drag-text [aria-grabbed='true'] {
