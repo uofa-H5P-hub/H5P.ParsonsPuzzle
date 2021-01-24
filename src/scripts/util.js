@@ -106,11 +106,24 @@ var createElementWithTextPart = function(text) {
   return  el;
 };
 
+var decodeHtml = function(str) {
+  var map =
+    {
+      '&amp;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&#039;': "'"
+    };
+    return str.replace(/&amp;|&lt;|&gt;|&quot;|&#039;/g, function (m) { return map[m];});
+};
+
 export default {
   curry: curry,
   cleanCharacter: cleanCharacter,
   startsWith: startsWith,
   endsWith: endsWith,
   shuffle: shuffle,
-  createElementWithTextPart: createElementWithTextPart
+  createElementWithTextPart: createElementWithTextPart,
+  decodeHtml: decodeHtml
 };
