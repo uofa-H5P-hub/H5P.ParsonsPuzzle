@@ -1,3 +1,5 @@
+import Util from './util';
+
 H5P.TextDroppable = (function ($) {
   //CSS Main Containers:
   //Special Sub-containers:
@@ -208,7 +210,7 @@ H5P.TextDroppable = (function ($) {
 
 
   Droppable.prototype.layout = function() {
-    if( this.newLeft != 0xffffffff) {
+   if( this.newLeft != 0xffffffff) {
       this.containedDraggable.getDraggableElement().css('left',(this.indent * this.indentSpaces)  + 'ch');
 
       while (this.newLeft > this.$dropzone.offset().left + this.containedDraggable.getDraggableElement().position().left) {
@@ -218,6 +220,9 @@ H5P.TextDroppable = (function ($) {
         this.shiftLeft();
       }
       this.newLeft = 0xffffffff;
+    }
+    else {
+        this.resize();
     }
   }
 
@@ -245,21 +250,21 @@ H5P.TextDroppable = (function ($) {
 
   Droppable.prototype.resize = function () {
 
-    var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();
-    var containerRightEdge = this.$dropzone.offset().left + this.$dropzone.width();
-    var variance = containerRightEdge - draggableRightEdge;
+  var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();
+  var containerRightEdge = this.$dropzone.offset().left + this.$dropzone.width();
+  var variance = containerRightEdge - draggableRightEdge;
 
-    var newWidth = this.containedDraggable.getDraggableElement().width() + variance;
-    this.containedDraggable.getDraggableElement().width(newWidth);
+  var adjustedWidth = this.containedDraggable.getDraggableElement().width() + variance;
+
+  this.containedDraggable.getDraggableElement().width(adjustedWidth);
+    
   }
 
   /**
    * Sets CSS styling feedback for this drop box.
    */
   Droppable.prototype.addFeedback = function () {
-    // add two characters to width of dropzone to allow space for feedback indicator
-    var newWidth = this.$dropzone.prop('style').width + 2;
-    this.$dropzone.css('width', newWidth + 'ch');
+
     //Draggable is correct
     if (this.isCorrect()) {
       this.$dropzone.removeClass(WRONG_FEEDBACK).addClass(CORRECT_FEEDBACK);
@@ -280,6 +285,9 @@ H5P.TextDroppable = (function ($) {
         this.containedDraggable.getDraggableElement().addClass(DRAGGABLE_FEEDBACK_WRONG).removeClass(DRAGGABLE_FEEDBACK_CORRECT);
       }
     }
+    // add two characters to width of dropzone to allow space for feedback indicator
+    var newWidth = this.$dropzone.prop('style').width + 2;
+    this.$dropzone.css('width', newWidth + 'ch');
   };
 
   /**
@@ -287,11 +295,15 @@ H5P.TextDroppable = (function ($) {
    */
   Droppable.prototype.removeFeedback = function () {
     this.$dropzone.removeClass(WRONG_FEEDBACK).removeClass(CORRECT_FEEDBACK);
+    
 
     //Draggable feedback
     if (this.containedDraggable !== null) {
       this.containedDraggable.getDraggableElement().removeClass(DRAGGABLE_FEEDBACK_WRONG).removeClass(DRAGGABLE_FEEDBACK_CORRECT);
     }
+
+    var newWidth = this.$dropzone.prop('style').width + 2;
+    this.$dropzone.css('width', newWidth + 'ch');
   };
 
   /**
