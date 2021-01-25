@@ -4,14 +4,14 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const isProd = (process.env.NODE_ENV === 'production');
 
 const extractCss = new ExtractTextPlugin({
-  filename: "h5p-drag-text.css"
+  filename: "h5p-parsons-puzzle.css"
 });
 
 const config = {
   entry: "./src/entries/dist.js",
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: "h5p-drag-text.js"
+    filename: "h5p-parsons-puzzle.js"
   },
   module: {
     rules: [

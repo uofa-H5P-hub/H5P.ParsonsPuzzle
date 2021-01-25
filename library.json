@@ -17,12 +17,12 @@
   "machineName": "H5P.ParsonsPuzzle",
   "preloadedCss": [
     {
-      "path": "dist/h5p-drag-text.css"
+      "path": "dist/h5p-parsons-puzzle.css"
     }
   ],
   "preloadedJs": [
     {
-      "path": "dist/h5p-drag-text.js"
+      "path": "dist/h5p-parsons-puzzle.js"
     }
   ],
   "preloadedDependencies": [

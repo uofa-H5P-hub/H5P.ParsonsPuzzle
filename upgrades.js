@@ -1,6 +1,6 @@
 var H5PUpgrades = H5PUpgrades || {};
 
-H5PUpgrades['H5P.DragText'] = (function ($) {
+H5PUpgrades['H5P.ParsonsPuzzle'] = (function ($) {
   return {
     1: {
       1: {

@@ -1,5 +1,5 @@
-require('../styles/drag-text.css');
+require('../styles/parsons-puzzle.css');
 
 // Load library
 H5P = H5P || {};
-H5P.MyDragText = require('../scripts/drag-text').default;
+H5P.ParsonsPuzzle = require('../scripts/parsons-puzzle').default;
