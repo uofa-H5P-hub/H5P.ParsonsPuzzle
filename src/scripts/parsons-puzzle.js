@@ -12,34 +12,34 @@ import UIKeyboard from 'h5p-lib-controls/src/scripts/ui/keyboard';
 import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
 /**
- * @typedef {object} H5P.DragTextEvent
+ * @typedef {object} H5P.ParsonsPuzzleEvent
  * @property {HTMLElement} element The element being dragged
  * @property {HTMLElement} [target] The target element
  */
 /**
  * Drag event
- * @event H5P.DragText#drag
- * @type {H5P.DragTextEvent}
+ * @event H5P.ParsonsPuzzle#drag
+ * @type {H5P.ParsonsPuzzleEvent}
  */
 /**
  * Drop event
- * @event H5P.DragText#drop
- * @type {H5P.DragTextEvent}
+ * @event H5P.ParsonsPuzzle#drop
+ * @type {H5P.ParsonsPuzzleEvent}
  */
 /**
  * Revert event
- * @event H5P.DragText#revert
- * @type {H5P.DragTextEvent}
+ * @event H5P.ParsonsPuzzle#revert
+ * @type {H5P.ParsonsPuzzleEvent}
  */
 /**
  * Start event
- * @event H5P.DragText#start
- * @type {H5P.DragTextEvent}
+ * @event H5P.ParsonsPuzzle#start
+ * @type {H5P.ParsonsPuzzleEvent}
  */
 /**
  * Stop event
- * @event H5P.DragText#stop
- * @type {H5P.DragTextEvent}
+ * @event H5P.ParsonsPuzzle#stop
+ * @type {H5P.ParsonsPuzzleEvent}
  */
 /**
  * Drag Text module
@@ -57,7 +57,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Initialize module.
    *
-   * @class H5P.DragText
+   * @class H5P.ParsonsPuzzle
    * @extends H5P.Question
    * @param {Object} params Behavior settings
    * @param {Number} contentId Content identification
@@ -69,7 +69,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.$ = $(this);
     this.contentId = contentId;
     this.contentData = contentData;
-    Question.call(this, 'drag-text');
+    Question.call(this, 'parsons-puzzle');
 
     // Set default behavior.
     this.params = $.extend(true, {
@@ -125,7 +125,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     }
 
     // introduction field id
-    this.introductionId = 'h5p-drag-text-' + contentId + '-introduction';
+    this.introductionId = 'h5p-parsons-puzzle-' + contentId + '-introduction';
 
     /**
      * @type {HTMLElement} selectedElement
@@ -508,7 +508,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @param {ControlsEvent} event
    *
-   * @fires H5P.DragText#start
+   * @fires H5P.ParsonsPuzzle#start
    */
    ParsonsPuzzle.prototype.keyboardDraggableSelected = function (event) {
     var tmp = this.selectedElement;
@@ -982,7 +982,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @param {H5P.TextDraggable} draggable
    *
-   * @fires H5P.DragText#revert
+   * @fires H5P.ParsonsPuzzle#revert
    * @fires Question#resize
    */
    ParsonsPuzzle.prototype.revert = function (draggable) {
@@ -1004,8 +1004,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @param {H5P.TextDraggable} draggable
    * @param {H5P.TextDroppable} droppable
    *
-   * @fires H5P.DragText#revert
-   * @fires H5P.DragText#drop
+   * @fires H5P.ParsonsPuzzle#revert
+   * @fires H5P.ParsonsPuzzle#drop
    * @fires Question#resize
    */
    ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
@@ -1578,7 +1578,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
  *   }
  * ]
  *
- * @param {string} question Question text for an H5P.DragText content item
+ * @param {string} question Question text for an H5P.ParsonsPuzzle content item
  */
  H5P.ParsonsPuzzle.parseText = function (question) {
   const isAnswerPart = function (part) {

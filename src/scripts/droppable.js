@@ -243,7 +243,7 @@ H5P.TextDroppable = (function ($) {
       this.indent = this.indent + 1;
       var shift = this.indent * this.indentSpaces;
       this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
-      
+
       // if the draggable extends beyond the edge of the drop zone, reduce the width of the draggable to fit
       this.resize();
   }
@@ -257,7 +257,7 @@ H5P.TextDroppable = (function ($) {
   var adjustedWidth = this.containedDraggable.getDraggableElement().width() + variance;
 
   this.containedDraggable.getDraggableElement().width(adjustedWidth);
-    
+
   }
 
   /**
@@ -295,7 +295,7 @@ H5P.TextDroppable = (function ($) {
    */
   Droppable.prototype.removeFeedback = function () {
     this.$dropzone.removeClass(WRONG_FEEDBACK).removeClass(CORRECT_FEEDBACK);
-    
+
 
     //Draggable feedback
     if (this.containedDraggable !== null) {
