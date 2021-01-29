@@ -24,7 +24,6 @@ H5P.TextDroppable = (function ($) {
    * @param {number} index.
    * @param {Object} params Behavior settings
    */
-  // function Droppable(solution, tip, correctFeedback, incorrectFeedback, dropzone, dropzoneContainer, index, params) {
    function Droppable(solution, tip, dropzone, dropzoneContainer, index, params) {
     var self = this;
     self.text = solution.code;
@@ -33,8 +32,6 @@ H5P.TextDroppable = (function ($) {
     self.indentSpaces = 4;
     self.newLeft = 0xffffffff;
     self.tip = tip;
-    //self.correctFeedback = correctFeedback;
-   // self.incorrectFeedback = incorrectFeedback;
     self.index = index;
     self.params = params;
     if (self.params.indentBy2) {
@@ -129,6 +126,7 @@ H5P.TextDroppable = (function ($) {
    Droppable.prototype.appendDroppableTo = function ($container) {
     this.$dropzoneContainer.appendTo($container);
   };
+
   /**
    * Appends the draggable contained within this dropzone to the argument.
    * Returns the Draggable that was reverted, if any exists
@@ -207,7 +205,9 @@ H5P.TextDroppable = (function ($) {
     return solution.code === this.text && answerIndentation == this.indent;
   };
 
-
+  /**
+    * Places draggables at the nearest indentation to drop location.
+  **/
   Droppable.prototype.layout = function() {
     if( this.newLeft != 0xffffffff) {
       this.containedDraggable.getDraggableElement().css('left',(this.indent * this.indentSpaces)  + 'ch');
@@ -225,6 +225,9 @@ H5P.TextDroppable = (function ($) {
     }
   }
 
+  /** 
+    * Moves draggable one indentation level to the left
+  **/
   Droppable.prototype.shiftLeft = function() {
 
     if( this.indent >= 1 ){
@@ -237,6 +240,9 @@ H5P.TextDroppable = (function ($) {
     }
   }
 
+  /** 
+    * Moves draggable one indentation level to the right
+  **/
   Droppable.prototype.shiftRight = function() {
 
     this.indent = this.indent + 1;
@@ -247,6 +253,9 @@ H5P.TextDroppable = (function ($) {
     this.resize();
   }
 
+  /**
+    * Adjusts the width of the draggable to fit within the dropzone
+  **/
   Droppable.prototype.resize = function () {
 
     var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();

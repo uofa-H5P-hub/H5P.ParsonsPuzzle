@@ -2,10 +2,11 @@ H5P.TextDraggable = (function ($) {
   //CSS Draggable feedback:
   var DRAGGABLE_DROPPED = 'h5p-drag-dropped';
   /**
-   * Private class for keeping track of draggable text.
+   * Private class for keeping track of draggable code including indentation.
+   * Follows design of H5P.DragText but stores codeLine objects instead of strings.
    *
    * @private
-   * @param {String} text String that will be turned into a selectable word.
+   * @param {codeLine} code that will be turned into a selectable line.
    * @param {jQuery} draggable Draggable object.
    * @param {number} index
    */
