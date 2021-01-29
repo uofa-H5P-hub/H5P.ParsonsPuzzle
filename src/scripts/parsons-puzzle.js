@@ -363,10 +363,10 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         else {
           resultString = droppable.incorrectFeedback ? droppable.incorrectFeedback : this.params.incorrectText;
         }
-        dropZone.setAttribute('aria-label', `${indexText} ${this.params.contains.replace('@index', index.toString()).replace('@draggable', text).replace('@indent', indent)} ${resultString}.`);
+        dropZone.setAttribute('aria-label', `${indexText} ${this.params.contains.replace('@index', index.toString()).replace('@draggable', text)} ${resultString}.`);
       }
       else if (hasChildren) {
-        dropZone.setAttribute('aria-label', `${indexText} ${this.params.contains.replace('@index', index.toString()).replace('@draggable', text)}`);
+        dropZone.setAttribute('aria-label', `${indexText} ${this.params.contains.replace('@index', index.toString()).replace('@draggable', text).replace('@indent', indent)}`);
       }
       else {
         dropZone.setAttribute('aria-label',  `${indexText} ${this.params.empty.replace('@index', index.toString())}`);
