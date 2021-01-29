@@ -94,7 +94,7 @@ H5P.TextDroppable = (function ($) {
    Droppable.prototype.showSolution = function () {
     const correct = this.isCorrect();
     if (!correct) {
-      this.$showSolution.html(" indented " + this.solution.indent + " levels " + this.solution.htmlIndent());
+      this.$showSolution.html(this.solution.htmlIndent());
       this.$dropzone.css('padding-left',0);
       this.$showSolution.css('padding-left',0);
       this.$showSolution.css('margin-left',0);
