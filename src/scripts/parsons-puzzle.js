@@ -533,7 +533,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   };
 
   /**
-   * Initialize drag text task
+   * Initialize draggables
    */
    ParsonsPuzzle.prototype.toggleDraggablesContainer = function () {
     var isEmpty = this.$draggables.children().length === 0;
@@ -724,7 +724,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       if( !codeLine.distractor) {
         const solution = ret.solutions[codeLine.lineNo];
         const droppable = self.createDroppable(solution, solution.tip);
-        // const droppable = self.createDroppable(solution, solution.tip, solution.correctFeedback, solution.incorrectFeedback);
           
         // trigger instant feedback
         if (self.params.behaviour.instantFeedback) {
@@ -744,18 +743,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     self.addDropzoneWidth();
   };
 
-/*
-  /**
-   * Returns true if part starts and ends with an asterisk
-   *
-   * @param {string} part
-   *
-   * @returns {boolean}
-   
-  ParsonsPuzzle.prototype.isAnswerPart = function(part) {
-    return Util.startsWith('*', part) && Util.endsWith('*', part);
-  };
-  */
 
   /**
    * Matches the width of all dropzones to the widest draggable, and sets widest class variable.
@@ -849,7 +836,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {H5P.TextDroppable}
    */
-   // ParsonsPuzzle.prototype.createDroppable = function (solution, tip, correctFeedback, incorrectFeedback) {
   ParsonsPuzzle.prototype.createDroppable = function (solution, tip) {
     var self = this;
 
@@ -1449,34 +1435,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
      .join('[,]');
    };
 
-/*
-	/**
-	 * replaceSolutionsWithBlanks
-	 *
-	 * @param {string} question
-	 * @returns {string}
-	 
-   ParsonsPuzzle.prototype.replaceSolutionsWithBlanks = function (question) {
-    return parseText(question)
-    .map(part => this.isAnswerPart(part) ? '__________' : part)
-    .join('');
-  };
-
-	/**
-	 * Get solutions from question
-	 *
-	 * @param {string} question
-	 * @returns {string} Array with a string containing solutions of a question
-	
-   ParsonsPuzzle.prototype.getSolutionsFromQuestion = function (question) {
-    return parseText(question)
-    .filter(this.isAnswerPart)
-    .map(part => lex(part))
-    .map(solution => solution.text)
-    .join('[,]');
-  };
-  */
-
   return ParsonsPuzzle;
 
 }(H5P.jQuery, H5P.Question, H5P.ConfirmationDialog));
@@ -1511,6 +1469,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
  *
  * @param {string} question Question text for an H5P.ParsonsPuzzle content item
  */
+ /*
  H5P.ParsonsPuzzle.parseText = function (question) {
   const isAnswerPart = function (part) {
     return Util.startsWith('*', part) && Util.endsWith('*', part);
@@ -1527,5 +1486,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     })
     );
 };
+*/
 
 export default H5P.ParsonsPuzzle;
