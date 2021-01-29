@@ -1396,7 +1396,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     // Create the description
     definition.description = {
-      'en-US': puzzleInstructions + this.draggables;
+      'en-US': puzzleInstructions + this.draggables
     };
 
     //Create the correct responses pattern
