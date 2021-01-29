@@ -64,7 +64,7 @@ H5P.TextDroppable = (function ($) {
     }
 
     self.$incorrectText = $('<div/>', {
-      html: self.params.incorrectText + " " + self.params.correctAnswer,
+      html: self.params.incorrectText + " " + self.params.correctAnswer + " indented " + self.indent + " levels.",
       'class': 'correct-answer'
     });
 
