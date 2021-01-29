@@ -1,8 +1,8 @@
 var UofAParsons = UofAParsons || {};
 
- /**
-   * UofAParsons.CodeLine module
-   */
+/**
+  * UofAParsons.CodeLine module
+  */
 UofAParsons.CodeLine = (function () {
 
 
