@@ -7,6 +7,13 @@ UofAParsons.CodeParser = (function () {
   var CodeParser = function(maxDistractors) {
     this.maxDistractors = maxDistractors
   }
+  /**
+   * Parse given code into separate lines
+   *
+   * @param {string} codeString The solution code
+   * @param {number} the number of spaces in code indent
+   *
+   */
   CodeParser.prototype.parse = function(codeString, defaultIndentation){
     var distractors = [],
       indented = [],
@@ -15,8 +22,10 @@ UofAParsons.CodeParser = (function () {
       errors = [],
       lines = codeString.split("\n");
 
+    // process each code line and put in indented (normal) or distractor lists
     lines.forEach(function(item, index) {
       lineObject = new CodeLine(item, index - distractors.length, defaultIndentation);
+
       if (item.search(/#distractor\s*$/) >= 0) {
         // This line is a distractor
         lineObject.indent = -1;
@@ -25,6 +34,7 @@ UofAParsons.CodeParser = (function () {
           distractors.push(lineObject);
         }
       } else {
+        // not a distractor
         if (lineObject.code.length > 0) {
           lineObject.distractor = false;
           indented.push(lineObject);
@@ -32,6 +42,7 @@ UofAParsons.CodeParser = (function () {
       }
     });
 
+    // remove extra indentations of blocks 
     var normalized = this.normalizeIndents(indented);
     normalized.forEach(function(item) {
       if (item.indent < 0) {
@@ -50,13 +61,14 @@ UofAParsons.CodeParser = (function () {
       selectedDistractors.push(distractors[permutation[i]]);
       codeLines.push(distractors[permutation[i]]);
     }
-
+/*
     var modifiedLines = [];
     codeLines.forEach(function( item ){
       var cl = item.clone();
     //  cl.indent = 0;
       modifiedLines.push(cl);
     });
+    */
 
     return {
       // an array of line objects specifying  the solution
@@ -67,7 +79,6 @@ UofAParsons.CodeParser = (function () {
       // an array of line objects specifying the initial code arrangement
       // given to the user to use in constructing the solution
       codeLines: codeLines,
-      modifiedLines: modifiedLines,
       errors: errors
     };
   };
@@ -88,17 +99,27 @@ UofAParsons.CodeParser = (function () {
     }
     return permutation;
   };
-  // Check and normalize code indentation.
-  // Does not use the current object (this) ro make changes to
-  // the parameter.
-  // Returns a new array of line objects whose indent fields' values
-  // may be different from the argument. If indentation does not match,
-  // i.e. code is malformed, value of indent may be -1.
-  // For example, the first line may not be indented.
+
+  /**
+   * Normalise indentatations by removing extra indentations on matching
+   * blocks - ie if all lines in a block are indented two levels from 
+   * containing block rather than 1 - change all indents to one level from
+   * containing block.
+   *
+   * @param {codeLine} Array of code lines to normalise indents
+   *
+   * @returns {codeLine} array of normalised code lines 
+   * indent fields' values may be different from the argument. 
+   * If indentation does not match, i.e. code is malformed, value of indent may be -1.
+   * For example, the first line may not be indented.
+   *
+   **/
   CodeParser.prototype.normalizeIndents = function(lines) {
 
     var normalized = [];
     var newLine;
+
+    // returns level of indent for matching line or -1 if none matching
     var matchIndent = function(index) {
       //return line index from the previous lines with matching indentation
       for (var i = index-1; i >= 0; i--) {
@@ -108,6 +129,7 @@ UofAParsons.CodeParser = (function () {
       }
       return -1;
     };
+
     for ( var i = 0; i < lines.length; i++ ) {
       //create shallow copy from the line object
       newLine = lines[i].clone();

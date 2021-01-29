@@ -17,16 +17,15 @@ H5P.TextDroppable = (function ($) {
    * Private class for keeping track of droppable zones.
    * @private
    *
-   * @param {String} text Correct text string for this drop box.
-   * @param {number} indent the current level of indentation
-   * @param {number} newLeft new css left value for setting changed layout
+   * @param {codeLine} solution - Correct code for this drop box.
    * @param {undefined/String} tip Tip for this container, optional.
    * @param {jQuery} dropzone Dropzone object.
    * @param {jQuery} dropzoneContainer Container Container for the dropzone.
    * @param {number} index.
    * @param {Object} params Behavior settings
    */
-   function Droppable(solution, tip, correctFeedback, incorrectFeedback, dropzone, dropzoneContainer, index, params) {
+  // function Droppable(solution, tip, correctFeedback, incorrectFeedback, dropzone, dropzoneContainer, index, params) {
+   function Droppable(solution, tip, dropzone, dropzoneContainer, index, params) {
     var self = this;
     self.text = solution.code;
     self.solution = solution;
@@ -34,8 +33,8 @@ H5P.TextDroppable = (function ($) {
     self.indentSpaces = 4;
     self.newLeft = 0xffffffff;
     self.tip = tip;
-    self.correctFeedback = correctFeedback;
-    self.incorrectFeedback = incorrectFeedback;
+    //self.correctFeedback = correctFeedback;
+   // self.incorrectFeedback = incorrectFeedback;
     self.index = index;
     self.params = params;
     if (self.params.indentBy2) {
