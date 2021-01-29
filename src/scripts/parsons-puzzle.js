@@ -68,11 +68,11 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    function ParsonsPuzzle(params, contentId, contentData) {
     this.$ = $(this);
     this.contentId = contentId;
-    this.contentData = contentData;
     Question.call(this, 'parsons-puzzle');
 
     // Set default behavior.
-    this.params = $.extend(true, {
+    this.params = $.extend(true, {codeBlock: ""}, params);
+      /*
       puzzleInstructions: "Drag the code lines to the solutions box to create a working program. Indent the code lines by dragging them into the correct position.",
       codeBlock: "",
       overallFeedback: [],
@@ -101,7 +101,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       a11yCheck: 'Check the answers. The responses will be marked as correct, incorrect, or unanswered.',
       a11yShowSolution: 'Show the solution. The task will be marked with its correct solution.',
       a11yRetry: 'Retry the task. Reset all responses and start the task over again.',
-    }, params);
+    } */
 
     this.contentData = contentData;
     if (this.contentData !== undefined && this.contentData.previousState !== undefined && this.contentData.previousState.length !== undefined) {
@@ -1232,7 +1232,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @returns {string} title
    */
    ParsonsPuzzle.prototype.getTitle = function () {
-    return H5P.createTitle((this.contentData && this.contentData.metadata && this.contentData.metadata.title) ? this.contentData.metadata.title : 'Drag the Words');
+    return H5P.createTitle((this.contentData && this.contentData.metadata && this.contentData.metadata.title) ? this.contentData.metadata.title : 'Parsons Puzzle');
   };
 
   /**
