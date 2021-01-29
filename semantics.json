@@ -22,7 +22,7 @@
       "code"
     ]
   },
-    {
+  {
     "label": "2-space Block Indentation",
     "description": "Default block indentation is 4 spaces.  If you want to indent by 2 spaces to save space, select this option.",
     "name": "indentBy2",
@@ -170,7 +170,7 @@
     "importance": "low",
     "name": "contains",
     "type": "text",
-    "default": "Drop Zone @index contains draggable @draggable.",
+    "default": "Drop Zone @index contains draggable @draggable indented @indent levels.",
     "description": "Label used for accessibility, where the Read speaker will read that the drop zone contains a draggable",
     "common": true
   },

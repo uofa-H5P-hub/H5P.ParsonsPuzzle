@@ -42,7 +42,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
  * @type {H5P.ParsonsPuzzleEvent}
  */
 /**
- * Drag Text module
+ * Parsons Puzzle module
  * @external {jQuery} $ H5P.jQuery
  */
  H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
@@ -283,7 +283,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     const droppable = this.getDroppableByElement(dropZone);
 
     if (dropZone) {
-      this.setDroppableLabel(dropZone, draggable.textContent, droppable.getIndex());
+      this.setDroppableLabel(dropZone, draggable.textContent, droppable.getIndent(), droppable.getIndex());
     }
   };
 
@@ -346,7 +346,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @param {string} text
    * @param {number} index
    */
-   ParsonsPuzzle.prototype.setDroppableLabel = function(dropZone, text, index) {
+   ParsonsPuzzle.prototype.setDroppableLabel = function(dropZone, text, indent, index) {
     const indexText = this.params.dropZoneIndex.replace('@index', index.toString());
     const correctFeedback = dropZone.classList.contains('h5p-drag-correct-feedback');
     const inCorrectFeedback = dropZone.classList.contains('h5p-drag-wrong-feedback');
@@ -363,7 +363,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         else {
           resultString = droppable.incorrectFeedback ? droppable.incorrectFeedback : this.params.incorrectText;
         }
-        dropZone.setAttribute('aria-label', `${indexText} ${this.params.contains.replace('@index', index.toString()).replace('@draggable', text)} ${resultString}.`);
+        dropZone.setAttribute('aria-label', `${indexText} ${this.params.contains.replace('@index', index.toString()).replace('@draggable', text).replace('@indent', indent)} ${resultString}.`);
       }
       else if (hasChildren) {
         dropZone.setAttribute('aria-label', `${indexText} ${this.params.contains.replace('@index', index.toString()).replace('@draggable', text)}`);
@@ -628,7 +628,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       const draggable = droppable.containedDraggable;
 
       if (droppable && draggable) {
-        this.setDroppableLabel(droppable.getElement(), draggable.getElement().textContent, droppable.getIndex());
+        this.setDroppableLabel(droppable.getElement(), draggable.getElement().textContent, droppable.getIndent(), droppable.getIndex());
         this.setDraggableAriaLabel(draggable);
       }
     });
