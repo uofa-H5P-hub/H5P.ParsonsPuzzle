@@ -4,6 +4,7 @@ H5P.jQuery = {};
 import CodeParser from '../src/scripts/code-parser';
 
 var assertCodesEqual = function(t, code1, code2) {
+  debugger
   t.deepEqual(code1.length, code2.length);
   for (var i=0; i<code1.length; i++) {
     t.deepEqual(code1[i].code, code2[i].code, code1[i].code + ' code of line ' + i );
@@ -19,10 +20,10 @@ test('Parser should parse middle', t => {
     '    foo\n' +
     '  foo-1\n';
   const res = parser.parse(initial);
-  assertCodesEqual(t,res.solution, [{'code': 'def traverse_in_order(binary_node):', 'indent':0},
-    {'code': 'if binary_node:', 'indent':1},
-    {'code': 'foo', 'indent':2},
-    {'code': 'foo-1', 'indent':1}], 'model solution'
+  assertCodesEqual(t,res.solutions, [{'code': 'def traverse_in_order(binary_node):', 'indent':0},
+    {'code': 'if binary_node:', 'indent':0},
+    {'code': 'foo', 'indent':1},
+    {'code': 'foo-1', 'indent':0}], 'model solution'
   );
 
   assertCodesEqual(t, res.distractors, 
@@ -30,11 +31,11 @@ test('Parser should parse middle', t => {
   );
 
   //distractors are moved to the end
-  assertCodesEqual(t, res.modifiedLines, [
+  assertCodesEqual(t, res.codeLines, [
     {'code': 'def traverse_in_order(binary_node):', 'indent':0},
     {'code': 'if binary_node:', 'indent':0},
-    {'code': 'foo', 'indent':0},
+    {'code': 'foo', 'indent':1},
     {'code': 'foo-1', 'indent':0},
-    {'code': 'if not binary_node:', 'indent':0}]
+    {'code': 'if not binary_node:', 'indent':-1}]
   );
 });
