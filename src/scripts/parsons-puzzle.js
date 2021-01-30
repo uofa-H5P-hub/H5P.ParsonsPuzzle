@@ -1,14 +1,13 @@
-import { parseText, lex } from './parse-text';
 import StopWatch from './stop-watch';
 import Util from './util';
 import Draggable from './draggable';
 import Droppable from './droppable';
 import CodeParser from './code-parser';
+import UIKeyboardEx from './keyboard_ex';
 
 import Controls from 'h5p-lib-controls/src/scripts/controls';
 import AriaDrag from 'h5p-lib-controls/src/scripts/aria/drag';
 import AriaDrop from 'h5p-lib-controls/src/scripts/aria/drop';
-import UIKeyboard from 'h5p-lib-controls/src/scripts/ui/keyboard';
 import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
 /**
@@ -149,26 +148,20 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.ariaDragControls = new AriaDrag();
     this.ariaDropControls = new AriaDrop();
 
-    var keyboard1 = new UIKeyboard();
-    var keyboard2 = new UIKeyboard();
-
-    this.dragControls = new Controls([keyboard1, new Mouse(), this.ariaDragControls]);
+    this.dragControls = new Controls([new UIKeyboardEx(), new Mouse(), this.ariaDragControls]);
     this.dragControls.useNegativeTabIndex();
 
-    this.dropControls = new Controls([keyboard2, new Mouse(), this.ariaDropControls]);
+    this.dropControls = new Controls([new UIKeyboardEx(), new Mouse(), this.ariaDropControls]);
     this.dropControls.useNegativeTabIndex();
-
-    this.oldBoundHandleKeyDown1 = keyboard1.boundHandleKeyDown;
-    this.oldBoundHandleKeyDown2 = keyboard2.boundHandleKeyDown;
-
-    keyboard1.boundHandleKeyDown = myHandleKeyDown1.bind(keyboard1);
-    keyboard2.boundHandleKeyDown = myHandleKeyDown2.bind(keyboard2);
 
     // return false to prevent select from happening when draggable is disabled
     this.dragControls.on('before-select', event => !this.isElementDisabled(event.element));
 
     this.dragControls.on('select', this.keyboardDraggableSelected, this);
     this.dropControls.on('select', this.keyboardDroppableSelected, this);
+
+    this.dropControls.on('shift-left', this.keyboardShiftLeft, this);
+    this.dropControls.on('shift-right', this.keyboardShiftRight, this);
 
     // add and remove droppables on start/stop drag from controls
     this.on('start', this.addAllDroppablesToControls, this);
@@ -493,6 +486,20 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    ParsonsPuzzle.prototype.isElementDisabled = function (element) {
     return element.getAttribute('aria-disabled') === 'true';
   };
+
+  ParsonsPuzzle.prototype.keyboardShiftRight = function (event) {
+    var self = this;
+    var droppableElement = event.element;
+    var droppable = self.getDroppableByElement(droppableElement);
+    droppable.shiftRight();
+  }
+
+  ParsonsPuzzle.prototype.keyboardShiftLeft = function (event) {
+    var self = this;
+    var droppableElement = event.element;
+    var droppable = self.getDroppableByElement(droppableElement);
+    droppable.shiftLeft();
+  }
 
   /**
    * Handle selected droppable
