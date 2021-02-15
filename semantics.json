@@ -23,6 +23,31 @@
     ]
   },
   {
+    "label": "Code Task",
+    "importance": "high",
+    "optional": true,
+    "name": "codeTask",
+    "type": "text",
+    "widget": "html",
+    "description": "Describe what the code should do",
+    "example": "Print the numbers 1 to 10 in reverse order.",
+    "default": "",
+    "enterMode": "p",
+    "tags": [
+      "strong",
+      "em",
+      "u",
+      "a",
+      "ul",
+      "ol",
+      "h2",
+      "h3",
+      "hr",
+      "pre",
+      "code"
+    ]
+  },
+  {
     "label": "2-space Block Indentation",
     "description": "Default block indentation is 4 spaces.  If you want to indent by 2 spaces to save space, select this option.",
     "name": "indentBy2",
@@ -38,7 +63,7 @@
     "placeholder": "def is_true(boolean_value):\n  if boolean_value:\n    return True\n  return False\n  return true #distractor\n",
     "important": {
       "description": "<ul><li>Enter the correct code in the box below.</li><li>Distractor lines can be added by typing #distractor at the end of the line.</li><li>Consecutive lines to be dragged as a single block of code should have \\ appended",
-      "example": "def&nbsp;is_true(boolean_value):</br>&nbsp;&nbsp;if&nbsp;boolean_value:</br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;True</br>&nbsp;&nbsp;return&nbsp;False</br>&nbsp;&nbsp;return&nbsp;true&nbsp;#distractor</br>"
+      "example": "def&nbsp;is_true(boolean_value):</br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;boolean_value:</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;True</br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;False</br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;true&nbsp;#distractor</br>"
     }
   },
   {
