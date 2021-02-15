@@ -345,7 +345,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    */
   ParsonsPuzzle.prototype.registerDomElements = function () {
     // Register task introduction text
-    this.$introduction = $('<p id="' + this.introductionId + '">' + this.params.puzzleInstructions + '</p>' + '<p>' + this.params.codeTask + '</p>');
+    console.log(this.params.codeTask);
+    this.$introduction = $('<p id="' + this.introductionId + '">' + this.params.puzzleInstructions + '<br/>' + this.params.codeTask + '</p>');
     this.setIntroduction(this.$introduction);
     this.$introduction.parent().attr('tabindex', '-1');
 
