@@ -712,6 +712,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     self.droppables = [];
     self.draggables = [];
 
+    console.log(self.params.codeTask);
+
     self.$taskContainer = $('<div/>', {
       'class': TASK_CONTAINER
     });
