@@ -101,7 +101,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
      * @type {HTMLElement} selectedElement
      */
      this.selectedElement = undefined;
-
+/*
      // map left and right arrow keys to handle indentation in keyboard navigation
      this.oldBoundHandleKeyDown1 = undefined;
      this.oldBoundHandleKeyDown2 = undefined;
@@ -143,6 +143,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         self.oldBoundHandleKeyDown2( event);
       }
     }
+    */
 
     // Init keyboard navigation
     this.ariaDragControls = new AriaDrag();
@@ -345,8 +346,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    */
   ParsonsPuzzle.prototype.registerDomElements = function () {
     // Register task introduction text
-    console.log(this.params.codeTask);
-    this.$introduction = $('<p id="' + this.introductionId + '">' + this.params.puzzleInstructions + '<br/>' + this.params.codeTask + '</p>');
+    this.$introduction = $('<p id="' + this.introductionId + '">' + this.params.puzzleInstructions + '</p>');
     this.setIntroduction(this.$introduction);
     this.$introduction.parent().attr('tabindex', '-1');
 
