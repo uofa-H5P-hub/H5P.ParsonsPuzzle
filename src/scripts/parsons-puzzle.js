@@ -101,49 +101,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
      * @type {HTMLElement} selectedElement
      */
      this.selectedElement = undefined;
-/*
-     // map left and right arrow keys to handle indentation in keyboard navigation
-     this.oldBoundHandleKeyDown1 = undefined;
-     this.oldBoundHandleKeyDown2 = undefined;
-     var self = this;
-
-     function myHandleKeyDown(event) {
-      var ret = true;
-      switch (event.which) {
-        case 37: // Left Arrow
-            // move to right
-            if(!this.hasChromevoxModifiers(event)) {
-              var droppable = self.getDroppableByElement(event.srcElement);
-              droppable.shiftLeft();
-              event.preventDefault();
-              event.stopPropagation();
-            }
-            break;
-        case 39: // Right Arrow
-        if(!this.hasChromevoxModifiers(event)) {
-          var droppable = self.getDroppableByElement(event.srcElement);
-          droppable.shiftRight();
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        break;
-        default:
-        ret = false;
-      }
-      return ret;
-    }
-    function myHandleKeyDown1(event) {
-      if( !myHandleKeyDown.apply(this, [event])){
-        self.oldBoundHandleKeyDown1(event);
-      }
-    }
-
-    function myHandleKeyDown2(event) {
-      if( !myHandleKeyDown.apply(this, [event])){
-        self.oldBoundHandleKeyDown2( event);
-      }
-    }
-    */
 
     // Init keyboard navigation
     this.ariaDragControls = new AriaDrag();
@@ -346,7 +303,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    */
   ParsonsPuzzle.prototype.registerDomElements = function () {
     // Register task introduction text
-    this.$introduction = $('<p id="' + this.introductionId + '">' + this.params.puzzleInstructions + '</p>');
+    this.$introduction = $('<p id="' + this.introductionId + '">' + this.params.puzzleInstructions + '</p>' + '<p>' + this.params.codeTask + '</p>');
     this.setIntroduction(this.$introduction);
     this.$introduction.parent().attr('tabindex', '-1');
 
@@ -711,8 +668,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     self.widestDraggable = 0;
     self.droppables = [];
     self.draggables = [];
-
-    console.log(self.params.codeTask);
 
     self.$taskContainer = $('<div/>', {
       'class': TASK_CONTAINER
