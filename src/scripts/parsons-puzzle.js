@@ -72,7 +72,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     // Set default behavior.
     this.params = $.extend(true, {codeBlock: ""}, params);
-     
+
     this.contentData = contentData;
     if (this.contentData !== undefined && this.contentData.previousState !== undefined && this.contentData.previousState.length !== undefined) {
       this.previousState = this.contentData.previousState;
@@ -345,7 +345,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    */
   ParsonsPuzzle.prototype.registerDomElements = function () {
     // Register task introduction text
-    this.$introduction = $('<p id="' + this.introductionId + '">' + this.params.puzzleInstructions + '</p>');
+    this.$introduction = $('<p id="' + this.introductionId + '">' + this.params.puzzleInstructions + '</p>' + '<p>' + this.params.codeTask + '</p>');
     this.setIntroduction(this.$introduction);
     this.$introduction.parent().attr('tabindex', '-1');
 
@@ -731,7 +731,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       if( !codeLine.distractor) {
         const solution = ret.solutions[codeLine.lineNo];
         const droppable = self.createDroppable(solution, solution.tip);
-          
+
         // trigger instant feedback
         if (self.params.behaviour.instantFeedback) {
           draggable.getDraggableElement().on('dragstop', function() {
