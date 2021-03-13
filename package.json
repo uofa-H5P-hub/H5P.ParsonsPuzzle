@@ -5,7 +5,7 @@
   "description": "Parsons Puzzles allows content designers to create programming puzzles. The end user drags lines of code to their correct place to form a program.",
   "scripts": {
     "test": "ava",
-    "build": "cross-env NODE_ENV='production' webpack -p",
+    "build": "webpack --define process.env.NODE_ENV=\"production\"",
     "watch": "webpack --watch"
   },
   "repository": {
