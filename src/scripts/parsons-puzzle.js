@@ -384,7 +384,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       self.stopWatch.reset();
       self.resetTask();
       self.$draggables.css('display','inline');
-
     });
   };
 
@@ -889,20 +888,18 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @fires H5P.ParsonsPuzzle#drop
    * @fires Question#resize
    */
-   ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
+  ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
     var self = this;
     self.answered = true;
-
-    draggable.removeFromZone();
-
-    // if this droppable contains a different draggable, revert the contained draggable back to draggables container
+    
+    // if there is another draggable in zone, revert it back to draggables container
     if (!(droppable.containedDraggable === draggable)) {
-
-      // if the droppable already contains another draggable
       var revertedDraggable = droppable.appendInsideDroppableTo(this.$draggables);
-
+      
       // trigger revert, if revert was performed
       if(revertedDraggable){
+        revertedDraggable.getDraggableElement().css('width', this.widestDraggable+'ch');
+        this.setDraggableAriaLabel(revertedDraggable);
         self.trigger('revert', {
           element: revertedDraggable.getElement(),
           target: droppable.getElement()
@@ -910,16 +907,27 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       }
     }
 
+    // if this droppable already contains draggable just update layout
+    if (droppable.containedDraggable === draggable) {
+      droppable.layout();
+    }
+    else {
+      // remove from previous zone
+      var previousDropZone = draggable.removeFromZone();
 
-    var offset = draggable.getDraggableElement().offset().left;
+      // attach to new zone, detaching from prevous
+      draggable.appendDraggableTo(droppable.getDropzone());
 
-    draggable.appendDraggableTo(droppable.getDropzone());
+      // update draggables previous zone label if any
+      if (previousDropZone) {
+       this.setDroppableLabel(previousDropZone.getElement(), draggable.getElement().textContent, previousDropZone.getIndent(), previousDropZone.getIndex());
+      }
 
-    // reset left offset as appendDraggableTo sets both left and top to 0
-    draggable.getDraggableElement().offset({'left': offset});
+      draggable.addToZone(droppable);
+      droppable.setDraggable(draggable);
+    }
 
-    droppable.setDraggable(draggable);
-
+    // instant feedback
     if (self.params.behaviour.instantFeedback) {
       droppable.addFeedback();
       self.instantFeedbackEvaluation();
@@ -935,7 +943,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     });
 
     this.trigger('resize');
-    droppable.layout();
 
     // Resize seems to set focus to the iframe
     droppable.getElement().focus();

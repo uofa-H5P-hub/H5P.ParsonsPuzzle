@@ -33,7 +33,6 @@ UofAParsons.CodeLine = (function () {
 
       // determine the level of indentation of this code line
       this.indent = parseInt((codeString.length - codeString.replace(/^\s+/, "").length)/this.defaultIndentation);
-
       // determine if this line is a distractor
       if (codeString.search(/#distractor\s*$/) >= 0) {
         this.distractor = true;
