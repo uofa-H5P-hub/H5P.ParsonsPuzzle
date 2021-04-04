@@ -1,7 +1,7 @@
-class Draggable extends H5P.EventDispatcher {
+//CSS Draggable feedback:
+var DRAGGABLE_DROPPED = "h5p-drag-dropped";
 
-  //CSS Draggable feedback:
-  var DRAGGABLE_DROPPED = 'h5p-drag-dropped';
+class Draggable extends H5P.EventDispatcher {
 
   /**
    * Private class for keeping track of draggable code including indentation.
@@ -12,14 +12,15 @@ class Draggable extends H5P.EventDispatcher {
    * @param {jQuery} draggable Draggable object.
    * @param {number} index
    */
-  constructor(codeLine, draggable, index) {
+   constructor($, codeLine, draggable, index) {
     super();
     
     var self = this;
+
     self.codeLine = codeLine;
     self.insideDropzone = null;
     self.$draggable = $(draggable);
-    self.$ariaLabel = self.$draggable.find('.h5p-hidden-read');
+    self.$ariaLabel = self.draggable.find('.h5p-hidden-read');
     self.index = index;
     self.initialIndex = index;
 
@@ -38,7 +39,7 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @return {number}
    */
-  getIndex = function () {
+   getIndex() {
     return this.index;
   }
 
@@ -46,9 +47,9 @@ class Draggable extends H5P.EventDispatcher {
    * Sets the index
    *
    * @param {number} index
-   * @returns {H5P.TextDraggable}
+   * @returns {Draggable}
    */
- setIndex = function (index) {
+   setIndex (index) {
     this.index = index;
     return this;
   }
@@ -58,7 +59,7 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @return {number}
    */
-  getInitialIndex = function () {
+   getInitialIndex() {
     return this.initialIndex;
   }
 
@@ -69,7 +70,7 @@ class Draggable extends H5P.EventDispatcher {
    * @param {number} index
    * @returns {boolean}
    */
-  hasInitialIndex = function (index) {
+   hasInitialIndex(index) {
     return this.initialIndex === index;
   }
 
@@ -78,7 +79,7 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @param {jQuery} $container Container the draggable will append to.
    */
-  appendDraggableTo = function ($container) {
+   appendDraggableTo($container) {
     this.$draggable.detach().css({left: 0, top: 0}).appendTo($container);
   }
 
@@ -87,14 +88,14 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @params {jQuery} $container The parent which the draggable will revert to.
    */
-  revertDraggableTo = function ($container) {
+   revertDraggableTo($container) {
     // Prepend draggable to new container, but keep the offset,
     // then animate to new container's top:0, left:0
     this.$draggable.removeClass(DRAGGABLE_DROPPED);
     this.$draggable.detach()
-      .css({left: 0, top: 0})
-      .prependTo($container)
-      .animate({left: 0, top: 0});
+    .css({left: 0, top: 0})
+    .prependTo($container)
+    .animate({left: 0, top: 0});
   }
 
   /**
@@ -102,7 +103,7 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @params {Boolean} isDropped Decides whether the draggable has been dropped.
    */
-  toggleDroppedFeedback = function (isDropped) {
+   toggleDroppedFeedback(isDropped) {
     if (isDropped) {
       this.$draggable.addClass(DRAGGABLE_DROPPED);
     } else {
@@ -113,14 +114,14 @@ class Draggable extends H5P.EventDispatcher {
   /**
    * Disables the draggable, making it immovable.
    */
-  disableDraggable = function () {
+   disableDraggable() {
     this.$draggable.draggable({ disabled: true});
   }
 
   /**
    * Enables the draggable, making it movable.
    */
-  enableDraggable = function () {
+   enableDraggable() {
     this.$draggable.draggable({ disabled: false});
   }
 
@@ -129,7 +130,7 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @returns {jQuery} Draggable item.
    */
-  getDraggableElement = function () {
+   getDraggableElement() {
     return this.$draggable;
   }
 
@@ -137,7 +138,7 @@ class Draggable extends H5P.EventDispatcher {
    * Update Draggables "aria label"
    * @param {String} label [description]
    */
-  updateAriaLabel = function (label) {
+   updateAriaLabel(label) {
     this.$ariaLabel.html(label);
   }
 
@@ -146,7 +147,7 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @returns {HTMLElement}
    */
-  getElement = function () {
+   getElement() {
     return this.$draggable.get(0);
   }
 
@@ -156,7 +157,7 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @returns {Droppable}
    */
-  removeFromZone = function () {
+   removeFromZone() {
     var dropZone = this.insideDropzone;
 
     if (this.insideDropzone !== null) {
@@ -175,7 +176,7 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @param {Droppable} droppable The droppable this draggable will be added to.
    */
-  addToZone = function (droppable) {
+   addToZone(droppable) {
     if (this.insideDropzone !== null) {
       this.insideDropzone.removeDraggable();
     }
@@ -190,7 +191,7 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @returns {String} The code line object in this draggable.
    */
-  getCodeLine = function () {
+   getCodeLine() {
     return this.codeLine;
   }
 
@@ -199,14 +200,14 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @returns {String} The answer text in this draggable.
    */
-  getAnswerText = function () {
+   getAnswerText() {
     return this.codeLine.code;
   }
 
   /**
    * Sets short format of draggable when inside a dropbox.
    */
-  setShortFormat = function () {
+   setShortFormat() {
     /* short form not currently used
     this.$draggable.html(this.shortFormat);
     short form current loses a11y labels
@@ -218,14 +219,14 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @returns {String|*}
    */
-  getShortFormat = function () {
+   getShortFormat() {
     return this.shortFormat;
   }
 
   /**
    * Removes the short format of draggable when it is outside a dropbox.
    */
-  removeShortFormat = function () {
+   removeShortFormat() {
     /* short form not currently used
     this.$draggable.html(this.codeLine.code);
     */
@@ -236,7 +237,7 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @returns {Droppable} Droppable
    */
-  getInsideDropzone = function () {
+   getInsideDropzone() {
     return this.insideDropzone;
   }
 
@@ -245,9 +246,10 @@ class Draggable extends H5P.EventDispatcher {
    *
    * @returns {boolean}
    */
-  isInsideDropZone = function () {
+   isInsideDropZone() {
     return !!this.insideDropzone;
   }
 
 }
+
 export default Draggable;
