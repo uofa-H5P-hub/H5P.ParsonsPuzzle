@@ -585,6 +585,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @returns {Boolean} Returns true if maxScore was achieved.
    */
    ParsonsPuzzle.prototype.showEvaluation = function (skipXapi) {
+
     this.hideEvaluation();
     this.showDropzoneFeedback();
     this.showExplanation();
@@ -901,6 +902,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       
       // trigger revert, if revert was performed
       if(revertedDraggable){
+        revertedDraggable.removeFromZone();
         revertedDraggable.getDraggableElement().css('width', this.widestDraggable+'ch');
         this.setDraggableAriaLabel(revertedDraggable);
         self.trigger('revert', {
@@ -1166,6 +1168,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    */
    ParsonsPuzzle.prototype.showSolutions = function () {
     this.showEvaluation(true);
+
     this.droppables.forEach(function (droppable) {
       droppable.addFeedback();
       droppable.showSolution();
