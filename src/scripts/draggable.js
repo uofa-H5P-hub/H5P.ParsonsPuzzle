@@ -28,6 +28,8 @@ H5P.TextDraggable = (function ($) {
       self.shortFormat = self.shortFormat.slice(0, 17) + '...';
     }
     */
+
+    console.log('created draggable: ', this);
   }
 
   Draggable.prototype = Object.create(H5P.EventDispatcher.prototype);
@@ -207,7 +209,10 @@ H5P.TextDraggable = (function ($) {
    * Sets short format of draggable when inside a dropbox.
    */
   Draggable.prototype.setShortFormat = function () {
+    /* short form not currently used
     this.$draggable.html(this.shortFormat);
+    short form current loses a11y labels
+    */
   };
 
   /**
@@ -223,7 +228,9 @@ H5P.TextDraggable = (function ($) {
    * Removes the short format of draggable when it is outside a dropbox.
    */
   Draggable.prototype.removeShortFormat = function () {
+    /* short form not currently used
     this.$draggable.html(this.codeLine.code);
+    */
   };
 
   /**
