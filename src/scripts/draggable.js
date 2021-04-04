@@ -28,8 +28,6 @@ H5P.TextDraggable = (function ($) {
       self.shortFormat = self.shortFormat.slice(0, 17) + '...';
     }
     */
-
-    console.log('created draggable: ', this);
   }
 
   Draggable.prototype = Object.create(H5P.EventDispatcher.prototype);
