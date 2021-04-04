@@ -152,8 +152,6 @@ H5P.TextDroppable = (function ($) {
    */
    Droppable.prototype.setDraggable = function (droppedDraggable) {
 
-    console.log('adding draggable ', droppedDraggable);
-    console.log(' to droppable', this);
     var self = this;
 
     self.containedDraggable = droppedDraggable;
@@ -174,8 +172,6 @@ H5P.TextDroppable = (function ($) {
    * Removes the contained draggable in this box.
    */
    Droppable.prototype.removeDraggable = function () {
-    console.log('removing draggable ', this.containedDraggable);
-    console.log(' from droppable', this);
     if (this.containedDraggable !== null) {
       this.lastContainedDraggable = this.containedDraggable;
       this.lastIndent = this.indent;
@@ -209,8 +205,6 @@ H5P.TextDroppable = (function ($) {
     * Places draggables at the nearest indentation to drop location.
   **/
   Droppable.prototype.layout = function() {
-    console.log('laying out draggable ', this.containedDraggable);
-    console.log(' in droppable', this);
     // set to draggable to top of droppable
     this.containedDraggable.getDraggableElement().css('top', 0);
 
