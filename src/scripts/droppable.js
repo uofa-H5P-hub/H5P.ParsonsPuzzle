@@ -1,7 +1,8 @@
 import Util from './util';
 
-H5P.TextDroppable = (function ($) {
-  //CSS Main Containers:
+/** Class represents a dropzone for code lines */
+class Droppable {
+
   //Special Sub-containers:
   var SHOW_SOLUTION_CONTAINER = "h5p-drag-show-solution-container";
 
@@ -24,7 +25,7 @@ H5P.TextDroppable = (function ($) {
    * @param {number} index.
    * @param {Object} params Behavior settings
    */
-   function Droppable(solution, tip, dropzone, dropzoneContainer, index, params) {
+   constructor(solution, tip, dropzone, dropzoneContainer, index, params) {
     var self = this;
     self.solution = solution;
 
@@ -41,7 +42,7 @@ H5P.TextDroppable = (function ($) {
     }
 
     /**
-     * @type {H5P.TextDraggable}
+     * @type {Draggable}
      */
      self.containedDraggable = null;
      self.lastContainedDraggable = null;
@@ -77,20 +78,19 @@ H5P.TextDroppable = (function ($) {
     }).appendTo(self.$dropzoneContainer).hide();
   }
 
-  Droppable.prototype.removeTipTabIndexIfNoFocus = function () {
+  removeTipTabIndexIfNoFocus() {
     const self = this;
 
-    setTimeout(() => {
-      if(!self.$dropzone.is(':focus') && !self.$tip.is(':focus')){
-        self.$tip.attr('tabindex', '-1');
-      }
-    }, 0);
-  };
+  //  setTimeout(() => {
+  //    if(!self.$dropzone.is(':focus') && !self.$tip.is(':focus')){
+   //     self.$tip.attr('tabindex', '-1');
+  //    }
+  }
 
   /**
    * Displays the solution next to the drop box if it is not correct.
    */
-   Droppable.prototype.showSolution = function () {
+   showSolution() {
     const correct = this.isCorrect();
     if (!correct) {
       this.$showSolution.html(this.solution.htmlIndent());
@@ -102,33 +102,33 @@ H5P.TextDroppable = (function ($) {
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
     this.$showSolution.toggleClass('incorrect', !correct);
     this.$showSolution.show();
-  };
+  }
 
   /**
    * Hides the solution.
    */
-   Droppable.prototype.hideSolution = function () {
+   hideSolution() {
     this.$showSolution.html('');
     this.$showSolution.hide();
-  };
+  }
 
   /**
    * Returns the html element
    *
    * @return {HTMLElement}
    */
-   Droppable.prototype.getElement = function () {
+   getElement() {
     return this.$dropzone.get(0);
-  };
+  }
 
   /**
    * Appends the droppable to the provided container.
    *
    * @param {jQuery} $container Container which the dropzone will be appended to.
    */
-   Droppable.prototype.appendDroppableTo = function ($container) {
+   appendDroppableTo($container) {
     this.$dropzoneContainer.appendTo($container);
-  };
+  }
 
   /**
    * Appends the draggable contained within this dropzone to the argument.
@@ -138,44 +138,40 @@ H5P.TextDroppable = (function ($) {
    *
    * @return {Draggable}
    */
-   Droppable.prototype.appendInsideDroppableTo = function ($container) {
+   appendInsideDroppableTo($container) {
     if (this.containedDraggable !== null) {
       this.containedDraggable.revertDraggableTo($container);
       return this.containedDraggable;
     }
-  };
+  }
 
   /**
    * Sets the contained draggable in this drop box to the provided argument.
    *
    * @param {Draggable} droppedDraggable A draggable that has been dropped on this box.
    */
-   Droppable.prototype.setDraggable = function (droppedDraggable) {
+   setDraggable(droppedDraggable) {
 
-    console.log('adding draggable ', droppedDraggable);
-    console.log(' to droppable', this);
     var self = this;
 
     self.containedDraggable = droppedDraggable;
     self.text = droppedDraggable.getAnswerText();
     self.layout();
-  };
+  }
 
   /**
    * Returns true if this dropzone currently has a draggable
    *
    * @return {boolean}
    */
-   Droppable.prototype.hasDraggable = function () {
+   hasDraggable() {
     return !!this.containedDraggable;
-  };
+  }
 
   /**
    * Removes the contained draggable in this box.
    */
-   Droppable.prototype.removeDraggable = function () {
-    console.log('removing draggable ', this.containedDraggable);
-    console.log(' from droppable', this);
+   removeDraggable() {
     if (this.containedDraggable !== null) {
       this.lastContainedDraggable = this.containedDraggable;
       this.lastIndent = this.indent;
@@ -189,28 +185,26 @@ H5P.TextDroppable = (function ($) {
     this.$showSolution.css('padding-left',"");
     this.$showSolution.css('margin-left',"");
     this.$dropzone.show();
-  };
+  }
 
   /**
    * Checks if this drop box contains the correct draggable.
    *
    * @returns {Boolean} True if this box has the correct answer.
    */
-   Droppable.prototype.isCorrect = function () {
+   isCorrect() {
     if (this.containedDraggable === null) {
       return false;
     }
     var solution = this.solution;
 
     return solution.code === this.text && solution.indent == this.indent;
-  };
+  }
 
   /**
     * Places draggables at the nearest indentation to drop location.
   **/
-  Droppable.prototype.layout = function() {
-    console.log('laying out draggable ', this.containedDraggable);
-    console.log(' in droppable', this);
+  layout {
     // set to draggable to top of droppable
     this.containedDraggable.getDraggableElement().css('top', 0);
 
@@ -241,7 +235,7 @@ H5P.TextDroppable = (function ($) {
   /** 
     * Moves draggable one indentation level to the left
   **/
-  Droppable.prototype.shiftLeft = function() {
+  shiftLeft {
     if( this.indent >= 1 ){
       this.indent = this.indent - 1;
       var shift = this.indent * this.indentSpaces;
@@ -256,7 +250,7 @@ H5P.TextDroppable = (function ($) {
   /** 
     * Moves draggable one indentation level to the right
   **/
-  Droppable.prototype.shiftRight = function() {
+  shiftRight {
     this.indent = this.indent + 1;
     var shift = this.indent * this.indentSpaces;
     this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
@@ -270,7 +264,7 @@ H5P.TextDroppable = (function ($) {
   /**
     * Adjusts the width of the draggable to fit within the dropzone
   **/
-  Droppable.prototype.resize = function () {
+  resize {
 
     var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();
     var containerRightEdge = this.$dropzone.offset().left + this.$dropzone.width();
@@ -285,7 +279,7 @@ H5P.TextDroppable = (function ($) {
   /**
    * Sets CSS styling feedback for this drop box.
    */
-   Droppable.prototype.addFeedback = function () {
+   addFeedback {
 
     //Draggable is correct
     if (this.isCorrect()) {
@@ -315,7 +309,7 @@ H5P.TextDroppable = (function ($) {
   /**
    * Removes all CSS styling feedback for this drop  *  * box.
    */
-   Droppable.prototype.removeFeedback = function () {
+   removeFeedback {
     this.$dropzone.removeClass(WRONG_FEEDBACK).removeClass(CORRECT_FEEDBACK);
 
 
@@ -326,45 +320,45 @@ H5P.TextDroppable = (function ($) {
 
     var newWidth = this.$dropzone.prop('style').width - 2;
     this.$dropzone.css('width', newWidth + 'ch');
-  };
+  }
 
   /**
    * Returns true if the dropzone has visible feedback
    */
-   Droppable.prototype.hasFeedback = function () {
+   hasFeedback {
     return this.$dropzone.hasClass(WRONG_FEEDBACK) || this.$dropzone.hasClass(CORRECT_FEEDBACK);
-  };
+  }
 
   /**
    * Sets short format of draggable when inside a dropbox.
    */
-   Droppable.prototype.setShortFormat = function () {
+   setShortFormat {
     if (this.containedDraggable !== null) {
       this.containedDraggable.setShortFormat();
     }
-  };
+  }
 
   /**
    * Disables dropzone and the contained draggable.
    */
-   Droppable.prototype.disableDropzoneAndContainedDraggable = function () {
+   disableDropzoneAndContainedDraggable {
     if (this.containedDraggable !== null) {
       this.containedDraggable.disableDraggable();
     }
     this.$dropzone.droppable({ disabled: true});
-  };
+  }
 
   /**
    * Enable dropzone.
    */
-   Droppable.prototype.enableDropzone = function () {
+   enableDropzone {
     this.$dropzone.droppable({ disabled: false});
   };
 
   /**
    * Removes the short format of draggable when it is outside a dropbox.
    */
-   Droppable.prototype.removeShortFormat = function () {
+  removeShortFormat {
     if (this.containedDraggable !== null) {
       this.containedDraggable.removeShortFormat();
     }
@@ -375,16 +369,16 @@ H5P.TextDroppable = (function ($) {
    *
    * @returns {jQuery} This object's dropzone.
    */
-   Droppable.prototype.getDropzone = function () {
+  getDropzone {
     return this.$dropzone;
-  };
+  }
 
   /**
    * Return the unique index of the dropzone
    *
    * @returns {number}
    */
-   Droppable.prototype.getIndex = function () {
+  getIndex {
     return this.index;
   };
 
@@ -393,11 +387,9 @@ H5P.TextDroppable = (function ($) {
    *
    * @returns {number}
    */
-   Droppable.prototype.getIndent = function () {
+   getIndent  {
     return this.indent;
   };
+}
 
-  return Droppable;
-})(H5P.jQuery);
-
-export default H5P.TextDroppable;
+export default Droppable;
