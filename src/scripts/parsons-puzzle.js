@@ -384,6 +384,9 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       self.stopWatch.reset();
       self.resetTask();
       self.$draggables.css('display','inline');
+      self.hideButton('try-again');
+    }, self.initShowTryAgainButton || false, {
+      'aria-label': self.params.a11yRetry,
     });
   };
 
