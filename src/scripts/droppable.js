@@ -1,18 +1,18 @@
 import Util from './util';
 
 //Special Sub-containers:
-var SHOW_SOLUTION_CONTAINER = "h5p-drag-show-solution-container";
+const SHOW_SOLUTION_CONTAINER = "h5p-drag-show-solution-container";
 
 //CSS Dropzone feedback:
-var CORRECT_FEEDBACK = 'h5p-drag-correct-feedback';
-var WRONG_FEEDBACK = 'h5p-drag-wrong-feedback';
+const CORRECT_FEEDBACK = 'h5p-drag-correct-feedback';
+const WRONG_FEEDBACK = 'h5p-drag-wrong-feedback';
 
 //CSS Draggable feedback:
-var DRAGGABLE_FEEDBACK_CORRECT = 'h5p-drag-draggable-correct';
-var DRAGGABLE_FEEDBACK_WRONG = 'h5p-drag-draggable-wrong';
+const DRAGGABLE_FEEDBACK_CORRECT = 'h5p-drag-draggable-correct';
+const DRAGGABLE_FEEDBACK_WRONG = 'h5p-drag-draggable-wrong';
 
 /** Class represents a dropzone for code lines */
-class Droppable {
+export default class Droppable {
 
   /**
    * Private class for keeping track of droppable zones.
@@ -27,6 +27,8 @@ class Droppable {
    */
    constructor(solution, tip, dropzone, dropzoneContainer, index, params) {
     var self = this;
+    const $ = H5P.jQuery;
+
     self.solution = solution;
 
     self.text = ""; // current text
@@ -191,7 +193,7 @@ class Droppable {
   /**
    * Checks if this drop box contains the correct draggable.
    *
-   * @returns {Boolean} True if this box has the correct answer.
+   * @returns {boolean} True if this box has the correct answer.
    */
    isCorrect() {
     if (this.containedDraggable === null) {
@@ -203,9 +205,9 @@ class Droppable {
   }
 
   /**
-    * Places draggables at the nearest indentation to drop location.
-    **/
-    layout() {
+   * Places draggables at the nearest indentation to drop location.
+   **/
+   layout() {
     // set to draggable to top of droppable
     this.containedDraggable.getDraggableElement().css('top', 0);
 
@@ -233,15 +235,15 @@ class Droppable {
  this.resize();
 }
 
-  /** 
-    * Moves draggable one indentation level to the left
-    **/
-    shiftLeft() {
-      if( this.indent >= 1 ){
-        this.indent = this.indent - 1;
-        var shift = this.indent * this.indentSpaces;
-        this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
-        this.currentLeft = this.containedDraggable.getDraggableElement().offset().left;
+/** 
+ * Moves draggable one indentation level to the left
+ **/
+ shiftLeft() {
+  if( this.indent >= 1 ){
+    this.indent = this.indent - 1;
+    var shift = this.indent * this.indentSpaces;
+    this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
+    this.currentLeft = this.containedDraggable.getDraggableElement().offset().left;
       // if the draggable does not reach the edge of the drop zone, 
       // expand the width of the draggable to fit
       this.resize();
@@ -249,13 +251,13 @@ class Droppable {
   }
 
   /** 
-    * Moves draggable one indentation level to the right
-    **/
-    shiftRight() {
-      this.indent = this.indent + 1;
-      var shift = this.indent * this.indentSpaces;
-      this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
-      this.currentLeft = this.containedDraggable.getDraggableElement().offset().left;
+   * Moves draggable one indentation level to the right
+   **/
+   shiftRight() {
+    this.indent = this.indent + 1;
+    var shift = this.indent * this.indentSpaces;
+    this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
+    this.currentLeft = this.containedDraggable.getDraggableElement().offset().left;
 
     // if the draggable extends beyond the edge of the drop zone, 
     // reduce the width of the draggable to fit
@@ -263,19 +265,19 @@ class Droppable {
   }
 
   /**
-    * Adjusts the width of the draggable to fit within the dropzone
-    **/
-    resize() {
+   * Adjusts the width of the draggable to fit within the dropzone
+   **/
+   resize() {
 
-      var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();
-      var containerRightEdge = this.$dropzone.offset().left + this.$dropzone.width();
-      var variance = containerRightEdge - draggableRightEdge;
+    var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();
+    var containerRightEdge = this.$dropzone.offset().left + this.$dropzone.width();
+    var variance = containerRightEdge - draggableRightEdge;
 
-      var adjustedWidth = this.containedDraggable.getDraggableElement().width() + variance;
+    var adjustedWidth = this.containedDraggable.getDraggableElement().width() + variance;
 
-      this.containedDraggable.getDraggableElement().width(adjustedWidth);
+    this.containedDraggable.getDraggableElement().width(adjustedWidth);
 
-    }
+  }
 
   /**
    * Sets CSS styling feedback for this drop box.
@@ -393,4 +395,3 @@ class Droppable {
   }
 }
 
-export default Droppable;

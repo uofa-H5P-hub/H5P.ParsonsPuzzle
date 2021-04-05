@@ -1,7 +1,7 @@
 //CSS Draggable feedback:
-var DRAGGABLE_DROPPED = "h5p-drag-dropped";
+const DRAGGABLE_DROPPED = "h5p-drag-dropped";
 
-class Draggable extends H5P.EventDispatcher {
+ export default class Draggable extends H5P.EventDispatcher {
 
   /**
    * Private class for keeping track of draggable code including indentation.
@@ -12,15 +12,17 @@ class Draggable extends H5P.EventDispatcher {
    * @param {jQuery} draggable Draggable object.
    * @param {number} index
    */
-   constructor($, codeLine, draggable, index) {
-    super();
+   constructor(codeLine, draggable, index) {
+
+    super()
     
     var self = this;
+    const $ = H5P.jQuery;
 
     self.codeLine = codeLine;
     self.insideDropzone = null;
     self.$draggable = $(draggable);
-    self.$ariaLabel = self.draggable.find('.h5p-hidden-read');
+    self.$ariaLabel = self.$draggable.find('.h5p-hidden-read');
     self.index = index;
     self.initialIndex = index;
 
@@ -49,10 +51,10 @@ class Draggable extends H5P.EventDispatcher {
    * @param {number} index
    * @returns {Draggable}
    */
-   setIndex (index) {
-    this.index = index;
-    return this;
-  }
+   setIndex(index) {
+     this.index = index;
+     return this;
+   }
 
   /**
    * Gets the initial index
@@ -249,7 +251,6 @@ class Draggable extends H5P.EventDispatcher {
    isInsideDropZone() {
     return !!this.insideDropzone;
   }
-
 }
 
-export default Draggable;
+
