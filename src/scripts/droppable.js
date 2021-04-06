@@ -4,6 +4,7 @@ H5P.TextDroppable = (function ($) {
   //CSS Main Containers:
   //Special Sub-containers:
   var SHOW_SOLUTION_CONTAINER = "h5p-drag-show-solution-container";
+  var SHOW_FEEDBACK_CONTAINER = "h5p-drag-show-feedback-container";
 
   //CSS Dropzone feedback:
   var CORRECT_FEEDBACK = 'h5p-drag-correct-feedback';
@@ -72,6 +73,10 @@ H5P.TextDroppable = (function ($) {
     self.$showSolution = $('<div/>', {
       'class': SHOW_SOLUTION_CONTAINER
     }).appendTo(self.$dropzoneContainer).hide();
+
+    self.$showFeedback = $('<div/>', {
+        'class': SHOW_FEEDBACK_CONTAINER
+    }).appendTo(self.$dropzoneContainer).hide();
   }
 
   Droppable.prototype.removeTipTabIndexIfNoFocus = function () {
@@ -102,11 +107,36 @@ H5P.TextDroppable = (function ($) {
   };
 
   /**
+    * Displays the feedback next to the drop box if it is not correct.
+   */
+    Droppable.prototype.showFeedback = function () {
+        const correct = this.isCorrect();
+        if (!correct) {
+            this.$showFeedback.html(this.solution.htmlIndent());
+            this.$dropzone.css('padding-left', 0);
+            this.$showFeedback.css('padding-left', 0);
+            this.$showFeedback.css('margin-left', 0);
+        }
+
+        this.$showFeedback.prepend(correct ? this.$correctText : this.$incorrectText);
+        this.$showFeedback.toggleClass('incorrect', !correct);
+        this.$showFeedback.show();
+    };
+
+  /**
    * Hides the solution.
    */
    Droppable.prototype.hideSolution = function () {
     this.$showSolution.html('');
     this.$showSolution.hide();
+  };
+
+  /**
+   * Hides the feedback.
+   */
+  Droppable.prototype.hideFeedback = function () {
+     this.$showFeedback.html('');
+     this.$showFeedback.hide();
   };
 
   /**
@@ -187,6 +217,8 @@ H5P.TextDroppable = (function ($) {
     this.$dropzone.css('padding-left',"");
     this.$showSolution.css('padding-left',"");
     this.$showSolution.css('margin-left',"");
+    this.$showFeedback.css('padding-left',"");
+    this.$showFeedback.css('margin-left',"");
     this.$dropzone.show();
   };
 

@@ -30,6 +30,9 @@
 .h5p-parsons-puzzle .h5p-drag-show-solution-button:before {
   content: "\f06e";
 }
+.h5p-parsons-puzzle .h5p-drag-show-feedback-button:before {
+  content: "\f0eb";
+}
 
 /* Buttons starting state: */
 .h5p-parsons-puzzle .h5p-drag-check-button {
@@ -39,6 +42,9 @@
   display: none;
 }
 .h5p-parsons-puzzle .h5p-drag-show-solution-button {
+  display: none;
+}
+.h5p-parsons-puzzle .h5p-drag-show-feedback-button {
   display: none;
 }
 
@@ -180,6 +186,21 @@
 }
 
 .h5p-parsons-puzzle .h5p-drag-show-solution-container.incorrect {
+  color: #255c41;
+  font-weight: bold;
+  border: 1px #255c41 dashed;
+  background-color: #d4f6e6;
+  padding: 0.15em;
+  margin-left: 0.5em;
+}
+
+/* Show feedback container */
+.h5p-parsons-puzzle .h5p-drag-show-feedback-container {
+  position: relative;
+  display: inline;
+}
+
+.h5p-parsons-puzzle .h5p-drag-show-feedback-container.incorrect {
   color: #255c41;
   font-weight: bold;
   border: 1px #255c41 dashed;

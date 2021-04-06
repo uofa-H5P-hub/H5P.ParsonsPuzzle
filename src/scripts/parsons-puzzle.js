@@ -365,6 +365,20 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       });
     }
 
+      //Show Feedback button
+      self.addButton('show-feedback', self.params.showFeedback, function () {
+          self.droppables.forEach(function (droppable) {
+              droppable.showFeedback();
+          });
+          self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
+          self.disableDraggables();
+          self.$draggables.css('display','none');
+          self.removeAllDroppablesFromControls();
+          self.hideButton('show-feedback');
+      }, self.initShowShowFeedbackButton || false, {
+          'aria-label': self.params.a11yShowFeedback,
+      });
+
     //Show Solution button
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
@@ -605,6 +619,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       //Hide buttons and disable task
       this.hideButton('check-answer');
       this.hideButton('show-solution');
+      this.hideButton('show-feedback');
       this.hideButton('try-again');
       this.disableDraggables();
     }
@@ -1016,12 +1031,15 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     var allFilled = self.isAllAnswersFilled();
 
     if (allFilled) {
-      //Shows "retry" and "show solution" buttons.
+      //Shows "retry" and "show solution" and "show feedback" buttons.
       if (self.params.behaviour.enableSolutionsButton) {
         self.showButton('show-solution');
       }
       if (self.params.behaviour.enableRetry) {
         self.showButton('try-again');
+      }
+      if (self.params.behaviour.enableFeedbackButton) {
+        self.showButton('show-feedback');
       }
 
       // Shows evaluation text
@@ -1031,6 +1049,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       self.instantFeedbackEvaluationFilled = false;
       //Hides "retry" and "show solution" buttons.
       self.hideButton('try-again');
+      self.hideButton('show-feedback')
       self.hideButton('show-solution');
 
       //Hides evaluation text.
@@ -1165,11 +1184,34 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.disableDraggables();
     //Remove all buttons in "show solution" mode.
     this.hideButton('try-again');
+    this.hideButton('show-feedback');
     this.hideButton('show-solution');
     this.hideButton('check-answer');
 
     this.trigger('resize');
   };
+
+  /**
+   * Used for contracts.
+   * Sets feedback on the dropzones.
+   */
+     ParsonsPuzzle.prototype.showFeedbacks = function () {
+         this.showEvaluation(true);
+         this.droppables.forEach(function (droppable) {
+             droppable.addFeedback();
+             droppable.showFeedback();
+         });
+
+         this.removeAllDroppablesFromControls();
+         this.disableDraggables();
+         //Remove all buttons in "show solution" mode.
+         this.hideButton('try-again');
+         this.hideButton('show-feedback');
+         this.hideButton('show-solution');
+         this.hideButton('check-answer');
+
+         this.trigger('resize');
+     };
 
   /**
    * Used for contracts.
@@ -1189,6 +1231,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     self.enableAllDropzonesAndDraggables();
     //Show and hide buttons
     self.hideButton('try-again');
+    self.hideButton('show-feedback');
     self.hideButton('show-solution');
 
     if (!self.params.behaviour.instantFeedback) {
@@ -1274,9 +1317,12 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       // Show buttons if not max score and all answers filled
       if (self.isAllAnswersFilled() && !self.showEvaluation()) {
 
-        //Shows "retry" and "show solution" buttons.
+        //Shows "retry" and "show solution" and "show feedback" buttons.
         if (self.params.behaviour.enableSolutionsButton) {
           self.initShowShowSolutionButton = true;
+        }
+        if (self.params.behaviour.enableFeedbackButton) {
+          self.initShowShowFeedbackButton = true;
         }
         if (self.params.behaviour.enableRetry) {
           self.initShowTryAgainButton = true;
