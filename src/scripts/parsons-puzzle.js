@@ -333,7 +333,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   };
 
   /**
-   * Add check solution, show solution and retry buttons, and their functionality.
+   * Add check solution, show solution, show feedback and retry buttons, and their functionality.
    */
   ParsonsPuzzle.prototype.addButtons = function () {
     var self = this;
@@ -348,13 +348,17 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
           if (self.params.behaviour.enableRetry) {
             self.showButton('try-again');
           }
+          if (self.params.behaviour.enableFeedbackButton) {
+            self.showButton('show-feedback');
+          }
           if (self.params.behaviour.enableSolutionsButton) {
-            self.showButton('show-solution');
+              self.showButton('show-solution');
           }
           self.hideButton('check-answer');
           self.disableDraggables();
         } else {
           self.hideButton('show-solution');
+          self.hideButton('show-feedback');
           self.hideButton('check-answer');
         }
 
