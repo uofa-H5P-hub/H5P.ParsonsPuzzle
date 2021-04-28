@@ -156,7 +156,8 @@
 
 .h5p-parsons-puzzle .h5p-drag-dropped.h5p-drag-draggable-correct {
   padding: 0;
-  color: #255c41;
+  /* color: #255c41; */
+  color:blue;
   border: none;
   box-shadow: none;
   line-height: 1.5;
@@ -166,11 +167,17 @@
 .h5p-parsons-puzzle .h5p-drag-dropped.h5p-drag-draggable-wrong {
   padding: 0;
   border: none;
-  color: #b71c1c;
+  /* color: #b71c1c; */
+  color: black;
   box-shadow: none;
   line-height: 1.5;
   background: none;
 }
+
+/* feedback line by line */
+/* .h5p-parsons-puzzle .h5p-drag-dropped.h5p-drag-draggable-wrong:hover {
+  
+} */
 
 /* Show solution container */
 .h5p-parsons-puzzle .h5p-drag-show-solution-container {
