@@ -174,11 +174,6 @@
   background: none;
 }
 
-/* feedback line by line */
-/* .h5p-parsons-puzzle .h5p-drag-dropped.h5p-drag-draggable-wrong:hover {
-  
-} */
-
 /* Show solution container */
 .h5p-parsons-puzzle .h5p-drag-show-solution-container {
   position: relative;
@@ -186,7 +181,8 @@
 }
 
 .h5p-parsons-puzzle .h5p-drag-show-solution-container.incorrect {
-  color: #255c41;
+  /* color: #255c41; */
+  color:pink;
   font-weight: bold;
   border: 1px #255c41 dashed;
   background-color: #d4f6e6;
