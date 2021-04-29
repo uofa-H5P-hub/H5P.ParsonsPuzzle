@@ -371,6 +371,9 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
       //Show Feedback button
       self.addButton('show-feedback', self.params.showFeedback, function () {
+          /* self.droppables.forEach(function (droppable) {
+              droppable.showFeedback();
+          }); */
           self.droppables.forEach(function (droppable) {
               droppable.showFeedback();
           });

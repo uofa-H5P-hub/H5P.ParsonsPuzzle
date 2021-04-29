@@ -27,11 +27,11 @@
 .h5p-parsons-puzzle .h5p-drag-retry-button:before {
   content: "\f021";
 }
-.h5p-parsons-puzzle .h5p-drag-show-solution-button:before {
-  content: "\f06e";
-}
 .h5p-parsons-puzzle .h5p-drag-show-feedback-button:before {
   content: "\f0eb";
+}
+.h5p-parsons-puzzle .h5p-drag-show-solution-button:before {
+  content: "\f06e";
 }
 
 /* Buttons starting state: */
@@ -41,10 +41,10 @@
 .h5p-parsons-puzzle .h5p-drag-retry-button {
   display: none;
 }
-.h5p-parsons-puzzle .h5p-drag-show-solution-button {
+.h5p-parsons-puzzle .h5p-drag-show-feedback-button {
   display: none;
 }
-.h5p-parsons-puzzle .h5p-drag-show-feedback-button {
+.h5p-parsons-puzzle .h5p-drag-show-solution-button {
   display: none;
 }
 

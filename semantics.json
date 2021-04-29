@@ -169,7 +169,7 @@
     "importance": "low",
     "name": "showFeedback",
     "type": "text",
-    "default": "Get hints",
+    "default": "Get hints!",
     "common": true
   },
   {

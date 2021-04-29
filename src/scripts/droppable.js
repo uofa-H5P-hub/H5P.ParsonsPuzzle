@@ -91,7 +91,7 @@ H5P.TextDroppable = (function ($) {
   /**
     * Displays the feedback next to the drop box if it is not correct.
    */
-   Droppable.prototype.showFeedback = function () {
+  Droppable.prototype.showFeedback = function () {
     const correct = this.isCorrect();
     if (!correct) {
         this.$showFeedback.html(this.solution.htmlIndent());
@@ -108,7 +108,7 @@ H5P.TextDroppable = (function ($) {
   /**
    * Displays the solution next to the drop box if it is not correct.
    */
-   Droppable.prototype.showSolution = function () {
+  Droppable.prototype.showSolution = function () {
     const correct = this.isCorrect();
     if (!correct) {
       this.$showSolution.html(this.solution.htmlIndent());
