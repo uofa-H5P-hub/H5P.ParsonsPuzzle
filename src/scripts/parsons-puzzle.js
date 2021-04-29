@@ -379,6 +379,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
           self.$draggables.css('display','none');
           self.removeAllDroppablesFromControls();
           self.hideButton('show-feedback');
+          self.hideAllSolutions();
       }, self.initShowShowFeedbackButton || false, {
           'aria-label': self.params.a11yShowFeedback,
       });
@@ -393,6 +394,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       self.$draggables.css('display','none');
       self.removeAllDroppablesFromControls();
       self.hideButton('show-solution');
+      self.hideAllFeedback();
     }, self.initShowShowSolutionButton || false, {
       'aria-label': self.params.a11yShowSolution,
     });
