@@ -1202,6 +1202,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.hideButton('show-solution');
     this.hideButton('check-answer');
 
+    self.hideAllFeedback();
     this.trigger('resize');
   };
 
@@ -1224,6 +1225,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
          this.hideButton('show-solution');
          this.hideButton('check-answer');
 
+         self.hideAllSolutions();
          this.trigger('resize');
      };
 

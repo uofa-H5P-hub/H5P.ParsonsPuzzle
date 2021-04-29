@@ -70,12 +70,12 @@ H5P.TextDroppable = (function ($) {
       'class': 'correct-answer'
     });
 
+    self.$showFeedback = $('<div/>', {
+      'class': SHOW_FEEDBACK_CONTAINER
+    }).appendTo(self.$dropzoneContainer).hide();
+    
     self.$showSolution = $('<div/>', {
       'class': SHOW_SOLUTION_CONTAINER
-    }).appendTo(self.$dropzoneContainer).hide();
-
-    self.$showFeedback = $('<div/>', {
-        'class': SHOW_FEEDBACK_CONTAINER
     }).appendTo(self.$dropzoneContainer).hide();
   }
 
