@@ -672,6 +672,16 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.trigger('resize');
   };
 
+  /**
+   * Hides feedback text for all dropzones.
+   */
+   ParsonsPuzzle.prototype.hideAllFeedback = function () {
+    this.droppables.forEach(function (droppable) {
+      droppable.hideFeedback();
+    });
+    this.trigger('resize');
+  };
+
   ParsonsPuzzle.prototype.hideDraggables = function() {
     this.$draggables.css('display', 'none');
     this.trigger('resize');
@@ -1242,6 +1252,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       self.showButton('check-answer');
     }
     self.hideAllSolutions();
+    self.hideAllFeedback();
     this.trigger('resize');
   };
 
