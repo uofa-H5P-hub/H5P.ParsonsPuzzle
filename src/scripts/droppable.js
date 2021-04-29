@@ -88,6 +88,22 @@ H5P.TextDroppable = (function ($) {
       }
     }, 0);
   };
+  /**
+    * Displays the feedback next to the drop box if it is not correct.
+   */
+   Droppable.prototype.showFeedback = function () {
+    const correct = this.isCorrect();
+    if (!correct) {
+        this.$showFeedback.html(this.solution.htmlIndent());
+        this.$dropzone.css('padding-left', 0);
+        this.$showFeedback.css('padding-left', 0);
+        this.$showFeedback.css('margin-left', 0);
+    }
+
+    this.$showFeedback.prepend(correct ? this.$correctText : this.$incorrectText);
+    this.$showFeedback.toggleClass('incorrect', !correct);
+    this.$showFeedback.show();
+  };
 
   /**
    * Displays the solution next to the drop box if it is not correct.
@@ -105,38 +121,20 @@ H5P.TextDroppable = (function ($) {
     this.$showSolution.toggleClass('incorrect', !correct);
     this.$showSolution.show();
   };
-
   /**
-    * Displays the feedback next to the drop box if it is not correct.
+   * Hides the feedback.
    */
-    Droppable.prototype.showFeedback = function () {
-        const correct = this.isCorrect();
-        if (!correct) {
-            this.$showFeedback.html(this.solution.htmlIndent());
-            this.$dropzone.css('padding-left', 0);
-            this.$showFeedback.css('padding-left', 0);
-            this.$showFeedback.css('margin-left', 0);
-        }
-
-        this.$showFeedback.prepend(correct ? this.$correctText : this.$incorrectText);
-        this.$showFeedback.toggleClass('incorrect', !correct);
-        this.$showFeedback.show();
-    };
-
+   Droppable.prototype.hideFeedback = function () {
+    this.$showFeedback.html('');
+    this.$showFeedback.hide();
+  };
+  
   /**
    * Hides the solution.
    */
    Droppable.prototype.hideSolution = function () {
     this.$showSolution.html('');
     this.$showSolution.hide();
-  };
-
-  /**
-   * Hides the feedback.
-   */
-  Droppable.prototype.hideFeedback = function () {
-     this.$showFeedback.html('');
-     this.$showFeedback.hide();
   };
 
   /**
