@@ -63,7 +63,7 @@
   right: 0.5em;
   font-family: 'H5PFontAwesome4';
   content: "\f00c";
-  color: #255c41;
+  color: #255c41; 
 }
 
 .h5p-parsons-puzzle .h5p-drag-wrong-feedback:before {
@@ -173,7 +173,8 @@
 .h5p-parsons-puzzle .h5p-drag-dropped.h5p-drag-draggable-wrong {
   padding: 0;
   border: none;
-  color: #b71c1c;
+  color: #9c96e9;
+  /* color: #b71c1c; */
   box-shadow: none;
   line-height: 1.5;
   background: none;
