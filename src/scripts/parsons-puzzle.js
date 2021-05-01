@@ -59,7 +59,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var wrong_order = false;
   var line_missing = false;
   var line_too_many = false;
-  var emptylines;
+  var emptylines = 0;
   /**
    * Initialize module.
    *
@@ -378,11 +378,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Show Feedback button
     self.addButton('show-feedback', self.params.showFeedback, function () {
-      var lines_num = self.droppables.length - emptylines;
-      if (lines_num > save_ret.solutions.length) {
+
+      if (self.droppables.length > save_ret.solutions.length) {
         line_too_many = true;
         error.push("Your program has too many code fragments." + "</br>");
-      } else if (lines_num < save_ret.solutions.length) {
+      } else if (self.droppables.length < save_ret.solutions.length) {
         line_missing = true;
         error.push("Your program has too few code fragments." + "</br>");
       }
@@ -630,7 +630,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         }
       }
 
-      if (droppable.text == null) {
+      if (droppable.containedDraggable == null) {
         emptylines++;
       }
 
