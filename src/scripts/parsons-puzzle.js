@@ -444,6 +444,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       error = ["Feedback:"];
       error.push("<br/>");
       error_no = 1;
+      totallines = 0;
       this.$showFeedback.html('');
       this.$showFeedback.hide();
       this.trigger('resize');
@@ -782,7 +783,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     });
 
     self.shuffleAndAddDraggables(self.$draggables);
-    self.$showFeedback.appendTo(self.$wordContainer).hide();
+    self.$showFeedback.appendTo(self.$wordContainer).hide(); 
     self.$draggables.appendTo(self.$taskContainer);
     self.$wordContainer.appendTo(self.$taskContainer);
     self.$taskContainer.appendTo($container);
