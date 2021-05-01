@@ -57,11 +57,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var save_ret;
   var error = [];
   error.push("Feedback:" + "<br/>");
+  var error_no = 1;
   var wrong_order = false;
   var line_missing = false;
   var line_too_many = false;
-  var emptylines = 0;
-  var lines_num = 0;
+  var totallines = 0;
   /**
    * Initialize module.
    *
@@ -380,15 +380,20 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Show Feedback button
     self.addButton('show-feedback', self.params.showFeedback, function () {
-      lines_num = self.droppables.length - emptylines;
-
-      if (lines_num > save_ret.solutions.length) {
+            
+      // feedback for lines too much
+      if (totallines > save_ret.solutions.length) {
         line_too_many = true;
-        error.push("Your program has too many code fragments." + "</br>");
-      } else if (lines_num < save_ret.solutions.length) {
+        error.push(error_no + ". " + self.params.linesTooMany + "</br>");
+        error_no ++;      
+      } 
+      // feedback for lines missing
+      else if (totallines < save_ret.solutions.length) {
         line_missing = true;
-        error.push("Your program has too few code fragments." + "</br>");
+        error.push(error_no + ". " + self.params.linesMissing + "</br>");
+        error_no ++;
       }
+
       self.showFeedback();
 
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
@@ -421,7 +426,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       self.stopWatch.reset();
       self.resetTask();
       self.$draggables.css('display', 'inline');
-
     });
   };
 
@@ -437,7 +441,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   };
 
   ParsonsPuzzle.prototype.hideFeedback = function () {
-      error = [];
+      error = ["Feedback:"];
+      error.push("<br/>");
+      error_no = 1;
       this.$showFeedback.html('');
       this.$showFeedback.hide();
       this.trigger('resize');
@@ -623,10 +629,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         }
       }
 
-      if (droppable.containedDraggable == null) {
-        emptylines++;
+      if (droppable.containedDraggable != null) {
+        totallines++;
       }
-
     });
 
     if (explanations.length !== 0) {
