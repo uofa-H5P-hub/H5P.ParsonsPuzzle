@@ -53,7 +53,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var DRAGGABLES_CONTAINER = "h5p-drag-draggables-container";
   var CODE_LINE = "h5p-drag-code";
 
-  const save_ret;
+  var save_ret;
   /**
    * Initialize module.
    *
@@ -372,23 +372,28 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
       //Show Feedback button
       self.addButton('show-feedback', self.params.showFeedback, function () {
-          /* self.droppables.forEach(function (droppable) {
+          self.droppables.forEach(function (droppable) {
               droppable.showFeedback();
-          }); */          
+          });   
+          if (self.droppables.length == save_ret.solutions.length) {
+            self.droppables.forEach(function (droppable) {
+              droppable.showFeedback();
+            }
+          } else if (self.droppables.length > save_ret.solutions.length) {
+            self.droppables.forEach(function (droppable) {
+              droppable.showFeedback();
+            }
+          } else {
+            self.droppables.forEach(function (droppable) {
+              droppable.showFeedback();
+            }
+          }   
           self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
           self.disableDraggables();
           self.$draggables.css('display','none');
           self.removeAllDroppablesFromControls();
           self.hideButton('show-feedback');
           self.hideAllSolutions();
-
-          if (self.droppables.length == save_ret.solutions.length) {
-            return self.params.order;
-          } else if (self.droppables.length > save_ret.solutions.length) {
-            return self.params.linesTooMany;
-          } else {
-            return self.params.linesMissing;
-          }
       }, self.initShowShowFeedbackButton || false, {
           'aria-label': self.params.a11yShowFeedback,
       });

@@ -94,14 +94,14 @@ H5P.TextDroppable = (function ($) {
   Droppable.prototype.showFeedback = function () {
     const correct = this.isCorrect();
     if (!correct) {
-        this.$showFeedback.html(this.solution.htmlIndent());
+        this.$showFeedback.html(self.params.linesTooMany);
         this.$dropzone.css('padding-left', 0);
         this.$showFeedback.css('padding-left', 0);
         this.$showFeedback.css('margin-left', 0);
     }
 
     this.$showFeedback.prepend(correct ? this.$correctText : this.$incorrectText);
-    this.$showFeedback.toggleClass('incorrect', !correct);
+    this.$showFeedback.toggleClass('incorrect', !correct); 
     this.$showFeedback.show();
   };
 
