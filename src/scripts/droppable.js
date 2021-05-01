@@ -25,7 +25,7 @@ H5P.TextDroppable = (function ($) {
    * @param {number} index.
    * @param {Object} params Behavior settings
    */
-   function Droppable(solution, tip, dropzone, dropzoneContainer, index, params) {
+  function Droppable(solution, tip, dropzone, dropzoneContainer, index, params) {
     var self = this;
     self.text = solution.code;
     self.solution = solution;

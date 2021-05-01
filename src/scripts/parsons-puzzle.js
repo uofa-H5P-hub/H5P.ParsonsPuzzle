@@ -44,7 +44,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
  * Parsons Puzzle module
  * @external {jQuery} $ H5P.jQuery
  */
- H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
+H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   //CSS Main Containers:
   var INNER_CONTAINER = "h5p-drag-inner";
   var TASK_CONTAINER = "h5p-drag-task";
@@ -53,6 +53,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   var DRAGGABLES_CONTAINER = "h5p-drag-draggables-container";
   var CODE_LINE = "h5p-drag-code";
 
+  const save_ret;
   /**
    * Initialize module.
    *
@@ -373,16 +374,21 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       self.addButton('show-feedback', self.params.showFeedback, function () {
           /* self.droppables.forEach(function (droppable) {
               droppable.showFeedback();
-          }); */
-          self.droppables.forEach(function (droppable) {
-              droppable.showFeedback();
-          });
+          }); */          
           self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
           self.disableDraggables();
           self.$draggables.css('display','none');
           self.removeAllDroppablesFromControls();
           self.hideButton('show-feedback');
           self.hideAllSolutions();
+
+          if (self.droppables.length == save_ret.solutions.length) {
+            return self.params.order;
+          } else if (self.droppables.length > save_ret.solutions.length) {
+            return self.params.linesTooMany;
+          } else {
+            return self.params.linesMissing;
+          }
       }, self.initShowShowFeedbackButton || false, {
           'aria-label': self.params.a11yShowFeedback,
       });
@@ -717,6 +723,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     const parser = new CodeParser(2);
     const ret = parser.parse(self.codeBlock, self.indentationSpacing);
+    save_ret = ret;
 
     ret.codeLines.forEach(function (codeLine) {
       const draggable = self.createDraggable(codeLine);
