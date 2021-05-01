@@ -51,6 +51,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var WORDS_CONTAINER = "h5p-drag-droppable-words";
   var DROPZONE_CONTAINER = "h5p-drag-dropzone-container";
   var DRAGGABLES_CONTAINER = "h5p-drag-draggables-container";
+  var SHOW_FEEDBACK_CONTAINER = "h5p-drag-show-feedback-container";
   var CODE_LINE = "h5p-drag-code";
 
   var save_ret;
@@ -373,17 +374,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       //Show Feedback button
       self.addButton('show-feedback', self.params.showFeedback, function () {
           if (self.droppables.length == save_ret.solutions.length) {
-            self.droppables.forEach(function (droppable) {
-              droppable.showFeedback();
-            });
+            
           } else if (self.droppables.length > save_ret.solutions.length) {
-            self.droppables.forEach(function (droppable) {
-              droppable.showFeedback();
-            });
+            
           } else {
-            self.droppables.forEach(function (droppable) {
-              droppable.showFeedback();
-            });
+            
           } 
           self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
           self.disableDraggables();
@@ -417,6 +412,20 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       self.$draggables.css('display','inline');
 
     });
+  };
+
+  ParsonsPuzzle.prototype.showFeedback = function () {
+    const correct = this.isCorrect();
+    if (!correct) {
+        this.$showFeedback.html("Your program has too few code fragments.");
+        this.$dropzone.css('padding-left', 0);
+        this.$showFeedback.css('padding-left', 0);
+        this.$showFeedback.css('margin-left', 0);
+    }
+
+    this.$showFeedback.prepend(correct ? this.$correctText : this.$incorrectText);
+    this.$showFeedback.toggleClass('incorrect', !correct); 
+    this.$showFeedback.show();
   };
 
   /**
@@ -721,6 +730,10 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     self.$wordContainer = $('<div/>', {
       'class': WORDS_CONTAINER
+    });
+
+    self.$showFeedback = $('<div/>', {
+      'class': SHOW_FEEDBACK_CONTAINER
     });
 
     const parser = new CodeParser(2);
