@@ -59,6 +59,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var wrong_order = false;
   var line_missing = false;
   var line_too_many = false;
+  var emptylines;
   /**
    * Initialize module.
    *
@@ -70,14 +71,14 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Object} DragText Drag Text instance
    */
-   function ParsonsPuzzle(params, contentId, contentData) {
+  function ParsonsPuzzle(params, contentId, contentData) {
     this.$ = $(this);
     this.contentId = contentId;
 
     Question.call(this, 'parsons-puzzle');
 
     // Set default behavior.
-    this.params = $.extend(true, {codeBlock: ""}, params);
+    this.params = $.extend(true, { codeBlock: "" }, params);
 
     this.contentData = contentData;
     if (this.contentData !== undefined && this.contentData.previousState !== undefined && this.contentData.previousState.length !== undefined) {
@@ -106,7 +107,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     /**
      * @type {HTMLElement} selectedElement
      */
-     this.selectedElement = undefined;
+    this.selectedElement = undefined;
 
     // Init keyboard navigation
     this.ariaDragControls = new AriaDrag();
@@ -131,7 +132,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.on('start', this.addAllDroppablesToControls, this);
     this.on('revert', this.removeControlsFromEmptyDropZones, this);
     this.on('stop', event => {
-      if(!event.data.target) {
+      if (!event.data.target) {
         this.removeControlsFromDropZonesIfAllEmpty();
       }
     }, this);
@@ -162,12 +163,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.on('drop', this.ariaDropControls.setAllToNone, this.ariaDropControls);
 
     // on drop remove element from drag controls
-    this.on('drop', function(event) {
+    this.on('drop', function (event) {
       this.dragControls.removeElement(event.data.element);
     }, this);
 
     // on revert, re add element to drag controls
-    this.on('revert', function(event) {
+    this.on('revert', function (event) {
       this.dragControls.insertElementAt(event.data.element, 0);
     }, this);
 
@@ -187,7 +188,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     // Indicate operations trough read speaker
     this.on('stop', event => {
-      if(!event.data.target) {
+      if (!event.data.target) {
         this.read(this.params.cancelledDragging);
       }
     });
@@ -206,7 +207,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @param event
    */
-   ParsonsPuzzle.prototype.updateDroppableElement = function(event) {
+  ParsonsPuzzle.prototype.updateDroppableElement = function (event) {
     const dropZone = event.data.target;
     const draggable = event.data.element;
     const droppable = this.getDroppableByElement(dropZone);
@@ -219,7 +220,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Remove controls from dropzones if all is empty
    */
-   ParsonsPuzzle.prototype.removeControlsFromDropZonesIfAllEmpty = function() {
+  ParsonsPuzzle.prototype.removeControlsFromDropZonesIfAllEmpty = function () {
     if (!this.anyDropZoneHasDraggable()) {
       this.removeAllDroppablesFromControls();
     }
@@ -228,43 +229,43 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Remove controls from dropzones without draggables
    */
-   ParsonsPuzzle.prototype.removeControlsFromEmptyDropZones = function() {
+  ParsonsPuzzle.prototype.removeControlsFromEmptyDropZones = function () {
     this.droppables
-    .filter(droppable => !droppable.hasDraggable())
-    .map(droppable => droppable.getElement())
-    .forEach(el => {
-      this.dropControls.removeElement(el);
-    });
+      .filter(droppable => !droppable.hasDraggable())
+      .map(droppable => droppable.getElement())
+      .forEach(el => {
+        this.dropControls.removeElement(el);
+      });
   };
 
   /**
    * Add all drop zones to drop keyboard controls
    */
-   ParsonsPuzzle.prototype.addAllDroppablesToControls = function() {
+  ParsonsPuzzle.prototype.addAllDroppablesToControls = function () {
     // to have a clean start, remove all first
-    if(this.dropControls.count() > 0){
+    if (this.dropControls.count() > 0) {
       this.removeAllDroppablesFromControls();
     }
 
     // add droppables in correct order
     this.droppables
-    .map(droppable => droppable.getElement())
-    .forEach(el => this.dropControls.addElement(el));
+      .map(droppable => droppable.getElement())
+      .forEach(el => this.dropControls.addElement(el));
   };
 
   /**
    * Remove all drop zones from drop keyboard controls
    */
-  ParsonsPuzzle.prototype.removeAllDroppablesFromControls = function() {
+  ParsonsPuzzle.prototype.removeAllDroppablesFromControls = function () {
     this.droppables
-    .map(droppable => droppable.getElement())
-    .forEach(el => this.dropControls.removeElement(el));
+      .map(droppable => droppable.getElement())
+      .forEach(el => this.dropControls.removeElement(el));
   };
 
   /**
    * Remove all drop zones from drop keyboard controls
    */
-  ParsonsPuzzle.prototype.anyDropZoneHasDraggable = function() {
+  ParsonsPuzzle.prototype.anyDropZoneHasDraggable = function () {
     return this.droppables.some(droppable => droppable.hasDraggable());
   };
 
@@ -275,7 +276,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * @param {string} text
    * @param {number} index
    */
-   ParsonsPuzzle.prototype.setDroppableLabel = function(dropZone, text, indent, index) {
+  ParsonsPuzzle.prototype.setDroppableLabel = function (dropZone, text, indent, index) {
     const indexText = this.params.dropZoneIndex.replace('@index', index.toString());
     const correctFeedback = dropZone.classList.contains('h5p-drag-correct-feedback');
     const inCorrectFeedback = dropZone.classList.contains('h5p-drag-wrong-feedback');
@@ -298,7 +299,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         dropZone.setAttribute('aria-label', `${indexText} ${this.params.contains.replace('@index', index.toString()).replace('@draggable', text).replace('@indent', indent)}`);
       }
       else {
-        dropZone.setAttribute('aria-label',  `${indexText} ${this.params.empty.replace('@index', index.toString())}`);
+        dropZone.setAttribute('aria-label', `${indexText} ${this.params.empty.replace('@index', index.toString())}`);
       }
     }
   };
@@ -358,7 +359,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
             self.showButton('show-feedback');
           }
           if (self.params.behaviour.enableSolutionsButton) {
-              self.showButton('show-solution');
+            self.showButton('show-solution');
           }
           self.hideButton('check-answer');
           self.disableDraggables();
@@ -375,27 +376,27 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       });
     }
 
-      //Show Feedback button
-      self.addButton('show-feedback', self.params.showFeedback, function () {
+    //Show Feedback button
+    self.addButton('show-feedback', self.params.showFeedback, function () {
+      var lines_num = self.droppables.length - emptylines;
+      if (lines_num > save_ret.solutions.length) {
+        line_too_many = true;
+        error.push("Your program has too many code fragments." + "</br>");
+      } else if (lines_num < save_ret.solutions.length) {
+        line_missing = true;
+        error.push("Your program has too few code fragments." + "</br>");
+      }
+      self.showFeedback();
 
-          if (self.droppables.length > save_ret.solutions.length) {
-            line_too_many = true;
-            error.push("Your program has too many code fragments."+ "</br>");
-          } else if (self.droppables.length < save_ret.solutions.length){
-            line_missing = true;
-            error.push("Your program has too few code fragments."+ "</br>");
-          } 
-          self.showFeedback();
-
-          self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
-          self.disableDraggables();
-          self.$draggables.css('display','none');
-          self.removeAllDroppablesFromControls();
-          self.hideButton('show-feedback');
-          self.hideAllSolutions();
-      }, self.initShowShowFeedbackButton || false, {
-          'aria-label': self.params.a11yShowFeedback,
-      });
+      self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
+      self.disableDraggables();
+      self.$draggables.css('display', 'none');
+      self.removeAllDroppablesFromControls();
+      self.hideButton('show-feedback');
+      self.hideAllSolutions();
+    }, self.initShowShowFeedbackButton || false, {
+      'aria-label': self.params.a11yShowFeedback,
+    });
 
     //Show Solution button
     self.addButton('show-solution', self.params.showSolution, function () {
@@ -404,7 +405,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       });
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
       self.disableDraggables();
-      self.$draggables.css('display','none');
+      self.$draggables.css('display', 'none');
       self.removeAllDroppablesFromControls();
       self.hideButton('show-solution');
       self.hideAllFeedback();
@@ -416,7 +417,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     self.addButton('try-again', self.params.tryAgain, function () {
       self.stopWatch.reset();
       self.resetTask();
-      self.$draggables.css('display','inline');
+      self.$draggables.css('display', 'inline');
 
     });
   };
@@ -440,11 +441,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     }*/
     if (line_missing) {
       self.$showFeedback.html("sssss");
-    } else{
-      self.$showFeedback.html(self.droppables.length + " " + save_ret.solutions.length);
+    } else {
+      self.$showFeedback.html(lines_num + " " + save_ret.solutions.length);
     }
-    
-    self.$showFeedback.toggleClass('incorrect'); 
+
+    self.$showFeedback.toggleClass('incorrect');
     self.$showFeedback.show();
   };
 
@@ -452,7 +453,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * Removes keyboard support for all elements left in the draggables
    * list.
    */
-   ParsonsPuzzle.prototype.removeAllElementsFromDragControl = function () {
+  ParsonsPuzzle.prototype.removeAllElementsFromDragControl = function () {
     this.dragControls.elements.forEach(element => this.dragControls.removeElement(element));
   };
 
@@ -463,19 +464,19 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @fires H5P.ParsonsPuzzle#start
    */
-   ParsonsPuzzle.prototype.keyboardDraggableSelected = function (event) {
+  ParsonsPuzzle.prototype.keyboardDraggableSelected = function (event) {
     var tmp = this.selectedElement;
     var hasSelectedElement = this.selectedElement !== undefined;
-    var isSelectedElement = this.selectedElement ===  event.element;
+    var isSelectedElement = this.selectedElement === event.element;
 
     // un select the selected
-    if(hasSelectedElement){
+    if (hasSelectedElement) {
       this.selectedElement = undefined;
       this.trigger('stop', { element: tmp });
     }
 
     // no previous selected or not the selected one
-    if((!hasSelectedElement || !isSelectedElement) && !this.isElementDisabled(event.element)) {
+    if ((!hasSelectedElement || !isSelectedElement) && !this.isElementDisabled(event.element)) {
       this.selectedElement = event.element;
       this.trigger('start', { element: event.element });
       this.focusOnFirstEmptyDropZone();
@@ -485,9 +486,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Focuses on the first empty drop zone
    */
-   ParsonsPuzzle.prototype.focusOnFirstEmptyDropZone = function() {
+  ParsonsPuzzle.prototype.focusOnFirstEmptyDropZone = function () {
     const dropZone = this.droppables
-    .filter(droppable => !droppable.hasDraggable())[0];
+      .filter(droppable => !droppable.hasDraggable())[0];
     const element = dropZone.getElement();
 
     this.dropControls.setTabbable(element);
@@ -501,7 +502,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @return {boolean}
    */
-   ParsonsPuzzle.prototype.isElementDisabled = function (element) {
+  ParsonsPuzzle.prototype.isElementDisabled = function (element) {
     return element.getAttribute('aria-disabled') === 'true';
   };
 
@@ -524,7 +525,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @param {ControlsEvent} event
    */
-   ParsonsPuzzle.prototype.keyboardDroppableSelected = function (event) {
+  ParsonsPuzzle.prototype.keyboardDroppableSelected = function (event) {
     var self = this;
 
     var droppableElement = event.element;
@@ -535,7 +536,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     var isShowingFeedback = !this.params.behaviour.instantFeedback && droppable.hasFeedback();
 
     // if something selected
-    if(draggable && droppable && !isCorrectInstantFeedback) {
+    if (draggable && droppable && !isCorrectInstantFeedback) {
       var tmp = self.selectedElement;
       // initiate drop
       self.drop(draggable, droppable);
@@ -548,7 +549,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         target: droppable.getElement()
       });
     }
-    else if(droppable && droppable.hasDraggable() && !isShowingFeedback && !isCorrectInstantFeedback) {
+    else if (droppable && droppable.hasDraggable() && !isShowingFeedback && !isCorrectInstantFeedback) {
       var containsDropped = droppableElement.querySelector('[aria-grabbed]');
 
       this.createConfirmResetDialog(function () {
@@ -560,7 +561,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Initialize draggables
    */
-   ParsonsPuzzle.prototype.toggleDraggablesContainer = function () {
+  ParsonsPuzzle.prototype.toggleDraggablesContainer = function () {
     var isEmpty = this.$draggables.children().length === 0;
     this.$draggables.toggleClass('hide', isEmpty);
   };
@@ -573,7 +574,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {ConfirmationDialog}
    */
-   ParsonsPuzzle.prototype.createConfirmResetDialog = function (callback, scope) {
+  ParsonsPuzzle.prototype.createConfirmResetDialog = function (callback, scope) {
     var self = this;
     var dialog = new ConfirmationDialog({
       headerText: self.params.resetDropTitle,
@@ -589,7 +590,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Shows feedback for dropzones.
    */
-   ParsonsPuzzle.prototype.showDropzoneFeedback = function () {
+  ParsonsPuzzle.prototype.showDropzoneFeedback = function () {
     this.droppables.forEach(droppable => {
       droppable.addFeedback();
       const draggable = droppable.containedDraggable;
@@ -605,7 +606,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * Generates data that is used to render the explanation container
    * at the bottom of the content type
    */
-   ParsonsPuzzle.prototype.showExplanation = function () {
+  ParsonsPuzzle.prototype.showExplanation = function () {
     const self = this;
     let explanations = [];
 
@@ -628,7 +629,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           });
         }
       }
-      
+
+      if (droppable.text == null) {
+        emptylines++;
+      }
+
     });
 
     if (explanations.length !== 0) {
@@ -643,7 +648,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Boolean} Returns true if maxScore was achieved.
    */
-   ParsonsPuzzle.prototype.showEvaluation = function (skipXapi) {
+  ParsonsPuzzle.prototype.showEvaluation = function (skipXapi) {
     this.hideEvaluation();
     this.showDropzoneFeedback();
     this.showExplanation();
@@ -659,8 +664,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     }
 
     var scoreText = H5P.Question.determineOverallFeedback(this.params.overallFeedback, score / maxScore)
-    .replace(/@score/g, score.toString())
-    .replace(/@total/g, maxScore.toString());
+      .replace(/@score/g, score.toString())
+      .replace(/@total/g, maxScore.toString());
 
     if (score === maxScore) {
       //Hide buttons and disable task
@@ -683,7 +688,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {number}
    */
-   ParsonsPuzzle.prototype.calculateScore = function () {
+  ParsonsPuzzle.prototype.calculateScore = function () {
     return this.droppables.reduce(function (sum, entry) {
       return sum + (entry.isCorrect() ? 1 : 0);
     }, 0);
@@ -692,7 +697,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Clear the evaluation text.
    */
-   ParsonsPuzzle.prototype.hideEvaluation = function () {
+  ParsonsPuzzle.prototype.hideEvaluation = function () {
     this.removeFeedback();
     this.trigger('resize');
   };
@@ -700,7 +705,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Remove the explanation container
    */
-   ParsonsPuzzle.prototype.hideExplanation = function () {
+  ParsonsPuzzle.prototype.hideExplanation = function () {
     this.setExplanation();
     this.trigger('resize');
   };
@@ -708,7 +713,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Hides solution text for all dropzones.
    */
-   ParsonsPuzzle.prototype.hideAllSolutions = function () {
+  ParsonsPuzzle.prototype.hideAllSolutions = function () {
     this.droppables.forEach(function (droppable) {
       droppable.hideSolution();
     });
@@ -718,14 +723,14 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Hides feedback text for all dropzones.
    */
-   ParsonsPuzzle.prototype.hideAllFeedback = function () {
+  ParsonsPuzzle.prototype.hideAllFeedback = function () {
     this.droppables.forEach(function (droppable) {
       droppable.hideFeedback();
     });
     this.trigger('resize');
   };
 
-  ParsonsPuzzle.prototype.hideDraggables = function() {
+  ParsonsPuzzle.prototype.hideDraggables = function () {
     this.$draggables.css('display', 'none');
     this.trigger('resize');
   }
@@ -735,7 +740,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @param {jQuery} $container The object which our task will attach to.
    */
-   ParsonsPuzzle.prototype.addTaskTo = function ($container) {
+  ParsonsPuzzle.prototype.addTaskTo = function ($container) {
     var self = this;
     self.widestDraggable = 0;
     self.droppables = [];
@@ -763,13 +768,13 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     ret.codeLines.forEach(function (codeLine) {
       const draggable = self.createDraggable(codeLine);
-      if( !codeLine.distractor) {
+      if (!codeLine.distractor) {
         const solution = ret.solutions[codeLine.lineNo];
         const droppable = self.createDroppable(solution, solution.tip);
 
         // trigger instant feedback
         if (self.params.behaviour.instantFeedback) {
-          draggable.getDraggableElement().on('dragstop', function() {
+          draggable.getDraggableElement().on('dragstop', function () {
             droppable.addFeedback();
             self.instantFeedbackEvaluation();
           });
@@ -782,7 +787,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     self.$showFeedback.appendTo(self.$wordContainer).hide();
     self.$draggables.appendTo(self.$taskContainer);
     self.$wordContainer.appendTo(self.$taskContainer);
-    self.$taskContainer.appendTo($container);   
+    self.$taskContainer.appendTo($container);
     self.addDropzoneWidth();
   };
 
@@ -813,11 +818,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Adjust all droppables to widest field and draggables to widest draggable.
     self.droppables.forEach(function (droppable) {
-      droppable.getDropzone().css('width', self.widestField+'ch');
+      droppable.getDropzone().css('width', self.widestField + 'ch');
     });
 
     self.draggables.forEach(function (draggable) {
-      draggable.getDraggableElement().css('width', self.widestDraggable+'ch');
+      draggable.getDraggableElement().css('width', self.widestDraggable + 'ch');
     });
 
   };
@@ -829,7 +834,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDraggable}
    */
-   ParsonsPuzzle.prototype.createDraggable = function (codeLine) {
+  ParsonsPuzzle.prototype.createDraggable = function (codeLine) {
     var self = this;
     var answer = codeLine.code;
 
@@ -840,7 +845,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       'aria-grabbed': 'false',
       tabindex: '-1'
     }).draggable({
-      revert: function(isValidDrop) {
+      revert: function (isValidDrop) {
         if (!isValidDrop) {
           self.revert(draggable);
         }
@@ -891,21 +896,21 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     var $dropzone = $('<div/>', {
       'aria-dropeffect': 'none',
-      'aria-label':  this.params.dropZoneIndex.replace('@index', draggableIndex.toString()) + ' ' + this.params.empty.replace('@index', draggableIndex.toString()),
+      'aria-label': this.params.dropZoneIndex.replace('@index', draggableIndex.toString()) + ' ' + this.params.empty.replace('@index', draggableIndex.toString()),
       'tabindex': '-1'
     }).appendTo($dropzoneContainer)
-    .droppable({
-      tolerance: 'pointer',
-      drop: function (event, ui) {
-        var draggable = self.getDraggableByElement(ui.draggable[0]);
-        var droppable = self.getDroppableByElement(event.target);
+      .droppable({
+        tolerance: 'pointer',
+        drop: function (event, ui) {
+          var draggable = self.getDraggableByElement(ui.draggable[0]);
+          var droppable = self.getDroppableByElement(event.target);
 
           /**
            * Note that drop will run for all initialized dropzones globally.
            * Thus if no matching draggable or droppable is found
            * for this dropzone we must skip it.
            */
-           if (!draggable || !droppable) {
+          if (!draggable || !droppable) {
             return;
           }
           self.drop(draggable, droppable);
@@ -930,7 +935,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * @function
    * @returns {boolean}
    */
-   ParsonsPuzzle.prototype.propagateDragEvent = Util.curry(function(eventName, self, event) {
+  ParsonsPuzzle.prototype.propagateDragEvent = Util.curry(function (eventName, self, event) {
     self.trigger(eventName, {
       element: event.target
     });
@@ -944,12 +949,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * @fires H5P.ParsonsPuzzle#revert
    * @fires Question#resize
    */
-   ParsonsPuzzle.prototype.revert = function (draggable) {
+  ParsonsPuzzle.prototype.revert = function (draggable) {
     var droppable = draggable.removeFromZone();
     var target = droppable ? droppable.getElement() : undefined;
 
     draggable.revertDraggableTo(this.$draggables);
-    draggable.getDraggableElement().css('width', this.widestDraggable+'ch');
+    draggable.getDraggableElement().css('width', this.widestDraggable + 'ch');
 
     this.setDraggableAriaLabel(draggable);
 
@@ -967,7 +972,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * @fires H5P.ParsonsPuzzle#drop
    * @fires Question#resize
    */
-   ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
+  ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
     var self = this;
     self.answered = true;
 
@@ -980,7 +985,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       var revertedDraggable = droppable.appendInsideDroppableTo(this.$draggables);
 
       // trigger revert, if revert was performed
-      if(revertedDraggable){
+      if (revertedDraggable) {
         self.trigger('revert', {
           element: revertedDraggable.getElement(),
           target: droppable.getElement()
@@ -994,7 +999,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     draggable.appendDraggableTo(droppable.getDropzone());
 
     // reset left offset as appendDraggableTo sets both left and top to 0
-    draggable.getDraggableElement().offset({'left': offset});
+    draggable.getDraggableElement().offset({ 'left': offset });
 
     droppable.setDraggable(draggable);
 
@@ -1026,12 +1031,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDraggable[]}
    */
-   ParsonsPuzzle.prototype.shuffleAndAddDraggables = function ($container) {
+  ParsonsPuzzle.prototype.shuffleAndAddDraggables = function ($container) {
     return Util.shuffle(this.draggables)
-    .map((draggable, index) => draggable.setIndex(index))
-    .map(draggable => this.addDraggableToContainer($container, draggable))
-    .map(draggable => this.setDraggableAriaLabel(draggable))
-    .map(draggable => this.addDraggableToControls(this.dragControls, draggable));
+      .map((draggable, index) => draggable.setIndex(index))
+      .map(draggable => this.addDraggableToContainer($container, draggable))
+      .map(draggable => this.setDraggableAriaLabel(draggable))
+      .map(draggable => this.addDraggableToControls(this.dragControls, draggable));
   };
 
   /**
@@ -1041,7 +1046,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @return {H5P.TextDraggable}
    */
-   ParsonsPuzzle.prototype.setDraggableAriaLabel = function (draggable) {
+  ParsonsPuzzle.prototype.setDraggableAriaLabel = function (draggable) {
     draggable.updateAriaLabel(this.params.ariaDraggableIndex
       .replace('@index', (draggable.getIndex() + 1).toString())
       .replace('@count', this.draggables.length.toString()));
@@ -1055,7 +1060,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * @param {HTMLElement} element
    * @returns {boolean}
    */
-   ParsonsPuzzle.prototype.isGrabbed = function (element) {
+  ParsonsPuzzle.prototype.isGrabbed = function (element) {
     return element.getAttribute("aria-grabbed") === 'true';
   };
 
@@ -1067,7 +1072,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDraggable}
    */
-   ParsonsPuzzle.prototype.addDraggableToContainer = function ($container, draggable) {
+  ParsonsPuzzle.prototype.addDraggableToContainer = function ($container, draggable) {
     draggable.getDraggableElement().addClass(CODE_LINE);
     draggable.appendDraggableTo($container);
     return draggable;
@@ -1081,7 +1086,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDraggable}
    */
-   ParsonsPuzzle.prototype.addDraggableToControls = function (controls, draggable) {
+  ParsonsPuzzle.prototype.addDraggableToControls = function (controls, draggable) {
     controls.addElement(draggable.getElement());
     return draggable;
   };
@@ -1089,7 +1094,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Feedback function for checking if all fields are filled, and show evaluation if that is the case.
    */
-   ParsonsPuzzle.prototype.instantFeedbackEvaluation = function () {
+  ParsonsPuzzle.prototype.instantFeedbackEvaluation = function () {
     var self = this;
     var allFilled = self.isAllAnswersFilled();
 
@@ -1125,8 +1130,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {boolean} allFilled Returns true if all answers are answered
    */
-   ParsonsPuzzle.prototype.isAllAnswersFilled = function () {
-    return this.draggables.every(function(draggable){
+  ParsonsPuzzle.prototype.isAllAnswersFilled = function () {
+    return this.draggables.every(function (draggable) {
       return draggable.isInsideDropZone();
     });
   };
@@ -1134,7 +1139,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Enables all dropzones and all draggables.
    */
-   ParsonsPuzzle.prototype.enableAllDropzonesAndDraggables = function () {
+  ParsonsPuzzle.prototype.enableAllDropzonesAndDraggables = function () {
     this.enableDraggables();
     this.droppables.forEach(function (droppable) {
       droppable.enableDropzone();
@@ -1144,7 +1149,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Disables all draggables, user will not be able to interact with them any more.
    */
-   ParsonsPuzzle.prototype.disableDraggables = function () {
+  ParsonsPuzzle.prototype.disableDraggables = function () {
     this.draggables.forEach(function (entry) {
       entry.disableDraggable();
     });
@@ -1153,7 +1158,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Enables all draggables, user will be able to interact with them again.
    */
-   ParsonsPuzzle.prototype.enableDraggables = function () {
+  ParsonsPuzzle.prototype.enableDraggables = function () {
     this.draggables.forEach(function (entry) {
       entry.enableDraggable();
     });
@@ -1165,7 +1170,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Boolean} true
    */
-   ParsonsPuzzle.prototype.getAnswerGiven = function () {
+  ParsonsPuzzle.prototype.getAnswerGiven = function () {
     return this.answered;
   };
 
@@ -1175,7 +1180,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Number} The current score.
    */
-   ParsonsPuzzle.prototype.getScore = function () {
+  ParsonsPuzzle.prototype.getScore = function () {
     return this.calculateScore();
   };
 
@@ -1185,7 +1190,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Number} The maximum score.
    */
-   ParsonsPuzzle.prototype.getMaxScore = function () {
+  ParsonsPuzzle.prototype.getMaxScore = function () {
     return this.droppables.length;
   };
 
@@ -1194,14 +1199,14 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {string} title
    */
-   ParsonsPuzzle.prototype.getTitle = function () {
+  ParsonsPuzzle.prototype.getTitle = function () {
     return H5P.createTitle((this.contentData && this.contentData.metadata && this.contentData.metadata.title) ? this.contentData.metadata.title : 'Parsons Puzzle');
   };
 
   /**
    * Toogles the drop effect based on if an element is selected
    */
-   ParsonsPuzzle.prototype.toggleDropEffect = function () {
+  ParsonsPuzzle.prototype.toggleDropEffect = function () {
     var hasSelectedElement = this.selectedElement !== undefined;
     this.ariaDropControls[hasSelectedElement ? 'setAllToMove' : 'setAllToNone']();
   };
@@ -1213,8 +1218,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDraggable}
    */
-   ParsonsPuzzle.prototype.getDraggableByElement = function (el) {
-    return this.draggables.filter(function(draggable){
+  ParsonsPuzzle.prototype.getDraggableByElement = function (el) {
+    return this.draggables.filter(function (draggable) {
       return draggable.$draggable.get(0) === el;
     }, this)[0];
   };
@@ -1226,8 +1231,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {H5P.TextDroppable}
    */
-   ParsonsPuzzle.prototype.getDroppableByElement = function (el) {
-    return this.droppables.filter(function(droppable){
+  ParsonsPuzzle.prototype.getDroppableByElement = function (el) {
+    return this.droppables.filter(function (droppable) {
       return droppable.$dropzone.get(0) === el;
     }, this)[0];
   };
@@ -1236,7 +1241,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * Used for contracts.
    * Sets feedback on the dropzones.
    */
-   ParsonsPuzzle.prototype.showSolutions = function () {
+  ParsonsPuzzle.prototype.showSolutions = function () {
     this.showEvaluation(true);
     this.droppables.forEach(function (droppable) {
       droppable.addFeedback();
@@ -1259,30 +1264,30 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * Used for contracts.
    * Sets feedback on the dropzones.
    */
-     ParsonsPuzzle.prototype.showFeedbacks = function () {
-         this.showEvaluation(true);
-         this.droppables.forEach(function (droppable) {
-             droppable.addFeedback();
-             droppable.showFeedback();
-         });
+  ParsonsPuzzle.prototype.showFeedbacks = function () {
+    this.showEvaluation(true);
+    this.droppables.forEach(function (droppable) {
+      droppable.addFeedback();
+      droppable.showFeedback();
+    });
 
-         this.removeAllDroppablesFromControls();
-         this.disableDraggables();
-         //Remove all buttons in "show solution" mode.
-         this.hideButton('try-again');
-         this.hideButton('show-feedback');
-         this.hideButton('show-solution');
-         this.hideButton('check-answer');
+    this.removeAllDroppablesFromControls();
+    this.disableDraggables();
+    //Remove all buttons in "show solution" mode.
+    this.hideButton('try-again');
+    this.hideButton('show-feedback');
+    this.hideButton('show-solution');
+    this.hideButton('check-answer');
 
-         self.hideAllSolutions();
-         this.trigger('resize');
-     };
+    self.hideAllSolutions();
+    this.trigger('resize');
+  };
 
   /**
    * Used for contracts.
    * Resets the complete task back to its' initial state.
    */
-   ParsonsPuzzle.prototype.resetTask = function () {
+  ParsonsPuzzle.prototype.resetTask = function () {
     var self = this;
     // Reset task answer
     self.answered = false;
@@ -1310,10 +1315,10 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   /**
    * Resets the position of all draggables shuffled.
    */
-   ParsonsPuzzle.prototype.resetDraggables = function () {
+  ParsonsPuzzle.prototype.resetDraggables = function () {
     Util.shuffle(this.draggables).forEach(this.revert, this);
     this.draggables.forEach(function (draggable) {
-      draggable.getDraggableElement().css('width', self.widestDraggable+'ch');
+      draggable.getDraggableElement().css('width', self.widestDraggable + 'ch');
     });
   };
 
@@ -1328,24 +1333,24 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {object} containing indexes of dropped words
    */
-   ParsonsPuzzle.prototype.getCurrentState = function () {
+  ParsonsPuzzle.prototype.getCurrentState = function () {
     // Return undefined if task is not initialized
     if (this.draggables === undefined) {
       return undefined;
     }
 
     return this.draggables
-    .filter(draggable => (draggable.getInsideDropzone() !== null))
-    .map(draggable => ({
-      draggable: draggable.getInitialIndex(),
-      droppable: this.droppables.indexOf(draggable.getInsideDropzone())
-    }));
+      .filter(draggable => (draggable.getInsideDropzone() !== null))
+      .map(draggable => ({
+        draggable: draggable.getInitialIndex(),
+        droppable: this.droppables.indexOf(draggable.getInsideDropzone())
+      }));
   };
 
   /**
    * Sets answers to current user state
    */
-   ParsonsPuzzle.prototype.setH5PUserState = function () {
+  ParsonsPuzzle.prototype.setH5PUserState = function () {
     const self = this;
 
     // Do nothing if user state is undefined
@@ -1403,7 +1408,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * @param {number} index
    * @return {boolean}
    */
-   ParsonsPuzzle.prototype.isValidIndex = function(index) {
+  ParsonsPuzzle.prototype.isValidIndex = function (index) {
     return !isNaN(index) && (index < this.draggables.length) && (index >= 0);
   };
 
@@ -1413,7 +1418,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * @param {number} initialIndex
    * @return {Draggable}
    */
-   ParsonsPuzzle.prototype.getDraggableByInitialIndex = function(initialIndex) {
+  ParsonsPuzzle.prototype.getDraggableByInitialIndex = function (initialIndex) {
     return this.draggables.filter(draggable => draggable.hasInitialIndex(initialIndex))[0];
   };
 
@@ -1425,7 +1430,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Object} xAPI data
    */
-   ParsonsPuzzle.prototype.getXAPIData = function () {
+  ParsonsPuzzle.prototype.getXAPIData = function () {
     var xAPIEvent = this.createXAPIEventTemplate('answered');
     this.addQuestionToXAPI(xAPIEvent);
     this.addResponseToXAPI(xAPIEvent);
@@ -1440,8 +1445,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @param xAPIEvent
    */
-   ParsonsPuzzle.prototype.addQuestionToXAPI = function (xAPIEvent) {
-    var definition = xAPIEvent.getVerifiedStatementValue(['object','definition']);
+  ParsonsPuzzle.prototype.addQuestionToXAPI = function (xAPIEvent) {
+    var definition = xAPIEvent.getVerifiedStatementValue(['object', 'definition']);
     $.extend(definition, this.getxAPIDefinition());
   };
 
@@ -1450,7 +1455,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {Object}
    */
-   ParsonsPuzzle.prototype.getxAPIDefinition = function () {
+  ParsonsPuzzle.prototype.getxAPIDefinition = function () {
     var definition = {};
     definition.interactionType = 'fill-in';
     definition.type = 'http://adlnet.gov/expapi/activities/cmi.interaction';
@@ -1474,7 +1479,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    * @param {H5P.XAPIEvent} xAPIEvent
    *  The xAPI event we will add a response to
    */
-   ParsonsPuzzle.prototype.addResponseToXAPI = function (xAPIEvent) {
+  ParsonsPuzzle.prototype.addResponseToXAPI = function (xAPIEvent) {
     var self = this;
     var currentScore = self.getScore();
     var maxScore = self.droppables.length;
@@ -1489,7 +1494,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       scaled: Math.round(currentScore / maxScore * 10000) / 10000
     };
 
-    if(self.stopWatch) {
+    if (self.stopWatch) {
       duration = 'PT' + self.stopWatch.stop() + 'S';
     }
 
@@ -1506,11 +1511,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    *
    * @returns {string} User answers separated by the "[,]" pattern
    */
-   ParsonsPuzzle.prototype.getXAPIResponse = function () {
-     return this.droppables
-     .map(droppable => droppable.hasDraggable() ? droppable.containedDraggable.text : '')
-     .join('[,]');
-   };
+  ParsonsPuzzle.prototype.getXAPIResponse = function () {
+    return this.droppables
+      .map(droppable => droppable.hasDraggable() ? droppable.containedDraggable.text : '')
+      .join('[,]');
+  };
 
   return ParsonsPuzzle;
 
