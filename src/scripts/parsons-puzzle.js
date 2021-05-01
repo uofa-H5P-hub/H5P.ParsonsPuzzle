@@ -372,22 +372,19 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
       //Show Feedback button
       self.addButton('show-feedback', self.params.showFeedback, function () {
-          self.droppables.forEach(function (droppable) {
-              droppable.showFeedback();
-          });   
           if (self.droppables.length == save_ret.solutions.length) {
             self.droppables.forEach(function (droppable) {
               droppable.showFeedback();
-            }
+            });
           } else if (self.droppables.length > save_ret.solutions.length) {
             self.droppables.forEach(function (droppable) {
               droppable.showFeedback();
-            }
+            });
           } else {
             self.droppables.forEach(function (droppable) {
               droppable.showFeedback();
-            }
-          }   
+            });
+          } 
           self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
           self.disableDraggables();
           self.$draggables.css('display','none');
