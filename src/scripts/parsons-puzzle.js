@@ -383,6 +383,15 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       } else {
         toFewLines_error = true;
       }
+
+      if (toManyLines_error) {
+        self.$showFeedback.append("Your program has too many code fragments.");
+      }
+      if (toFewLines_error) {
+        self.$showFeedback.append("Your program has too few code fragments.")
+      }
+      // this.$showFeedback.html("Your program has too few code fragments.");  "h5p-drag-show-feedback-container"
+
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
       self.disableDraggables();
       self.$draggables.css('display', 'none');
