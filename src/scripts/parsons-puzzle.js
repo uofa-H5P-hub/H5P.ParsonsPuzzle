@@ -779,6 +779,18 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           });
         }
         self.$wordContainer.append("</br>");
+      } else {
+        const solution = "";
+        const droppable = self.createDroppable(solution, solution.tip);
+
+        // trigger instant feedback
+        if (self.params.behaviour.instantFeedback) {
+          draggable.getDraggableElement().on('dragstop', function () {
+            droppable.addFeedback();
+            self.instantFeedbackEvaluation();
+          });
+        }
+        self.$wordContainer.append("</br>");
       }
     });
 
