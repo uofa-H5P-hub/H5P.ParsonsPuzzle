@@ -56,6 +56,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
   var save_ret;
   var error = [];
+  error.push("Feedback:" + "<br/>");
   var wrong_order = false;
   var line_missing = false;
   var line_too_many = false;
@@ -380,6 +381,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     //Show Feedback button
     self.addButton('show-feedback', self.params.showFeedback, function () {
       lines_num = self.droppables.length - emptylines;
+
       if (lines_num > save_ret.solutions.length) {
         line_too_many = true;
         error.push("Your program has too many code fragments." + "</br>");
@@ -409,7 +411,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       self.$draggables.css('display', 'none');
       self.removeAllDroppablesFromControls();
       self.hideButton('show-solution');
-      self.hideAllFeedback();
+      self.hideFeedback();
     }, self.initShowShowSolutionButton || false, {
       'aria-label': self.params.a11yShowSolution,
     });
@@ -426,30 +428,20 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   ParsonsPuzzle.prototype.showFeedback = function () {
     var self = this;
 
-    /*if (line_missing) {
-      error.appendTo(self.$showFeedback)
-      self.$showFeedback.html("sssss");
-      self.$dropzone.css('padding-left', 0);
-      self.$showFeedback.css('padding-left', 0);
-      self.$showFeedback.css('margin-left', 0);
-    }*/
-    /*if (line_too_many) {
-      error.appendTo(self.$showFeedback);
-      self.$showFeedback.html(error);
-      self.$dropzone.css('padding-left', 0);
-      self.$showFeedback.css('padding-left', 0);
-      self.$showFeedback.css('margin-left', 0);
-    }*/
-    if (line_missing) {
-      self.$showFeedback.html("sssss");
-    } else {
-      self.$showFeedback.html(lines_num + " " + save_ret.solutions.length);
-    }
+    self.$showFeedback.html(error);
+    self.$showFeedback.css('padding-left', 0);
+    self.$showFeedback.css('margin-left', 0);
 
-    self.$showFeedback.toggleClass('incorrect');
+    self.$showFeedback.addClass('incorrect');
     self.$showFeedback.show();
   };
 
+  ParsonsPuzzle.prototype.hideFeedback = function () {
+      error = [];
+      this.$showFeedback.html('');
+      this.$showFeedback.hide();
+      this.trigger('resize');
+  }
   /**
    * Removes keyboard support for all elements left in the draggables
    * list.
@@ -1257,7 +1249,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.hideButton('show-solution');
     this.hideButton('check-answer');
 
-    self.hideAllFeedback();
+    self.hideFeedback();
     this.trigger('resize');
   };
 
@@ -1309,7 +1301,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       self.showButton('check-answer');
     }
     self.hideAllSolutions();
-    self.hideAllFeedback();
+    self.hideFeedback();
     this.trigger('resize');
   };
 
