@@ -380,10 +380,14 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Show Feedback button
     self.addButton('show-feedback', self.params.showFeedback, function () {
-            
-      if ((totallines == save_ret.solutions.length) && (wrong_order == true)) {
-        error.push(error_no + ". " + self.params.order + "</br>");
-        error_no ++;
+      
+      // feedback for wrong order
+      self.check_wrong_order();
+      if (totallines == save_ret.solutions.length) {
+        if (wrong_order) {
+          error.push(error_no + ". " + self.params.order + "</br>");
+          error_no ++;
+        }
       }
       // feedback for lines too much
       else if (totallines > save_ret.solutions.length) {
@@ -430,6 +434,15 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       self.stopWatch.reset();
       self.resetTask();
       self.$draggables.css('display', 'inline');
+    });
+  };
+
+  ParsonsPuzzle.prototype.check_wrong_order = function() {
+    var self = this;
+    self.droppables.forEach(function (droppable) {
+      if (!droppable.isCorrect()) {
+        wrong_order = true;
+      }
     });
   };
 
@@ -605,7 +618,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       }
     });
   };
-
+  
   /**
    * Generates data that is used to render the explanation container
    * at the bottom of the content type
@@ -626,7 +639,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         }
 
         if (!droppable.isCorrect() && droppable.incorrectFeedback) {
-          wrong_order == true;
           explanations.push({
             correct: droppable.text,
             wrong: draggable.text,
@@ -634,7 +646,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           });
         }
       }
-
       if (droppable.containedDraggable != null) {
         totallines++;
       }
