@@ -382,7 +382,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     self.addButton('show-feedback', self.params.showFeedback, function () {
             
       if ((totallines == save_ret.solutions.length) && (wrong_order == true)) {
-        error.push(error_no + ". " + self.params.linesTooMany + "</br>");
+        error.push(error_no + ". " + self.params.order + "</br>");
         error_no ++;
       }
       // feedback for lines too much
