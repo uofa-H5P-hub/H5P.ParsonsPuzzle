@@ -380,9 +380,10 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Show Feedback button
     self.addButton('show-feedback', self.params.showFeedback, function () {
-      
+
       // feedback for wrong order
       self.check_wrong_order();
+
       if (totallines == save_ret.solutions.length) {
         if (wrong_order) {
           error.push(error_no + ". " + self.params.order + "</br>");
