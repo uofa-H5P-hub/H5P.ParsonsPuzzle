@@ -381,8 +381,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     //Show Feedback button
     self.addButton('show-feedback', self.params.showFeedback, function () {
             
+      if ((totallines == save_ret.solutions.length) && (wrong_order == true)) {
+        error.push(error_no + ". " + self.params.linesTooMany + "</br>");
+        error_no ++;
+      }
       // feedback for lines too much
-      if (totallines > save_ret.solutions.length) {
+      else if (totallines > save_ret.solutions.length) {
         line_too_many = true;
         error.push(error_no + ". " + self.params.linesTooMany + "</br>");
         error_no ++;      
@@ -622,6 +626,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         }
 
         if (!droppable.isCorrect() && droppable.incorrectFeedback) {
+          wrong_order == true;
           explanations.push({
             correct: droppable.text,
             wrong: draggable.text,
@@ -779,7 +784,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           });
         }
         self.$wordContainer.append("</br>");
-      } else {
+      } 
+      /*else {
         const solution = "";
         const droppable = self.createDroppable(solution, solution.tip);
 
@@ -791,7 +797,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           });
         }
         self.$wordContainer.append("</br>");
-      }
+      } */
     });
 
     self.shuffleAndAddDraggables(self.$draggables);
@@ -1267,7 +1273,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.hideButton('show-solution');
     this.hideButton('check-answer');
 
-    self.hideFeedback();
+    this.hideFeedback();
     this.trigger('resize');
   };
 
@@ -1290,7 +1296,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.hideButton('show-solution');
     this.hideButton('check-answer');
 
-    self.hideAllSolutions();
+    this.hideAllSolutions();
     this.trigger('resize');
   };
 

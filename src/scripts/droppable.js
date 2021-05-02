@@ -94,7 +94,7 @@ H5P.TextDroppable = (function ($) {
   Droppable.prototype.showFeedback = function () {
     const correct = this.isCorrect();
     if (!correct) {
-        this.$showFeedback.html("Your program has too few code fragments.");
+        this.$showFeedback.html("sssss.");
         this.$dropzone.css('padding-left', 0);
         this.$showFeedback.css('padding-left', 0);
         this.$showFeedback.css('margin-left', 0);
