@@ -802,7 +802,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         self.$wordContainer.append("</br>");
       } 
       else {
-        //自己创建的 所以不是codeline，即没有code
         const solution = "";
         const droppable = self.createDroppable(solution, solution.tip);
         droppable.check = true;
