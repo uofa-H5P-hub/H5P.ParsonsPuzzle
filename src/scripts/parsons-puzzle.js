@@ -418,7 +418,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     //Show Solution button
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
-        droppable.showSolution();
+        if (droppable.check == true) {
+          droppable.showSolutionDistractor();
+        } else {
+          droppable.showSolution();
+        }
       });
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
       self.disableDraggables();
@@ -797,19 +801,14 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         }
         self.$wordContainer.append("</br>");
       } 
-      /*else {
+      else {
+        //自己创建的 所以不是codeline，即没有code
         const solution = "";
         const droppable = self.createDroppable(solution, solution.tip);
-
-        // trigger instant feedback
-        if (self.params.behaviour.instantFeedback) {
-          draggable.getDraggableElement().on('dragstop', function () {
-            droppable.addFeedback();
-            self.instantFeedbackEvaluation();
-          });
-        }
+        droppable.check = true;
+        
         self.$wordContainer.append("</br>");
-      } */
+      } 
     });
 
     self.shuffleAndAddDraggables(self.$draggables);

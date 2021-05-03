@@ -35,6 +35,7 @@ H5P.TextDroppable = (function ($) {
     self.tip = tip;
     self.index = index;
     self.params = params;
+    self.check = false;
     if (self.params.indentBy2) {
       self.indentSpaces = 2;
     }
@@ -119,6 +120,18 @@ H5P.TextDroppable = (function ($) {
 
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
     this.$showSolution.toggleClass('incorrect', !correct);
+    this.$showSolution.show();
+  };
+
+  Droppable.prototype.showSolutionDistractor = function () {
+    const correct = this.isCorrect_Distractor();
+    if (!correct) {
+      this.$dropzone.css('padding-left',0);
+      this.$showSolution.css('padding-left',0);
+      this.$showSolution.css('margin-left',0);
+    }
+
+    this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
     this.$showSolution.show();
   };
   /**
@@ -229,10 +242,15 @@ H5P.TextDroppable = (function ($) {
     if (this.containedDraggable === null) {
       return false;
     }
-    var solution = this.solution;
-    var answerIndentation = solution.indent;
+    var solution = this.solution; 
+    var answerIndentation = solution.indent; 
 
     return solution.code === this.text && answerIndentation == this.indent;
+  };
+
+  Droppable.prototype.isCorrect_Distractor = function () {
+    var solution = this.solution; 
+    return solution === this.text;
   };
 
   /**
