@@ -63,6 +63,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var line_too_many = false;
   var totallines = 0;
   var right_answer = false;
+
+  var right_length = 0;
   /**
    * Initialize module.
    *
@@ -347,8 +349,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    */
   ParsonsPuzzle.prototype.addButtons = function () {
     var self = this;
-    self.hidefeedback_Correct();
-    console.log(right_answer);    
+    
     // Check answer button
     if (self.params.behaviour.enableCheckButton) {
       self.addButton('check-answer', self.params.checkAnswer, function () {
@@ -359,7 +360,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           if (self.params.behaviour.enableRetry) {
             self.showButton('try-again');
           }
-          if (self.params.behaviour.enableFeedbackButton && (right_answer == false)) {
+          if (self.params.behaviour.enableFeedbackButton) {
             self.showButton('show-feedback');
           }
           if (self.params.behaviour.enableSolutionsButton) {
@@ -383,6 +384,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     //Show Feedback button
     self.addButton('show-feedback', self.params.showFeedback, function () {
 
+      self.hidefeedback_Correct();  
       // feedback for wrong order
       self.check_wrong_order();
 
@@ -404,8 +406,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         error.push(error_no + ". " + self.params.linesMissing + "</br>");
         error_no ++;
       }
-
-      self.showFeedback();
+      if (right_answer == false) {
+        self.showFeedback();
+      }
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
       self.disableDraggables();
       self.$draggables.css('display', 'none');
@@ -694,7 +697,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.showExplanation();
 
     var score = this.calculateScore();
-    var maxScore = this.droppables.length;
+    // var maxScore = this.droppables.length;
+    var maxScore = this.right_length;
 
     if (!skipXapi) {
       var xAPIEvent = this.createXAPIEventTemplate('answered');
@@ -809,6 +813,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     ret.codeLines.forEach(function (codeLine) {
       const draggable = self.createDraggable(codeLine);
       if (!codeLine.distractor) {
+        right_length ++;
         const solution = ret.solutions[codeLine.lineNo];
         const droppable = self.createDroppable(solution, solution.tip);
 
