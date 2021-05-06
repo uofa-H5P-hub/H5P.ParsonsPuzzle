@@ -694,6 +694,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       .replace(/@total/g, maxScore.toString());
 
     if (score === maxScore) {
+      console.log("score: " + score);
+      console.log("maxScore: " + maxScore);
       //Hide buttons and disable task
       this.hideButton('check-answer');
       this.hideButton('show-solution');
@@ -1318,7 +1320,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     self.hideExplanation();
     self.enableAllDropzonesAndDraggables();
     //Show and hide buttons
-    self.hideButton('try-again');
+    //self.hideButton('try-again');
     self.hideButton('show-feedback');
     self.hideButton('show-solution');
 
