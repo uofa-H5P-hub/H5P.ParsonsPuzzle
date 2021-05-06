@@ -62,9 +62,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var line_missing = false;
   var line_too_many = false;
   var totallines = 0;
-  var right_answer = false;
-
   var right_length = 0;
+
   /**
    * Initialize module.
    *
@@ -384,7 +383,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     //Show Feedback button
     self.addButton('show-feedback', self.params.showFeedback, function () {
 
-      self.hidefeedback_Correct();  
       // feedback for wrong order
       self.check_wrong_order();
 
@@ -406,9 +404,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         error.push(error_no + ". " + self.params.linesMissing + "</br>");
         error_no ++;
       }
-      if (right_answer == false) {
-        self.showFeedback();
-      }
+      self.showFeedback();
+
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
       self.disableDraggables();
       self.$draggables.css('display', 'none');
@@ -456,21 +453,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       }
     });
   };
-
-// check student's answer, if is all correct, then do not show feedback button
-  ParsonsPuzzle.prototype.hidefeedback_Correct = function() {
-    var self = this;
-    self.droppables.forEach(function (droppable) {
-      // if droppable not a distractor
-      if (!droppable.check) {
-        if (droppable.isCorrect()) {
-          right_answer = true;
-        } else {
-          right_answer = false;
-        }
-      }
-    });
-  }
 
   ParsonsPuzzle.prototype.showFeedback = function () {
     var self = this;
@@ -696,9 +678,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.showDropzoneFeedback();
     this.showExplanation();
 
+    // recalulate maxScore as there are distractors in droppables
     var score = this.calculateScore();
-    // var maxScore = this.droppables.length;
-    var maxScore = this.right_length;
+    var maxScore = right_length;
 
     if (!skipXapi) {
       var xAPIEvent = this.createXAPIEventTemplate('answered');
@@ -716,7 +698,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       this.hideButton('check-answer');
       this.hideButton('show-solution');
       this.hideButton('show-feedback');
-      this.hideButton('try-again');
+      //this.hideButton('try-again');
       this.disableDraggables();
     }
     this.trigger('resize');
@@ -809,11 +791,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     const parser = new CodeParser(2);
     const ret = parser.parse(self.codeBlock, self.indentationSpacing);
     save_ret = ret;
+    right_length = ret.solutions.length;
 
     ret.codeLines.forEach(function (codeLine) {
       const draggable = self.createDraggable(codeLine);
       if (!codeLine.distractor) {
-        right_length ++;
         const solution = ret.solutions[codeLine.lineNo];
         const droppable = self.createDroppable(solution, solution.tip);
 
@@ -1167,7 +1149,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       self.instantFeedbackEvaluationFilled = true;
     } else {
       self.instantFeedbackEvaluationFilled = false;
-      //Hides "retry" and "show solution" buttons.
+      //Hides "retry", "show-feedback" and "show solution" buttons.
       self.hideButton('try-again');
       self.hideButton('show-feedback')
       self.hideButton('show-solution');
@@ -1314,35 +1296,17 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
   /**
    * Used for contracts.
-   * Sets feedback on the dropzones.
-   */
-  ParsonsPuzzle.prototype.showFeedbacks = function () {
-    this.showEvaluation(true);
-    this.droppables.forEach(function (droppable) {
-      droppable.addFeedback();
-      droppable.showFeedback();
-    });
-
-    this.removeAllDroppablesFromControls();
-    this.disableDraggables();
-    //Remove all buttons in "show solution" mode.
-    this.hideButton('try-again');
-    this.hideButton('show-feedback');
-    this.hideButton('show-solution');
-    this.hideButton('check-answer');
-
-    this.hideAllSolutions();
-    this.trigger('resize');
-  };
-
-  /**
-   * Used for contracts.
    * Resets the complete task back to its' initial state.
    */
   ParsonsPuzzle.prototype.resetTask = function () {
     var self = this;
 
-    self.right_answer = false;
+    error_no = 1;
+    wrong_order = false;
+    line_missing = false;
+    line_too_many = false;
+    totallines = 0;
+
     // Reset task answer
     self.answered = false;
     self.instantFeedbackEvaluationFilled = false;
@@ -1536,7 +1500,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   ParsonsPuzzle.prototype.addResponseToXAPI = function (xAPIEvent) {
     var self = this;
     var currentScore = self.getScore();
-    var maxScore = self.droppables.length;
+    // recalulate maxScore as there are distractors in droppables
+    var maxScore = this.right_length;
     var duration;
 
     xAPIEvent.setScoredResult(currentScore, maxScore, self);
