@@ -62,6 +62,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var line_missing = false;
   var line_too_many = false;
   var totallines = 0;
+  var right_answer = false;
   /**
    * Initialize module.
    *
@@ -346,7 +347,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    */
   ParsonsPuzzle.prototype.addButtons = function () {
     var self = this;
-
+    self.hidefeedback_Correct();
+    console.log(right_answer);    
     // Check answer button
     if (self.params.behaviour.enableCheckButton) {
       self.addButton('check-answer', self.params.checkAnswer, function () {
@@ -357,7 +359,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           if (self.params.behaviour.enableRetry) {
             self.showButton('try-again');
           }
-          if (self.params.behaviour.enableFeedbackButton) {
+          if (self.params.behaviour.enableFeedbackButton && (right_answer == false)) {
             self.showButton('show-feedback');
           }
           if (self.params.behaviour.enableSolutionsButton) {
@@ -404,7 +406,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       }
 
       self.showFeedback();
-
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
       self.disableDraggables();
       self.$draggables.css('display', 'none');
@@ -445,11 +446,28 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   ParsonsPuzzle.prototype.check_wrong_order = function() {
     var self = this;
     self.droppables.forEach(function (droppable) {
-      if (!droppable.isCorrect()) {
-        wrong_order = true;
+      if (!droppable.check) {
+        if (!droppable.isCorrect()) {
+          wrong_order = true;
+        }
       }
     });
   };
+
+// check student's answer, if is all correct, then do not show feedback button
+  ParsonsPuzzle.prototype.hidefeedback_Correct = function() {
+    var self = this;
+    self.droppables.forEach(function (droppable) {
+      // if droppable not a distractor
+      if (!droppable.check) {
+        if (droppable.isCorrect()) {
+          right_answer = true;
+        } else {
+          right_answer = false;
+        }
+      }
+    });
+  }
 
   ParsonsPuzzle.prototype.showFeedback = function () {
     var self = this;
@@ -467,10 +485,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       error.push("<br/>");
       error_no = 1;
       totallines = 0;
+      wrong_order = false;
       this.$showFeedback.html('');
       this.$showFeedback.hide();
       this.trigger('resize');
   }
+
   /**
    * Removes keyboard support for all elements left in the draggables
    * list.
@@ -1316,6 +1336,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    */
   ParsonsPuzzle.prototype.resetTask = function () {
     var self = this;
+
+    self.right_answer = false;
     // Reset task answer
     self.answered = false;
     self.instantFeedbackEvaluationFilled = false;
