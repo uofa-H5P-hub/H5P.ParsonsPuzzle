@@ -253,6 +253,15 @@ H5P.TextDroppable = (function ($) {
     return solution === this.text;
   };
 
+  Droppable.prototype.isCorrect_noIndent = function () {
+    if (this.containedDraggable === null) {
+      return false;
+    }
+    var solution = this.solution; 
+
+    return solution.code === this.text;
+  };
+
   /**
     * Places draggables at the nearest indentation to drop location.
   **/

@@ -58,6 +58,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var error = [];
   error.push("Feedback:" + "<br/>");
   var error_no = 1;
+  var wrong_indent = false;
   var wrong_order = false;
   var line_missing = false;
   var line_too_many = false;
@@ -385,7 +386,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
       // feedback for wrong order
       self.check_wrong_order();
-
       if (totallines == save_ret.solutions.length) {
         if (wrong_order) {
           error.push(error_no + ". " + self.params.order + "</br>");
@@ -404,6 +404,13 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         error.push(error_no + ". " + self.params.linesMissing + "</br>");
         error_no ++;
       }
+      // feedback for wrong indentation
+      self.check_indent();
+      if (wrong_indent) {
+        error.push(error_no + ". " + self.params.linesNoMatching + "</br>");
+        error_no ++;
+      }
+
       self.showFeedback();
 
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
@@ -443,11 +450,22 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     });
   };
 
+  ParsonsPuzzle.prototype.check_indent = function() {
+    var self = this;
+    self.droppables.forEach(function (droppable) {
+      if (!droppable.check) {
+        if ((droppable.containedDraggable != null) && (!droppable.isCorrect())) {
+          wrong_indent = true;
+        }
+      }
+    });
+  };
+
   ParsonsPuzzle.prototype.check_wrong_order = function() {
     var self = this;
     self.droppables.forEach(function (droppable) {
       if (!droppable.check) {
-        if (!droppable.isCorrect()) {
+        if (!droppable.isCorrect_noIndent()) {
           wrong_order = true;
         }
       }
@@ -471,6 +489,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       error_no = 1;
       totallines = 0;
       wrong_order = false;
+      wrong_indent = false;
       this.$showFeedback.html('');
       this.$showFeedback.hide();
       this.trigger('resize');
@@ -1305,6 +1324,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     error_no = 1;
     wrong_order = false;
+    wrong_indent = false;
     line_missing = false;
     line_too_many = false;
     totallines = 0;
