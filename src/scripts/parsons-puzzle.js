@@ -712,7 +712,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       .replace(/@score/g, score.toString())
       .replace(/@total/g, maxScore.toString());
 
-    if (score === maxScore) {
+    if ((score === maxScore) && (totallines === save_ret.solutions.length)) {
       console.log("score: " + score);
       console.log("maxScore: " + maxScore);
       //Hide buttons and disable task
@@ -727,7 +727,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     // Set feedback score
     this.setFeedback(scoreText, score, maxScore, this.params.scoreBarLabel);
 
-    return score === maxScore;
+    return score === maxScore && totallines === save_ret.solutions.length;
   };
 
   /**
