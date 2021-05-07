@@ -52,6 +52,11 @@
       "machineName": "H5PEditor.RangeList",
       "majorVersion": 1,
       "minorVersion": 0
+    },
+    {
+      "machineName": "H5PEditor.CodeEditor",
+      "majorVersion": 1,
+      "minorVersion": 0
     }
   ]
 }
