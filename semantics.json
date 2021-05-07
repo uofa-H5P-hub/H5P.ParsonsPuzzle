@@ -439,5 +439,14 @@
     "optional": true,
     "common": true,
     "default": "Can not end block while still inside a nested block."
+  },
+  {
+    "name": "haveDistractor",
+    "label": "Feedback when containing a distractor",
+    "type": "text",
+    "importance": "low",
+    "optional": true,
+    "common": true,
+    "default": "Your program has contained a distractor or distractors."
   }
 ]

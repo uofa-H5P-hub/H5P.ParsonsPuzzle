@@ -262,6 +262,16 @@ H5P.TextDroppable = (function ($) {
     return solution.code === this.text;
   };
 
+  Droppable.prototype.isCorrect_noText = function () {
+    if (this.containedDraggable === null) {
+      return false;
+    }
+    var solution = this.solution;
+    var answerIndentation = solution.indent; 
+
+    return answerIndentation == this.indent;
+  };
+
   /**
     * Places draggables at the nearest indentation to drop location.
   **/

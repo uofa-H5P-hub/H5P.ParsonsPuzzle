@@ -62,6 +62,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var wrong_order = false;
   var line_missing = false;
   var line_too_many = false;
+  var contain_distractor = false;
   var totallines = 0;
   var right_length = 0;
 
@@ -383,7 +384,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Show Feedback button
     self.addButton('show-feedback', self.params.showFeedback, function () {
-
+      // feedback for containing maxDistractors
+      self.check_distractor();
+      if (contain_distractor) {
+        error.push(error_no + ". " + self.params.haveDistractor + "</br>");
+        error_no ++;
+      }
       // feedback for wrong order
       self.check_wrong_order();
       if (totallines == save_ret.solutions.length) {
@@ -454,7 +460,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     var self = this;
     self.droppables.forEach(function (droppable) {
       if (!droppable.check) {
-        if ((droppable.containedDraggable != null) && (!droppable.isCorrect())) {
+        if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText())) {
           wrong_indent = true;
         }
       }
@@ -468,6 +474,15 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         if (!droppable.isCorrect_noIndent()) {
           wrong_order = true;
         }
+      }
+    });
+  };
+
+  ParsonsPuzzle.prototype.check_distractor = function() {
+    var self = this;
+    self.droppables.forEach(function (droppable) {
+      if (droppable.check) {
+        contain_distractor = true;
       }
     });
   };
