@@ -65,6 +65,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var contain_distractor = false;
   var totallines = 0;
   var right_length = 0;
+  var student_solution = [];
+  var count_open = 0;
+  var count_close = 0;
 
   /**
    * Initialize module.
@@ -384,7 +387,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     //Show Feedback button
     self.addButton('show-feedback', self.params.showFeedback, function () {
-      // feedback for containing maxDistractors
+
+      // feedback for containing distractors
       self.check_distractor();
       if (contain_distractor) {
         error.push(error_no + ". " + self.params.haveDistractor + "</br>");
@@ -414,6 +418,16 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       self.check_indent();
       if (wrong_indent) {
         error.push(error_no + ". " + self.params.linesNoMatching + "</br>");
+        error_no ++;
+      }
+      // feedback for no matching open
+      self.check_open_brackets();
+      self.check_close_brackets();
+      if (count_open < count_close) {
+        error.push(error_no + ". " + self.params.noMatchingOpen + "</br>");
+        error_no ++;
+      } else if (count_open > count_close) {
+        error.push(error_no + ". " + self.params.noMatchingClose + "</br>");
         error_no ++;
       }
 
@@ -509,6 +523,24 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       this.$showFeedback.hide();
       this.trigger('resize');
   }
+
+  ParsonsPuzzle.prototype.check_open_brackets = function() {
+    var self = this;
+    for (var i = 0; i < student_solution.length; i++) {
+      if (student_solution[i] === "{") {
+        count_open ++;
+      }
+    }
+  };
+
+  ParsonsPuzzle.prototype.check_close_brackets = function() {
+    var self = this;
+    for (var i = 0; i < student_solution.length; i++) {
+      if (student_solution[i] === "}") {
+        count_close ++;
+      }
+    }
+  };
 
   /**
    * Removes keyboard support for all elements left in the draggables
@@ -693,6 +725,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       if (droppable.containedDraggable != null) {
         totallines++;
       }
+      if (droppable.containedDraggable != null) {
+        student_solution.push(droppable.containedDraggable.codeLine.code);
+      }
     });
 
     if (explanations.length !== 0) {
@@ -728,8 +763,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       .replace(/@total/g, maxScore.toString());
 
     if ((score === maxScore) && (totallines === save_ret.solutions.length)) {
-      console.log("score: " + score);
-      console.log("maxScore: " + maxScore);
       //Hide buttons and disable task
       this.hideButton('check-answer');
       this.hideButton('show-solution');
@@ -1343,6 +1376,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     line_missing = false;
     line_too_many = false;
     totallines = 0;
+    student_solution = [];
+    count_open = 0;
+    count_close = 0;
 
     // Reset task answer
     self.answered = false;
