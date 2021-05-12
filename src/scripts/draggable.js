@@ -90,6 +90,7 @@ H5P.TextDraggable = (function ($) {
   Draggable.prototype.revertDraggableTo = function ($container) {
     // Prepend draggable to new container, but keep the offset,
     // then animate to new container's top:0, left:0
+    this.$draggable.removeClass(DRAGGABLE_DROPPED);
     this.$draggable.detach()
       .css({left: 0, top: 0})
       .prependTo($container)
