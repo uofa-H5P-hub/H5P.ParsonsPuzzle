@@ -43,6 +43,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 /**
  * Parsons Puzzle module
  * @external {jQuery} $ H5P.jQuery
+ * @external {Question} $ H5P.Question
+ * @external {ConfirmationDialog} $ H5P.ConfirmationDialog
  */
  H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   //CSS Main Containers:
