@@ -68,11 +68,15 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var student_solution = [];
   var count_open = 0;
   var count_close = 0;
+  var count_correct_open = 0;
+  var count_correct_close = 0;
   var count_total = 0;
   var correct_solution = [];
   var correct_total = 0;
   var index_open = [];
   var index_close = [];
+  var index_correct_open = [];
+  var index_correct_close = [];
   var block_mismatch = false;
 
   /**
@@ -532,13 +536,23 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     }
   };
 
-  ParsonsPuzzle.prototype.check_correct_total_brackets = function() {
+  ParsonsPuzzle.prototype.check_correct_open_brackets = function() {
     for (var i = 0; i < correct_solution.length; i++) {
-      if ((correct_solution[i] === "{") || (correct_solution[i] === "}")) {
-        correct_total ++;
+      if (correct_solution[i] === "{") {
+        count_correct_open ++;
+        index_correct_open.push(i);
       }
     }
-  }
+  };
+
+  ParsonsPuzzle.prototype.check_correct_close_brackets = function() {
+    for (var i = 0; i < correct_solution.length; i++) {
+      if (correct_solution[i] === "}") {
+        count_correct_close ++;
+        index_correct_close.push(i);
+      }
+    }
+  };
 
   ParsonsPuzzle.prototype.check_block_mismatch = function() {
     var self = this;
@@ -553,12 +567,15 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         if (student_solution[i] != correct_solution[i]) {
           block_mismatch = true;
         }
+        break;
       }
       if (!block_mismatch){
         index_open.pop(); // remove the last element in index_open
         index_close.shift(); // remove the first element in index_close
         save_count_open --;
         save_count_close --;
+      } else {
+        break;
       }
     }
   }
@@ -930,7 +947,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         self.$wordContainer.append("</br>");
       } 
     });
-    self.check_correct_total_brackets();
+    self.check_correct_open_brackets();
+    self.check_correct_close_brackets();
+    correct_total = count_correct_open + count_correct_close;
 
     self.shuffleAndAddDraggables(self.$draggables);
     self.$showFeedback.appendTo(self.$wordContainer).hide(); 
