@@ -430,7 +430,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         error.push(error_no + ". " + self.params.linesNoMatching + "</br>");
         error_no ++;
       }
-      // feedback for no matching open
+      // feedback for no matching open and no matching close
       self.check_open_brackets();
       self.check_close_brackets();
       count_total = count_open + count_close;
@@ -440,7 +440,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       } else if (count_open > count_close) {
         error.push(error_no + ". " + self.params.noMatchingClose + "</br>");
         error_no ++;
-      } else if ((count_open === count_close) && (count_total === correct_total)) {
+      }
+      // feedback for block close mismatch
+      else if ((count_open === count_close) && (count_total === correct_total)) {
         self.check_block_mismatch();
         if (block_mismatch) {
           error.push(error_no + ". " + self.params.blockCloseMismatch + "</br>");
@@ -555,29 +557,38 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   };
 
   ParsonsPuzzle.prototype.check_block_mismatch = function() {
-    var self = this;
-    var save_count_open = count_open;
-    var save_count_close = count_close;
-
-    while ((save_count_open != 0) && (save_count_close != 0)) {
-      var pos1 = index_open[save_count_open - 1];
-      var pos2 = index_close[0];
-
-      for (var i = pos1 + 1; i < pos2; i++) {
-        if (student_solution[i] != correct_solution[i]) {
-          block_mismatch = true;
-        }
-        break;
-      }
-      if (!block_mismatch){
-        index_open.pop(); // remove the last element in index_open
-        index_close.shift(); // remove the first element in index_close
-        save_count_open --;
-        save_count_close --;
-      } else {
-        break;
+    const equals = (index_open, index_correct_open) => JSON.stringify(index_open) === JSON.stringify(index_correct_open);
+    if (equals) {
+      for (var i = 0; i < index_close.length; i++) {
+       if (index_close[i] < index_correct_close[i]) {
+         block_mismatch = true;
+         break;
+       }
       }
     }
+
+    // var save_count_open = count_open;
+    // var save_count_close = count_close;
+
+    // while ((save_count_open != 0) && (save_count_close != 0)) {
+    //   var pos1 = index_open[save_count_open - 1];
+    //   var pos2 = index_close[0];
+
+    //   for (var i = pos1 + 1; i < pos2; i++) {
+    //     if (student_solution[i] != correct_solution[i]) {
+    //       block_mismatch = true;
+    //     }
+    //     break;
+    //   }
+    //   if (!block_mismatch){
+    //     index_open.pop(); // remove the last element in index_open
+    //     index_close.shift(); // remove the first element in index_close
+    //     save_count_open --;
+    //     save_count_close --;
+    //   } else {
+    //     break;
+    //   }
+    // }
   }
 
   ParsonsPuzzle.prototype.showFeedback = function () {
