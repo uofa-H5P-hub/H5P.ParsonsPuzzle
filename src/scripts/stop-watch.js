@@ -1,9 +1,12 @@
-class StopWatch {
+var H5P = H5P || {};
+H5P.DragText = H5P.DragText || {};
+
+H5P.DragText.StopWatch = (function () {
   /**
-   * @class {StopWatch}
+   * @class {H5P.DragText.StopWatch}
    * @constructor
    */
-  constructor() {
+  function StopWatch() {
     /**
      * @property {number} duration in ms
      */
@@ -13,42 +16,44 @@ class StopWatch {
   /**
    * Starts the stop watch
    *
-   * @return {StopWatch}
+   * @return {H5P.DragText.StopWatch}
    */
-  start(){
+  StopWatch.prototype.start = function(){
     /**
      * @property {number}
      */
     this.startTime = Date.now();
     return this;
-  }
+  };
 
   /**
    * Stops the stopwatch, and returns the duration in seconds.
    *
    * @return {number}
    */
-  stop(){
+  StopWatch.prototype.stop = function(){
     this.duration = this.duration + Date.now() - this.startTime;
     return this.passedTime();
-  }
+  };
 
   /**
    * Sets the duration to 0
    */
-  reset(){
+  StopWatch.prototype.reset = function(){
     this.duration = 0;
     this.startTime = Date.now();
-  }
+  };
 
   /**
    * Returns the passed time in seconds
    *
    * @return {number}
    */
-  passedTime(){
+  StopWatch.prototype.passedTime = function(){
     return Math.round(this.duration / 10) / 100;
-  }
-};
+  };
 
-export default StopWatch;
+  return StopWatch;
+})();
+
+export default H5P.DragText.StopWatch;

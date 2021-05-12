@@ -1,11 +1,12 @@
 import CodeLine from './code-line';
 
-class CodeParser {
+var UofAParsons = UofAParsons || {};
 
-  constructor(maxDistractors) {
-    this.maxDistractors = maxDistractors;
+UofAParsons.CodeParser = (function () {
+
+  var CodeParser = function(maxDistractors) {
+    this.maxDistractors = maxDistractors
   }
-
   /**
    * Parse given code into separate lines
    *
@@ -13,7 +14,7 @@ class CodeParser {
    * @param {number} the number of spaces in code indent
    *
    */
-  parse(codeString, defaultIndentation) {
+  CodeParser.prototype.parse = function(codeString, defaultIndentation){
     var distractors = [],
       indented = [],
       codeLines = [],
@@ -60,8 +61,7 @@ class CodeParser {
       selectedDistractors.push(distractors[permutation[i]]);
       codeLines.push(distractors[permutation[i]]);
     }
-
-    /*
+/*
     var modifiedLines = [];
     codeLines.forEach(function( item ){
       var cl = item.clone();
@@ -81,9 +81,9 @@ class CodeParser {
       codeLines: codeLines,
       errors: errors
     };
-  }
+  };
 
-  getRandomPermutation(n) {
+  CodeParser.prototype.getRandomPermutation = function(n) {
     var permutation = [];
     var i;
     for (i = 0; i < n; i++) {
@@ -98,7 +98,7 @@ class CodeParser {
       permutation[swap2] = tmp;
     }
     return permutation;
-  }
+  };
 
   /**
    * Normalise indentatations by removing extra indentations on matching
@@ -114,7 +114,7 @@ class CodeParser {
    * For example, the first line may not be indented.
    *
    **/
-  normalizeIndents(lines) {
+  CodeParser.prototype.normalizeIndents = function(lines) {
 
     var normalized = [];
     var newLine;
@@ -149,7 +149,8 @@ class CodeParser {
       normalized[i] = newLine;
     }
     return normalized;
-  }
-};
+  };
+  return CodeParser;
+})();
 
-export default CodeParser;
+export default UofAParsons.CodeParser;

@@ -1,8 +1,6 @@
-//CSS Draggable feedback:
-const DRAGGABLE_DROPPED = "h5p-drag-dropped";
-
- export default class Draggable extends H5P.EventDispatcher {
-
+H5P.TextDraggable = (function ($) {
+  //CSS Draggable feedback:
+  var DRAGGABLE_DROPPED = 'h5p-drag-dropped';
   /**
    * Private class for keeping track of draggable code including indentation.
    * Follows design of H5P.DragText but stores codeLine objects instead of strings.
@@ -12,13 +10,9 @@ const DRAGGABLE_DROPPED = "h5p-drag-dropped";
    * @param {jQuery} draggable Draggable object.
    * @param {number} index
    */
-   constructor(codeLine, draggable, index) {
-
-    super()
-    
+  function Draggable(codeLine, draggable, index) {
+    H5P.EventDispatcher.call(this);
     var self = this;
-    const $ = H5P.jQuery;
-
     self.codeLine = codeLine;
     self.insideDropzone = null;
     self.$draggable = $(draggable);
@@ -36,34 +30,37 @@ const DRAGGABLE_DROPPED = "h5p-drag-dropped";
     */
   }
 
+  Draggable.prototype = Object.create(H5P.EventDispatcher.prototype);
+  Draggable.prototype.constructor = Draggable;
+
   /**
    * Gets the index
    *
    * @return {number}
    */
-   getIndex() {
+  Draggable.prototype.getIndex = function () {
     return this.index;
-  }
+  };
 
   /**
    * Sets the index
    *
    * @param {number} index
-   * @returns {Draggable}
+   * @returns {H5P.TextDraggable}
    */
-   setIndex(index) {
-     this.index = index;
-     return this;
-   }
+  Draggable.prototype.setIndex = function (index) {
+    this.index = index;
+    return this;
+  };
 
   /**
    * Gets the initial index
    *
    * @return {number}
    */
-   getInitialIndex() {
+  Draggable.prototype.getInitialIndex = function () {
     return this.initialIndex;
-  }
+  };
 
 
   /**
@@ -72,86 +69,86 @@ const DRAGGABLE_DROPPED = "h5p-drag-dropped";
    * @param {number} index
    * @returns {boolean}
    */
-   hasInitialIndex(index) {
+  Draggable.prototype.hasInitialIndex = function (index) {
     return this.initialIndex === index;
-  }
+  };
 
   /**
    * Moves the draggable to the provided container.
    *
    * @param {jQuery} $container Container the draggable will append to.
    */
-   appendDraggableTo($container) {
+  Draggable.prototype.appendDraggableTo = function ($container) {
     this.$draggable.detach().css({left: 0, top: 0}).appendTo($container);
-  }
+  };
 
   /**
    * Reverts the draggable to its' provided container.
    *
    * @params {jQuery} $container The parent which the draggable will revert to.
    */
-   revertDraggableTo($container) {
+  Draggable.prototype.revertDraggableTo = function ($container) {
     // Prepend draggable to new container, but keep the offset,
     // then animate to new container's top:0, left:0
     this.$draggable.removeClass(DRAGGABLE_DROPPED);
     this.$draggable.detach()
-    .css({left: 0, top: 0})
-    .prependTo($container)
-    .animate({left: 0, top: 0});
-  }
+      .css({left: 0, top: 0})
+      .prependTo($container)
+      .animate({left: 0, top: 0});
+  };
 
   /**
    * Sets dropped feedback if the on the draggable if parameter is true.
    *
    * @params {Boolean} isDropped Decides whether the draggable has been dropped.
    */
-   toggleDroppedFeedback(isDropped) {
+  Draggable.prototype.toggleDroppedFeedback = function (isDropped) {
     if (isDropped) {
       this.$draggable.addClass(DRAGGABLE_DROPPED);
     } else {
       this.$draggable.removeClass(DRAGGABLE_DROPPED);
     }
-  }
+  };
 
   /**
    * Disables the draggable, making it immovable.
    */
-   disableDraggable() {
+  Draggable.prototype.disableDraggable = function () {
     this.$draggable.draggable({ disabled: true});
-  }
+  };
 
   /**
    * Enables the draggable, making it movable.
    */
-   enableDraggable() {
+  Draggable.prototype.enableDraggable = function () {
     this.$draggable.draggable({ disabled: false});
-  }
+  };
 
   /**
    * Gets the draggable jQuery object for this class.
    *
    * @returns {jQuery} Draggable item.
    */
-   getDraggableElement() {
+  Draggable.prototype.getDraggableElement = function () {
     return this.$draggable;
-  }
+  };
 
   /**
    * Update Draggables "aria label"
    * @param {String} label [description]
    */
-   updateAriaLabel(label) {
+  Draggable.prototype.updateAriaLabel = function (label) {
     this.$ariaLabel.html(label);
-  }
+  };
 
   /**
    * Gets the draggable element for this class.
    *
    * @returns {HTMLElement}
    */
-   getElement() {
+  Draggable.prototype.getElement = function () {
     return this.$draggable.get(0);
-  }
+  };
 
   /**
    * Removes this draggable from its dropzone, if it is contained in one,
@@ -159,7 +156,7 @@ const DRAGGABLE_DROPPED = "h5p-drag-dropped";
    *
    * @returns {Droppable}
    */
-   removeFromZone() {
+  Draggable.prototype.removeFromZone = function () {
     var dropZone = this.insideDropzone;
 
     if (this.insideDropzone !== null) {
@@ -171,14 +168,14 @@ const DRAGGABLE_DROPPED = "h5p-drag-dropped";
     this.insideDropzone = null;
 
     return dropZone;
-  }
+  };
 
   /**
    * Adds this draggable to the given dropzone.
    *
    * @param {Droppable} droppable The droppable this draggable will be added to.
    */
-   addToZone(droppable) {
+  Draggable.prototype.addToZone = function (droppable) {
     if (this.insideDropzone !== null) {
       this.insideDropzone.removeDraggable();
     }
@@ -186,71 +183,73 @@ const DRAGGABLE_DROPPED = "h5p-drag-dropped";
     this.insideDropzone = droppable;
     this.setShortFormat();
     this.trigger('addedToZone');
-  }
+  };
 
   /**
    * Gets the code line for this draggable.
    *
    * @returns {String} The code line object in this draggable.
    */
-   getCodeLine() {
+  Draggable.prototype.getCodeLine = function () {
     return this.codeLine;
-  }
+  };
 
   /**
    * Gets the answer text for this draggable.
    *
    * @returns {String} The answer text in this draggable.
    */
-   getAnswerText() {
+  Draggable.prototype.getAnswerText = function () {
     return this.codeLine.code;
-  }
+  };
 
   /**
    * Sets short format of draggable when inside a dropbox.
    */
-   setShortFormat() {
+  Draggable.prototype.setShortFormat = function () {
     /* short form not currently used
     this.$draggable.html(this.shortFormat);
     short form current loses a11y labels
     */
-  }
+  };
 
   /**
    * Get short format of draggable when inside a dropbox.
    *
    * @returns {String|*}
    */
-   getShortFormat() {
+  Draggable.prototype.getShortFormat = function () {
     return this.shortFormat;
-  }
+  };
 
   /**
    * Removes the short format of draggable when it is outside a dropbox.
    */
-   removeShortFormat() {
+  Draggable.prototype.removeShortFormat = function () {
     /* short form not currently used
     this.$draggable.html(this.codeLine.code);
     */
-  }
+  };
 
   /**
    * Get the droppable this draggable is inside
    *
    * @returns {Droppable} Droppable
    */
-   getInsideDropzone() {
+  Draggable.prototype.getInsideDropzone = function () {
     return this.insideDropzone;
-  }
+  };
 
   /**
    * Returns true if inside dropzone
    *
    * @returns {boolean}
    */
-   isInsideDropZone() {
+  Draggable.prototype.isInsideDropZone = function () {
     return !!this.insideDropzone;
-  }
-}
+  };
 
+  return Draggable;
+})(H5P.jQuery);
 
+export default H5P.TextDraggable;

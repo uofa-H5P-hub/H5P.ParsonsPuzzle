@@ -1,13 +1,15 @@
+var UofAParsons = UofAParsons || {};
+
 /**
   * UofAParsons.CodeLine module
   */
-class CodeLine {
+UofAParsons.CodeLine = (function () {
 
 
   /**
    * Initialize module.
    *
-   * @class CodeLine
+   * @class UofAParsons.CodeLine
    *
    * @param {string} codeString text of code line
    * @param {Number} lineNo the location of this line in the code
@@ -16,7 +18,7 @@ class CodeLine {
    * @returns {Object} CodeLine Code Line instance
    */
 
-  constructor(codeString, lineNo, defaultIndentation) {
+  var CodeLine = function(codeString, lineNo, defaultIndentation) {
     const trimRegexp = /^\s*(.*?)\s*$/;
 
     this.code = "";
@@ -47,7 +49,7 @@ class CodeLine {
     *
     * @returns {string} HTML representation of code with indentation
     */
-  htmlIndent() {
+  CodeLine.prototype.htmlIndent = function() {
     var tmp = "";
     for (let i = 0; i < this.indent * this.defaultIndentation; i++) {
       tmp += "&nbsp;"
@@ -55,7 +57,7 @@ class CodeLine {
     return tmp + this.code;
   }
 
-  clone() {
+  CodeLine.prototype.clone = function() {
     var cl = new CodeLine(this.code);
     cl.indent = this.indent;
     cl.lineNo = this.lineNo;
@@ -63,6 +65,7 @@ class CodeLine {
     cl.defaultIndentation = this.defaultIndentation;
     return cl;
   };
-};
+  return CodeLine;
+})();
 
-export default CodeLine;
+export default UofAParsons.CodeLine;
