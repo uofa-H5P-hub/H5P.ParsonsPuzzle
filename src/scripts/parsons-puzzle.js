@@ -371,12 +371,12 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     //Show Solution button
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
-        droppable.showSolution();
+        // droppable.showSolution();
         droppable.showFeedback();
       });
      
       // feedback for wrong order
-      self.check_wrong_order();
+      // self.check_wrong_order();
       // if (totallines == save_ret.solutions.length) {
       //   if (wrong_order) {
       //     error.push(error_no + ". " + self.params.order + "</br>");
@@ -385,6 +385,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       // }
       // feedback for wrong indentation
       self.check_indent();
+      console.log("2");
       // if (wrong_indent) {
       //   error.push(error_no + ". " + self.params.linesNoMatching + "</br>");
         
@@ -405,35 +406,34 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       self.stopWatch.reset();
       self.resetTask();
       self.$draggables.css('display','inline');
-    //   self.hideButton('try-again');
-    // }, self.initShowTryAgainButton || false, {
-    //   'aria-label': self.params.a11yRetry,
+      self.hideButton('try-again');
+    }, self.initShowTryAgainButton || false, {
+      'aria-label': self.params.a11yRetry,
     });
   };
 
   ParsonsPuzzle.prototype.check_indent = function() {
     var self = this;
     self.droppables.forEach(function (droppable) {
+      droppable.isCorrect();
       if (!droppable.check) {
-        if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText())) {
-          wrong_indent = true;
-          this.droppable.error.push(self.params.linesNoMatching);
+        if (droppable.containedDraggable != null) {
+          droppable.error.push(self.params.linesNoMatching);
         }
       }
     });
   };
 
-  ParsonsPuzzle.prototype.check_wrong_order = function() {
-    var self = this;
-    self.droppables.forEach(function (droppable) {
-      if (!droppable.check) {
-        if (!droppable.isCorrect_noIndent()) {
-          wrong_order = true;
-          this.droppable.error.push(self.params.order);
-        }
-      }
-    });
-  };
+  // ParsonsPuzzle.prototype.check_wrong_order = function() {
+  //   var self = this;
+  //   self.droppables.forEach(function (droppable) {
+  //     if (!droppable.check) {
+  //       if (!droppable.isCorrect_noIndent()) {
+  //         this.droppable.error.push(self.params.order);
+  //       }
+  //     }
+  //   });
+  // };
   // ParsonsPuzzle.prototype.showFeedback = function () {
   //   var self = this;
 
@@ -663,7 +663,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       //Hide buttons and disable task
       this.hideButton('check-answer');
       this.hideButton('show-solution');
-      this.hideButton('try-again');
+      // this.hideButton('try-again');
       this.disableDraggables();
     }
     this.trigger('resize');
@@ -707,6 +707,13 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    ParsonsPuzzle.prototype.hideAllSolutions = function () {
     this.droppables.forEach(function (droppable) {
       droppable.hideSolution();
+    });
+    this.trigger('resize');
+  };
+
+  ParsonsPuzzle.prototype.hideAllFeedbacks = function () {
+    this.droppables.forEach(function (droppable) {
+      droppable.hideFeedback();
     });
     this.trigger('resize');
   };
@@ -765,7 +772,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     });
 
     self.shuffleAndAddDraggables(self.$draggables);
-    self.$showFeedback.appendTo(self.$wordContainer).hide();
     self.$draggables.appendTo(self.$taskContainer);
     self.$wordContainer.appendTo(self.$taskContainer);
     self.$taskContainer.appendTo($container);
@@ -1233,6 +1239,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.droppables.forEach(function (droppable) {
       droppable.addFeedback();
       droppable.showSolution();
+
     });
 
     this.removeAllDroppablesFromControls();
@@ -1269,6 +1276,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       self.showButton('check-answer');
     }
     self.hideAllSolutions();
+    self.hideAllFeedbacks();
     this.trigger('resize');
   };
 

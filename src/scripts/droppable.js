@@ -41,6 +41,7 @@ export default class Droppable {
     self.index = index;
     self.params = params;
     self.error= [];
+    self.check= false;
     if (self.params.indentBy2) {
       self.indentSpaces = 2;
     }
@@ -100,9 +101,10 @@ export default class Droppable {
     * Displays the feedback next to the drop box if it is not correct.
    */
    showFeedback() {
-    const correct = this.isCorrect();
+    this.isCorrect();
+    const correct = this.check;
     if (!correct) {
-        this.$showFeedback.html("sssss.");
+        this.$showFeedback.html(this.error);
         this.$dropzone.css('padding-left', 0);
         this.$showFeedback.css('padding-left', 0);
         this.$showFeedback.css('margin-left', 0);
@@ -156,6 +158,13 @@ export default class Droppable {
     this.$showSolution.hide();
   }
 
+  /**
+   * Hides the solution.
+   */
+   hideFeedback() {
+    this.$showFeedback.html('');
+    this.$showFeedback.hide();
+  }
   /**
    * Returns the html element
    *
@@ -239,12 +248,10 @@ export default class Droppable {
    * @returns {boolean} True if this box has the correct answer.
    */
    isCorrect() {
-    if (this.containedDraggable === null) {
-      return false;
-    }
     var solution = this.solution;
-
-    return solution.code === this.text && solution.indent == this.indent;
+    if(this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent){
+       this.check =true;
+    }
   }
 
   isCorrect_noIndent(){
@@ -373,18 +380,8 @@ export default class Droppable {
   /**
    * Removes all CSS styling feedback for this drop  *  * box.
    */
-   removeFeedback() {
-    this.$dropzone.removeClass(WRONG_FEEDBACK).removeClass(CORRECT_FEEDBACK);
-
-
-    //Draggable feedback
-    if (this.containedDraggable !== null) {
-      this.containedDraggable.getDraggableElement().removeClass(DRAGGABLE_FEEDBACK_WRONG).removeClass(DRAGGABLE_FEEDBACK_CORRECT);
-    }
-
-    var newWidth = this.$dropzone.prop('style').width - 2;
-    this.$dropzone.css('width', newWidth + 'ch');
-  }
+   
+  
 
   /**
    * Returns true if the dropzone has visible feedback
