@@ -57,14 +57,26 @@
   {
     "label": "Code Block",
     "name": "codeBlock",
-    "type": "text",
+    "description": "Enter the correct code here. Distractor lines can be added by typing #distractor at the end of the line.",
+    "type": "group",
     "widget": "codeEditor",
-    "codeEditor": {
-      "language": "python",
-      "spacing": 4,
-      "placeholder": "def is_true(boolean_value):\n    if boolean_value:\n        return True\n    return False\n    return true #distractor\n"
-    },
-    "description": "Enter the correct code here. Distractor lines can be added by typing #distractor at the end of the line."
+    "fields": [
+      {
+        "name": "code",
+        "type": "text",
+        "default": "def is_true(boolean_value):\n    if boolean_value:\n        return True\n    return False\n    return true #distractor\n"
+      },
+      {
+        "name": "language",
+        "type": "text",
+        "default": "python"
+      },
+      {
+        "name": "spacing",
+        "type": "number",
+        "default": 4
+      }
+    ]
   },
   {
     "label": "Language",
