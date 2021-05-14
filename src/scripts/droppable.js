@@ -2,6 +2,7 @@ import Util from './util';
 
 //Special Sub-containers:
 const SHOW_SOLUTION_CONTAINER = "h5p-drag-show-solution-container";
+const SHOW_FEEDBACK_CONTAINER = "h5p-drag-show-feedback-container";
 
 //CSS Dropzone feedback:
 const CORRECT_FEEDBACK = 'h5p-drag-correct-feedback';
@@ -31,7 +32,7 @@ export default class Droppable {
 
     self.solution = solution;
 
-    self.text = ""; // current text
+    self.text = solution.code; // current text
     self.indent = 0;
     self.lastIndent = 0;
     self.indentSpaces = 4;
@@ -39,6 +40,7 @@ export default class Droppable {
     self.tip = tip;
     self.index = index;
     self.params = params;
+    self.error= [];
     if (self.params.indentBy2) {
       self.indentSpaces = 2;
     }
@@ -75,6 +77,10 @@ export default class Droppable {
       'class': 'correct-answer'
     });
 
+    self.$showFeedback = $('<div/>', {
+      'class': SHOW_FEEDBACK_CONTAINER
+    }).appendTo(self.$dropzoneContainer).hide();
+
     self.$showSolution = $('<div/>', {
       'class': SHOW_SOLUTION_CONTAINER
     }).appendTo(self.$dropzoneContainer).hide();
@@ -89,6 +95,23 @@ export default class Droppable {
       }
     },0)
   }
+
+  /**
+    * Displays the feedback next to the drop box if it is not correct.
+   */
+   showFeedback() {
+    const correct = this.isCorrect();
+    if (!correct) {
+        this.$showFeedback.html("sssss.");
+        this.$dropzone.css('padding-left', 0);
+        this.$showFeedback.css('padding-left', 0);
+        this.$showFeedback.css('margin-left', 0);
+    }
+
+    this.$showFeedback.prepend(correct ? this.$correctText : this.$incorrectText);
+    this.$showFeedback.toggleClass('incorrect', !correct); 
+    this.$showFeedback.show();
+  };
 
   /**
    * Displays the solution next to the drop box if it is not correct.
@@ -106,6 +129,24 @@ export default class Droppable {
     this.$showSolution.toggleClass('incorrect', !correct);
     this.$showSolution.show();
   }
+  /**
+   * Displays the solution next to the drop box if it is not correct.
+   */
+  //  showFeedback() {
+  //   const correct = this.isCorrect();
+  //   const self = this;
+  //   if (!correct) {
+  //     // this.$showFeedback.html(this.solution.htmlIndent(),this.droppables.error);
+  //     this.$showFeedback.html(this.error);
+  //     this.$dropzone.css('padding-left',0);
+  //     this.$showFeedback.css('padding-left',0);
+  //     this.$showFeedback.css('margin-left',0);
+  //   }
+
+  //   this.$showFeedback.prepend(correct ? this.$correctText : this.$incorrectText);
+  //   this.$showFeedback.toggleClass('incorrect', !correct);
+  //   this.$showFeedback.show();
+  // }
 
   /**
    * Hides the solution.
@@ -187,6 +228,8 @@ export default class Droppable {
     this.$dropzone.css('padding-left',"");
     this.$showSolution.css('padding-left',"");
     this.$showSolution.css('margin-left',"");
+    this.$showFeedback.css('padding-left',"");
+    this.$showFeedback.css('margin-left',"");
     this.$dropzone.show();
   }
 
@@ -203,6 +246,24 @@ export default class Droppable {
 
     return solution.code === this.text && solution.indent == this.indent;
   }
+
+  isCorrect_noIndent(){
+    if(this.containedDraggable === null){
+      return false;
+    }
+    var solution = this.solution;
+    return solution.code === this.text;
+  }
+
+  isCorrect_noText(){
+    if(this.containedDraggable === null){
+      return false;
+    }
+    var solution = this.solution;
+    var answerIndentation = solution.indent;
+    return answerIndentation === this.indent;
+  }
+
 
   /**
    * Places draggables at the nearest indentation to drop location.
@@ -392,6 +453,15 @@ export default class Droppable {
    */
    getIndent()  {
     return this.indent;
+  }
+
+ /**
+   * Return the error of the dropzone contents.
+   *
+   * @returns {[]}
+   */
+  getError()  {
+    return this.error;
   }
 }
 

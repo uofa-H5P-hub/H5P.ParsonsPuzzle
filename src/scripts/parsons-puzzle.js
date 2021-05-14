@@ -53,6 +53,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   var WORDS_CONTAINER = "h5p-drag-droppable-words";
   var DROPZONE_CONTAINER = "h5p-drag-dropzone-container";
   var DRAGGABLES_CONTAINER = "h5p-drag-draggables-container";
+  var SHOW_FEEDBACK_CONTAINER = "h5p-drag-show-feedback-container";
   var CODE_LINE = "h5p-drag-code";
 
   /**
@@ -371,7 +372,25 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
         droppable.showSolution();
+        droppable.showFeedback();
       });
+     
+      // feedback for wrong order
+      self.check_wrong_order();
+      // if (totallines == save_ret.solutions.length) {
+      //   if (wrong_order) {
+      //     error.push(error_no + ". " + self.params.order + "</br>");
+          
+      //   }
+      // }
+      // feedback for wrong indentation
+      self.check_indent();
+      // if (wrong_indent) {
+      //   error.push(error_no + ". " + self.params.linesNoMatching + "</br>");
+        
+      // }
+
+
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
       self.disableDraggables();
       self.$draggables.css('display','none');
@@ -386,11 +405,45 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       self.stopWatch.reset();
       self.resetTask();
       self.$draggables.css('display','inline');
-      self.hideButton('try-again');
-    }, self.initShowTryAgainButton || false, {
-      'aria-label': self.params.a11yRetry,
+    //   self.hideButton('try-again');
+    // }, self.initShowTryAgainButton || false, {
+    //   'aria-label': self.params.a11yRetry,
     });
   };
+
+  ParsonsPuzzle.prototype.check_indent = function() {
+    var self = this;
+    self.droppables.forEach(function (droppable) {
+      if (!droppable.check) {
+        if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText())) {
+          wrong_indent = true;
+          this.droppable.error.push(self.params.linesNoMatching);
+        }
+      }
+    });
+  };
+
+  ParsonsPuzzle.prototype.check_wrong_order = function() {
+    var self = this;
+    self.droppables.forEach(function (droppable) {
+      if (!droppable.check) {
+        if (!droppable.isCorrect_noIndent()) {
+          wrong_order = true;
+          this.droppable.error.push(self.params.order);
+        }
+      }
+    });
+  };
+  // ParsonsPuzzle.prototype.showFeedback = function () {
+  //   var self = this;
+
+  //   self.$showFeedback.html(this.droppables.error);
+  //   self.$showFeedback.css('padding-left', 0);
+  //   self.$showFeedback.css('margin-left', 0);
+
+  //   self.$showFeedback.addClass('incorrect');
+  //   self.$showFeedback.show();
+  // };
 
   /**
    * Removes keyboard support for all elements left in the draggables
@@ -658,6 +711,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.trigger('resize');
   };
 
+
   ParsonsPuzzle.prototype.hideDraggables = function() {
     this.$draggables.css('display', 'none');
     this.trigger('resize');
@@ -686,6 +740,10 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       'class': WORDS_CONTAINER
     });
 
+    self.$showFeedback = $('<div/>', {
+      'class': SHOW_FEEDBACK_CONTAINER
+    });
+
     const parser = new CodeParser(2);
     const ret = parser.parse(self.codeBlock, self.indentationSpacing);
 
@@ -707,6 +765,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     });
 
     self.shuffleAndAddDraggables(self.$draggables);
+    self.$showFeedback.appendTo(self.$wordContainer).hide();
     self.$draggables.appendTo(self.$taskContainer);
     self.$wordContainer.appendTo(self.$taskContainer);
     self.$taskContainer.appendTo($container);

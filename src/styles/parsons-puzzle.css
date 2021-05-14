@@ -187,6 +187,22 @@
   margin-left: 0.5em;
 }
 
+/* Show solution container */
+.h5p-parsons-puzzle .h5p-drag-show-feedback-container {
+  position: relative;
+  display: inline;
+  float: left;
+}
+
+.h5p-parsons-puzzle .h5p-drag-show-feedback-container.incorrect {
+  color: #255c41;
+  font-weight: bold;
+  border: 1px #255c41 dashed;
+  background-color: #d4f6e6;
+  padding: 0.15em;
+  margin-left: 0.5em;
+}
+
 .h5p-parsons-puzzle .h5p-drag-droppable-words {
   background-color: lightyellow;
   height: fit-content;
