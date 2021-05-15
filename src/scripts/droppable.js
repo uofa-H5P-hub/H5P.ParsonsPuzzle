@@ -253,6 +253,7 @@ export default class Droppable {
     if(this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent){
        this.check =true;
     }
+    return this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent;
   }
 
   isCorrect_noIndent(){
