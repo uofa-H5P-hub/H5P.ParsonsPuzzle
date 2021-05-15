@@ -371,7 +371,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     //Show Solution button
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
-        // droppable.showSolution();
+        droppable.showSolution();
        // feedback for wrong indentation
       self.check_indent();
       console.log("2"); 
@@ -402,25 +402,16 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     var self = this;
     self.droppables.forEach(function (droppable) {
       droppable.isCorrect();
+      droppable.error=[];
       if (!droppable.check) {
-        if (droppable.containedDraggable != null) {
+        if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText())) {
           droppable.error.push(self.params.linesNoMatching);
+        }else{
+          droppable.error=[];
         }
       }
     });
   };
-
-  
-  // ParsonsPuzzle.prototype.showFeedback = function () {
-  //   var self = this;
-
-  //   self.$showFeedback.html(this.droppables.error);
-  //   self.$showFeedback.css('padding-left', 0);
-  //   self.$showFeedback.css('margin-left', 0);
-
-  //   self.$showFeedback.addClass('incorrect');
-  //   self.$showFeedback.show();
-  // };
 
   /**
    * Removes keyboard support for all elements left in the draggables
@@ -1227,6 +1218,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.hideButton('show-solution');
     this.hideButton('check-answer');
 
+    this.hideAllFeedbacks();
     this.trigger('resize');
   };
 
@@ -1255,6 +1247,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     }
     self.hideAllSolutions();
     self.hideAllFeedbacks();
+    console.log("CLEAR ERROR");
     this.trigger('resize');
   };
 

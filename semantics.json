@@ -388,7 +388,7 @@
     "importance": "low",
     "optional": true,
     "common": true,
-    "default": "Based on language syntax, the highlighted fragment is not correctly indented."
+    "default": "The highlighted fragment is not correctly indented."
   },
   {
     "name": "noMatchingOpen",

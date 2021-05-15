@@ -97,24 +97,7 @@ export default class Droppable {
     },0)
   }
 
-  /**
-    * Displays the feedback next to the drop box if it is not correct.
-   */
-   showFeedback() {
-    this.isCorrect();
-    const correct = this.check;
-    if (!correct) {
-        this.$showFeedback.html(this.error);
-        this.$dropzone.css('padding-left', 0);
-        this.$showFeedback.css('padding-left', 0);
-        this.$showFeedback.css('margin-left', 0);
-    }
-
-    this.$showFeedback.prepend(correct ? this.$correctText : this.$incorrectText);
-    this.$showFeedback.toggleClass('incorrect', !correct); 
-    this.$showFeedback.show();
-  };
-
+  
   /**
    * Displays the solution next to the drop box if it is not correct.
    */
@@ -131,6 +114,24 @@ export default class Droppable {
     this.$showSolution.toggleClass('incorrect', !correct);
     this.$showSolution.show();
   }
+   /**
+    * Displays the feedback next to the drop box if it is not correct.
+   */
+    showFeedback() {
+      self=this;
+      self.isCorrect();
+      const correct = self.check;
+      if (!correct) {
+          self.$showFeedback.html(self.error);
+          self.$dropzone.css('padding-left', 0);
+          self.$showFeedback.css('padding-left', 0);
+          self.$showFeedback.css('margin-left', 0);
+      }
+  
+      self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
+      self.$showFeedback.toggleClass('incorrect', !correct); 
+      self.$showFeedback.show();
+    };
   /**
    * Displays the solution next to the drop box if it is not correct.
    */
@@ -163,9 +164,10 @@ export default class Droppable {
    */
    hideFeedback() {
     this.$showFeedback.html('');
-    this.error=[];
     this.$showFeedback.hide();
   }
+
+  
   /**
    * Returns the html element
    *
@@ -256,15 +258,17 @@ export default class Droppable {
     return this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent;
   }
 
-  isCorrect_noIndent(){
-    if(this.containedDraggable === null){
+ 
+  isCorrect_noText() {
+    if (this.containedDraggable === null) {
       return false;
     }
     var solution = this.solution;
-    return solution.code === this.text;
+    var answerIndentation = solution.indent; 
+
+    return answerIndentation == this.indent;
   }
 
-  
 
 
   /**
