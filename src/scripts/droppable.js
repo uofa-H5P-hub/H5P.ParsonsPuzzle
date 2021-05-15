@@ -26,7 +26,7 @@ export default class Droppable {
    * @param {number} index.
    * @param {Object} params Behavior settings
    */
-   constructor(solution, tip, dropzone, dropzoneContainer, index, params) {
+  constructor(solution, tip, dropzone, dropzoneContainer, index, params) {
     var self = this;
     const $ = H5P.jQuery;
 
@@ -40,8 +40,8 @@ export default class Droppable {
     self.tip = tip;
     self.index = index;
     self.params = params;
-    self.error= [];
-    self.check= false;
+    self.error = [];
+    self.check = false;
     if (self.params.indentBy2) {
       self.indentSpaces = 2;
     }
@@ -49,13 +49,13 @@ export default class Droppable {
     /**
      * @type {Draggable}
      */
-     self.containedDraggable = null;
-     self.lastContainedDraggable = null;
-     
-     self.$dropzone = $(dropzone);
-     self.$dropzoneContainer = $(dropzoneContainer);
+    self.containedDraggable = null;
+    self.lastContainedDraggable = null;
 
-     if (self.tip) {
+    self.$dropzone = $(dropzone);
+    self.$dropzoneContainer = $(dropzoneContainer);
+
+    if (self.tip) {
       self.$tip = H5P.JoubelUI.createTip(self.tip, {
         tipLabel: self.params.tipLabel,
         tabcontrol: true
@@ -91,52 +91,52 @@ export default class Droppable {
     const self = this;
 
     setTimeout(() => {
-      if(!self.$dropzone.is(':focus') && !self.$tip.is(':focus')){
+      if (!self.$dropzone.is(':focus') && !self.$tip.is(':focus')) {
         self.$tip.attr('tabindex', '-1');
       }
-    },0)
+    }, 0)
   }
 
-  
+
   /**
    * Displays the solution next to the drop box if it is not correct.
    */
-   showSolution() {
+  showSolution() {
     const correct = this.isCorrect();
     if (!correct) {
       this.$showSolution.html(this.solution.htmlIndent());
-      this.$dropzone.css('padding-left',0);
-      this.$showSolution.css('padding-left',0);
-      this.$showSolution.css('margin-left',0);
+      this.$dropzone.css('padding-left', 0);
+      this.$showSolution.css('padding-left', 0);
+      this.$showSolution.css('margin-left', 0);
     }
 
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
     this.$showSolution.toggleClass('incorrect', !correct);
     this.$showSolution.show();
   }
-   /**
-    * Displays the feedback next to the drop box if it is not correct.
-   */
-    showFeedback() {
-      self=this;
-      self.isCorrect();
-      const correct = self.check;
-      if (!correct) {
-          self.$showFeedback.html(self.error);
-          self.$dropzone.css('padding-left', 0);
-          self.$showFeedback.css('padding-left', 0);
-          self.$showFeedback.css('margin-left', 5);
-      }
-  
-      self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
-      self.$showFeedback.toggleClass('incorrect', !correct); 
-      self.$showFeedback.show();
-    };
+  /**
+   * Displays the feedback next to the drop box if it is not correct.
+  */
+  showFeedback() {
+    self = this;
+    self.isCorrect();
+    const correct = self.check;
+    if (!correct) {
+      self.$showFeedback.html(self.error);
+      self.$dropzone.css('padding-left', 0);
+      self.$showFeedback.css('padding-left', 0);
+      self.$showFeedback.css('margin-left', 5);
+    }
+
+    self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
+    self.$showFeedback.toggleClass('incorrect', !correct);
+    self.$showFeedback.show();
+  };
 
   /**
    * Hides the solution.
    */
-   hideSolution() {
+  hideSolution() {
     this.$showSolution.html('');
     this.$showSolution.hide();
   }
@@ -144,18 +144,18 @@ export default class Droppable {
   /**
    * Hides the feedback.
    */
-   hideFeedback() {
+  hideFeedback() {
     this.$showFeedback.html('');
     this.$showFeedback.hide();
   }
 
-  
+
   /**
    * Returns the html element
    *
    * @return {HTMLElement}
    */
-   getElement() {
+  getElement() {
     return this.$dropzone.get(0);
   }
 
@@ -164,7 +164,7 @@ export default class Droppable {
    *
    * @param {jQuery} $container Container which the dropzone will be appended to.
    */
-   appendDroppableTo($container) {
+  appendDroppableTo($container) {
     this.$dropzoneContainer.appendTo($container);
   }
 
@@ -176,7 +176,7 @@ export default class Droppable {
    *
    * @return {Draggable}
    */
-   appendInsideDroppableTo($container) {
+  appendInsideDroppableTo($container) {
     if (this.containedDraggable !== null) {
       this.containedDraggable.revertDraggableTo($container);
       return this.containedDraggable;
@@ -188,7 +188,7 @@ export default class Droppable {
    *
    * @param {Draggable} droppedDraggable A draggable that has been dropped on this box.
    */
-   setDraggable(droppedDraggable) {
+  setDraggable(droppedDraggable) {
 
     var self = this;
 
@@ -202,14 +202,14 @@ export default class Droppable {
    *
    * @return {boolean}
    */
-   hasDraggable() {
+  hasDraggable() {
     return !!this.containedDraggable;
   }
 
   /**
    * Removes the contained draggable in this box.
    */
-   removeDraggable() {
+  removeDraggable() {
     if (this.containedDraggable !== null) {
       this.lastContainedDraggable = this.containedDraggable;
       this.lastIndent = this.indent;
@@ -219,11 +219,11 @@ export default class Droppable {
       this.text = "";
     }
 
-    this.$dropzone.css('padding-left',"");
-    this.$showSolution.css('padding-left',"");
-    this.$showSolution.css('margin-left',"");
-    this.$showFeedback.css('padding-left',"");
-    this.$showFeedback.css('margin-left',"");
+    this.$dropzone.css('padding-left', "");
+    this.$showSolution.css('padding-left', "");
+    this.$showSolution.css('margin-left', "");
+    this.$showFeedback.css('padding-left', "");
+    this.$showFeedback.css('margin-left', "");
     this.$dropzone.show();
   }
 
@@ -232,21 +232,21 @@ export default class Droppable {
    *
    * @returns {boolean} True if this box has the correct answer.
    */
-   isCorrect() {
+  isCorrect() {
     var solution = this.solution;
-    if(this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent){
-       this.check =true;
+    if (this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent) {
+      this.check = true;
     }
     return this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent;
   }
 
- 
+
   isCorrect_noText() {
     if (this.containedDraggable === null) {
       return false;
     }
     var solution = this.solution;
-    var answerIndentation = solution.indent; 
+    var answerIndentation = solution.indent;
 
     return answerIndentation == this.indent;
   }
@@ -255,7 +255,7 @@ export default class Droppable {
     if (this.containedDraggable === null) {
       return false;
     }
-    var solution = this.solution; 
+    var solution = this.solution;
 
     return solution.code === this.text;
   }
@@ -264,13 +264,13 @@ export default class Droppable {
   /**
    * Places draggables at the nearest indentation to drop location.
    **/
-   layout() {
+  layout() {
     // set to draggable to top of droppable
     this.containedDraggable.getDraggableElement().css('top', 0);
 
     // set draggable to nearest indent
     var newOffset = this.containedDraggable.getDraggableElement().offset().left;
-    
+
     // if dragged beyond left edge, set to left edge
     if (newOffset < this.$dropzone.offset().left) {
       this.indent = 0;
@@ -278,29 +278,29 @@ export default class Droppable {
       this.containedDraggable.getDraggableElement().css('left', 0);
     }
     else {
-      if (this.currentLeft < newOffset ) {
-       while (this.currentLeft < newOffset) {
-         this.shiftRight();
-       }
-     }
-     else {
-      while (this.currentLeft > newOffset && this.indent > 0) {
-       this.shiftLeft();
-     }
-   }
- }
- this.resize();
-}
+      if (this.currentLeft < newOffset) {
+        while (this.currentLeft < newOffset) {
+          this.shiftRight();
+        }
+      }
+      else {
+        while (this.currentLeft > newOffset && this.indent > 0) {
+          this.shiftLeft();
+        }
+      }
+    }
+    this.resize();
+  }
 
-/** 
- * Moves draggable one indentation level to the left
- **/
- shiftLeft() {
-  if( this.indent >= 1 ){
-    this.indent = this.indent - 1;
-    var shift = this.indent * this.indentSpaces;
-    this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
-    this.currentLeft = this.containedDraggable.getDraggableElement().offset().left;
+  /** 
+   * Moves draggable one indentation level to the left
+   **/
+  shiftLeft() {
+    if (this.indent >= 1) {
+      this.indent = this.indent - 1;
+      var shift = this.indent * this.indentSpaces;
+      this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
+      this.currentLeft = this.containedDraggable.getDraggableElement().offset().left;
       // if the draggable does not reach the edge of the drop zone, 
       // expand the width of the draggable to fit
       this.resize();
@@ -310,7 +310,7 @@ export default class Droppable {
   /** 
    * Moves draggable one indentation level to the right
    **/
-   shiftRight() {
+  shiftRight() {
     this.indent = this.indent + 1;
     var shift = this.indent * this.indentSpaces;
     this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
@@ -324,9 +324,9 @@ export default class Droppable {
   /**
    * Adjusts the width of the draggable to fit within the dropzone
    **/
-   resize() {
+  resize() {
 
-    var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left  + this.containedDraggable.getDraggableElement().width();
+    var draggableRightEdge = this.containedDraggable.getDraggableElement().offset().left + this.containedDraggable.getDraggableElement().width();
     var containerRightEdge = this.$dropzone.offset().left + this.$dropzone.width();
     var variance = containerRightEdge - draggableRightEdge;
 
@@ -339,7 +339,7 @@ export default class Droppable {
   /**
    * Sets CSS styling feedback for this drop box.
    */
-   addFeedback() {
+  addFeedback() {
 
     //Draggable is correct
     if (this.isCorrect()) {
@@ -369,7 +369,7 @@ export default class Droppable {
   /**
    * Removes all CSS styling feedback for this drop  *  * box.
    */
-   removeFeedback() {
+  removeFeedback() {
     this.$dropzone.removeClass(WRONG_FEEDBACK).removeClass(CORRECT_FEEDBACK);
 
 
@@ -382,19 +382,19 @@ export default class Droppable {
     this.$dropzone.css('width', newWidth + 'ch');
   }
 
-   
+
 
   /**
    * Returns true if the dropzone has visible feedback
    */
-   hasFeedback() {
+  hasFeedback() {
     return this.$dropzone.hasClass(WRONG_FEEDBACK) || this.$dropzone.hasClass(CORRECT_FEEDBACK);
   }
 
   /**
    * Sets short format of draggable when inside a dropbox.
    */
-   setShortFormat() {
+  setShortFormat() {
     if (this.containedDraggable !== null) {
       this.containedDraggable.setShortFormat();
     }
@@ -403,24 +403,24 @@ export default class Droppable {
   /**
    * Disables dropzone and the contained draggable.
    */
-   disableDropzoneAndContainedDraggable() {
+  disableDropzoneAndContainedDraggable() {
     if (this.containedDraggable !== null) {
       this.containedDraggable.disableDraggable();
     }
-    this.$dropzone.droppable({ disabled: true});
+    this.$dropzone.droppable({ disabled: true });
   }
 
   /**
    * Enable dropzone.
    */
-   enableDropzone() {
-    this.$dropzone.droppable({ disabled: false});
+  enableDropzone() {
+    this.$dropzone.droppable({ disabled: false });
   }
 
   /**
    * Removes the short format of draggable when it is outside a dropbox.
    */
-   removeShortFormat() {
+  removeShortFormat() {
     if (this.containedDraggable !== null) {
       this.containedDraggable.removeShortFormat();
     }
@@ -431,7 +431,7 @@ export default class Droppable {
    *
    * @returns {jQuery} This object's dropzone.
    */
-   getDropzone() {
+  getDropzone() {
     return this.$dropzone;
   }
 
@@ -440,25 +440,25 @@ export default class Droppable {
    *
    * @returns {number}
    */
-   getIndex() {
+  getIndex() {
     return this.index;
   }
 
-    /**
-   * Return the level of indent of the dropzone contents.
-   *
-   * @returns {number}
-   */
-   getIndent()  {
+  /**
+ * Return the level of indent of the dropzone contents.
+ *
+ * @returns {number}
+ */
+  getIndent() {
     return this.indent;
   }
 
- /**
-   * Return the error of the dropzone contents.
-   *
-   * @returns {[]}
-   */
-  getError()  {
+  /**
+    * Return the error of the dropzone contents.
+    *
+    * @returns {[]}
+    */
+  getError() {
     return this.error;
   }
 }
