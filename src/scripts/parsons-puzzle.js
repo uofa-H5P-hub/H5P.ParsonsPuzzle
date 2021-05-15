@@ -372,26 +372,12 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
         // droppable.showSolution();
+       // feedback for wrong indentation
+      self.check_indent();
+      console.log("2"); 
         droppable.showFeedback();
       });
      
-      // feedback for wrong order
-      // self.check_wrong_order();
-      // if (totallines == save_ret.solutions.length) {
-      //   if (wrong_order) {
-      //     error.push(error_no + ". " + self.params.order + "</br>");
-          
-      //   }
-      // }
-      // feedback for wrong indentation
-      self.check_indent();
-      console.log("2");
-      // if (wrong_indent) {
-      //   error.push(error_no + ". " + self.params.linesNoMatching + "</br>");
-        
-      // }
-
-
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
       self.disableDraggables();
       self.$draggables.css('display','none');
@@ -424,16 +410,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     });
   };
 
-  // ParsonsPuzzle.prototype.check_wrong_order = function() {
-  //   var self = this;
-  //   self.droppables.forEach(function (droppable) {
-  //     if (!droppable.check) {
-  //       if (!droppable.isCorrect_noIndent()) {
-  //         this.droppable.error.push(self.params.order);
-  //       }
-  //     }
-  //   });
-  // };
+  
   // ParsonsPuzzle.prototype.showFeedback = function () {
   //   var self = this;
 
@@ -714,6 +691,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   ParsonsPuzzle.prototype.hideAllFeedbacks = function () {
     this.droppables.forEach(function (droppable) {
       droppable.hideFeedback();
+      droppable.error=[];
     });
     this.trigger('resize');
   };

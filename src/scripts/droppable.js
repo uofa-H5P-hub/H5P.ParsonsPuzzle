@@ -159,10 +159,11 @@ export default class Droppable {
   }
 
   /**
-   * Hides the solution.
+   * Hides the feedback.
    */
    hideFeedback() {
     this.$showFeedback.html('');
+    this.error=[];
     this.$showFeedback.hide();
   }
   /**
@@ -262,14 +263,7 @@ export default class Droppable {
     return solution.code === this.text;
   }
 
-  isCorrect_noText(){
-    if(this.containedDraggable === null){
-      return false;
-    }
-    var solution = this.solution;
-    var answerIndentation = solution.indent;
-    return answerIndentation === this.indent;
-  }
+  
 
 
   /**
@@ -380,8 +374,20 @@ export default class Droppable {
   /**
    * Removes all CSS styling feedback for this drop  *  * box.
    */
+   removeFeedback() {
+    this.$dropzone.removeClass(WRONG_FEEDBACK).removeClass(CORRECT_FEEDBACK);
+
+
+    //Draggable feedback
+    if (this.containedDraggable !== null) {
+      this.containedDraggable.getDraggableElement().removeClass(DRAGGABLE_FEEDBACK_WRONG).removeClass(DRAGGABLE_FEEDBACK_CORRECT);
+    }
+
+    var newWidth = this.$dropzone.prop('style').width - 2;
+    this.$dropzone.css('width', newWidth + 'ch');
+  }
+
    
-  
 
   /**
    * Returns true if the dropzone has visible feedback

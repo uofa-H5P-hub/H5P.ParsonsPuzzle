@@ -191,7 +191,7 @@
 .h5p-parsons-puzzle .h5p-drag-show-feedback-container {
   position: relative;
   display: inline;
-  float: left;
+  float: right;
 }
 
 .h5p-parsons-puzzle .h5p-drag-show-feedback-container.incorrect {
