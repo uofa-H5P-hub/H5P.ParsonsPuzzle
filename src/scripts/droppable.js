@@ -125,31 +125,13 @@ export default class Droppable {
           self.$showFeedback.html(self.error);
           self.$dropzone.css('padding-left', 0);
           self.$showFeedback.css('padding-left', 0);
-          self.$showFeedback.css('margin-left', 0);
+          self.$showFeedback.css('margin-left', 5);
       }
   
       self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
       self.$showFeedback.toggleClass('incorrect', !correct); 
       self.$showFeedback.show();
     };
-  /**
-   * Displays the solution next to the drop box if it is not correct.
-   */
-  //  showFeedback() {
-  //   const correct = this.isCorrect();
-  //   const self = this;
-  //   if (!correct) {
-  //     // this.$showFeedback.html(this.solution.htmlIndent(),this.droppables.error);
-  //     this.$showFeedback.html(this.error);
-  //     this.$dropzone.css('padding-left',0);
-  //     this.$showFeedback.css('padding-left',0);
-  //     this.$showFeedback.css('margin-left',0);
-  //   }
-
-  //   this.$showFeedback.prepend(correct ? this.$correctText : this.$incorrectText);
-  //   this.$showFeedback.toggleClass('incorrect', !correct);
-  //   this.$showFeedback.show();
-  // }
 
   /**
    * Hides the solution.
@@ -269,6 +251,14 @@ export default class Droppable {
     return answerIndentation == this.indent;
   }
 
+  isCorrect_noIndent() {
+    if (this.containedDraggable === null) {
+      return false;
+    }
+    var solution = this.solution; 
+
+    return solution.code === this.text;
+  }
 
 
   /**

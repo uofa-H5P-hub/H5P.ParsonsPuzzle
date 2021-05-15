@@ -391,6 +391,15 @@
     "default": "The highlighted fragment is not correctly indented."
   },
   {
+    "name": "linesWrong",
+    "label": "The codeline which is chosen is incorrect",
+    "type": "text",
+    "importance": "low",
+    "optional": true,
+    "common": true,
+    "default": "The codeline which is chosen is incorrect."
+  },
+  {
     "name": "noMatchingOpen",
     "label": "Feedback when code block is closed but not opened",
     "type": "text",

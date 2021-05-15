@@ -404,10 +404,12 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       droppable.isCorrect();
       droppable.error=[];
       if (!droppable.check) {
-        if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText())) {
+        if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
           droppable.error.push(self.params.linesNoMatching);
+        }else if (droppable.containedDraggable === null){
+          droppable.error.push(self.params.linesMissing);
         }else{
-          droppable.error=[];
+          droppable.error.push(self.params.linesWrong);
         }
       }
     });
@@ -1247,6 +1249,9 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     }
     self.hideAllSolutions();
     self.hideAllFeedbacks();
+    self.droppables.forEach(function(droppable){
+      droppable.error=[];
+    });
     console.log("CLEAR ERROR");
     this.trigger('resize');
   };
