@@ -373,9 +373,9 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       self.droppables.forEach(function (droppable) {
         droppable.showSolution();
        // feedback for wrong indentation
-      self.check_indent();
-      console.log("2"); 
+        self.check_indent();
         droppable.showFeedback();
+        console.log("showFeedback");
       });
      
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
@@ -412,6 +412,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
           droppable.error.push(self.params.linesWrong);
         }
       }
+      console.log("check the droppable's indent");
     });
   };
 
@@ -685,6 +686,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.droppables.forEach(function (droppable) {
       droppable.hideFeedback();
       droppable.error=[];
+      console.log("clear one error");
     });
     this.trigger('resize');
   };

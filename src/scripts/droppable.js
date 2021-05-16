@@ -102,7 +102,11 @@ export default class Droppable {
    * Displays the solution next to the drop box if it is not correct.
    */
    showSolution() {
-    const correct = this.isCorrect();
+    // const correct = this.isCorrect();
+    self=this;
+      self.check= false;
+      self.isCorrect();
+      const correct = self.check;
     if (!correct) {
       this.$showSolution.html(this.solution.htmlIndent());
       this.$dropzone.css('padding-left',0);
@@ -119,10 +123,12 @@ export default class Droppable {
    */
     showFeedback() {
       self=this;
+      self.check= false;
       self.isCorrect();
       const correct = self.check;
       if (!correct) {
           self.$showFeedback.html(self.error);
+          console.log("show-droppable-feedback");
           self.$dropzone.css('padding-left', 0);
           self.$showFeedback.css('padding-left', 0);
           self.$showFeedback.css('margin-left', 5);
