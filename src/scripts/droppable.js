@@ -102,7 +102,6 @@ export default class Droppable {
    * Displays the solution next to the drop box if it is not correct.
    */
    showSolution() {
-    // const correct = this.isCorrect();
     self=this;
       self.check= false;
       self.isCorrect();
