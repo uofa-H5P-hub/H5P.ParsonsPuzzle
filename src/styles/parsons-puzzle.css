@@ -195,10 +195,10 @@
 }
 
 .h5p-parsons-puzzle .h5p-drag-show-feedback-container.incorrect {
-  color: #a33f17;
+  color: #1879d3;
   font-weight: bold;
-  border: 1px #a33f17 dashed;
-  background-color: #f6d4e1;
+  border: 1px #1879d3 dashed;
+  background-color: #c7cce4;
   padding: 0.15em;
   margin-left: 0.5em;
 }

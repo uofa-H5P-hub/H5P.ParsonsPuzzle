@@ -635,6 +635,10 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       this.hideButton('check-answer');
       this.hideButton('show-solution');
       // this.hideButton('try-again');
+      if (this.params.behaviour.enableRetry) {
+        this.showButton('try-again');
+      }
+      console.log("show try again");
       this.disableDraggables();
     }
     this.trigger('resize');
@@ -1342,6 +1346,15 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
           self.initShowTryAgainButton = true;
         }
       }
+      // Show buttons if  max score and all answers filled
+      if (self.isAllAnswersFilled() && self.showEvaluation()) {
+
+        //Shows "retry" and "show solution" buttons.
+        if (self.params.behaviour.enableRetry) {
+          self.initShowTryAgainButton = true;
+        }
+      }
+
     }
   };
 
