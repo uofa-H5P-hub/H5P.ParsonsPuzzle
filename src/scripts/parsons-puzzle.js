@@ -399,11 +399,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     self.addButton('show-feedback', self.params.showFeedback, function () {
 
       // feedback for containing distractors
-      // self.check_distractor();
-      // if (contain_distractor) {
-      //   error.push(error_no + ". " + self.params.haveDistractor + "</br>");
-      //   error_no ++;
-      // }
+      self.check_distractor();
+      if (contain_distractor) {
+        error.push(error_no + ". " + self.params.haveDistractor + "</br>");
+        error_no ++;
+      }
       // feedback for wrong order
       self.check_wrong_order();
       if (totallines == save_ret.solutions.length) {
