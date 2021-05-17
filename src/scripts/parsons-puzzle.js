@@ -78,6 +78,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var index_correct_open = [];
   var index_correct_close = [];
   var block_mismatch = false;
+  var saved_distractors = [];
 
   /**
    * Initialize module.
@@ -512,12 +513,13 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   };
 
   ParsonsPuzzle.prototype.check_distractor = function() {
-    var self = this;
-    self.droppables.forEach(function (droppable) {
-      if (droppable.check) {
-        contain_distractor = true;
+    for (var i = 0; i < student_solution.length; i++) {
+      for (var j = 0; j < saved_distractors.length; j++) {
+        if (student_solution[i] == saved_distractors[j]) {
+          contain_distractor = true;
+        }
       }
-    });
+    }
   };
 
   ParsonsPuzzle.prototype.check_open_brackets = function() {
@@ -954,6 +956,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         const solution = "";
         const droppable = self.createDroppable(solution, solution.tip);
         droppable.check = true;
+        saved_distractors.push(codeLine.code);
         
         self.$wordContainer.append("</br>");
       } 
