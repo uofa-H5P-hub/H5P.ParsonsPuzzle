@@ -53,8 +53,9 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   var WORDS_CONTAINER = "h5p-drag-droppable-words";
   var DROPZONE_CONTAINER = "h5p-drag-dropzone-container";
   var DRAGGABLES_CONTAINER = "h5p-drag-draggables-container";
-  var SHOW_FEEDBACK_CONTAINER = "h5p-drag-show-feedback-container";
   var CODE_LINE = "h5p-drag-code";
+
+  var solution_max_score = 0;
 
   /**
    * Initialize module.
@@ -347,6 +348,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         self.answered = true;
         self.removeAllElementsFromDragControl();
 
+
         if (!self.showEvaluation()) {
           if (self.params.behaviour.enableRetry) {
             self.showButton('try-again');
@@ -371,7 +373,11 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     //Show Solution button
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
+        if(droppable.isDistractor ==true){
+          droppable.showSolution_distractor();
+        }else{
         droppable.showSolution();
+        }
        // feedback for wrong indentation
         self.check_indent();
         droppable.showFeedback();
@@ -399,16 +405,25 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   };
 
   ParsonsPuzzle.prototype.check_indent = function() {
-    var self = this;
-    self.droppables.forEach(function (droppable) {
+    
+    this.droppables.forEach(function (droppable) {
       droppable.isCorrect();
       droppable.error=[];
-      if (!droppable.check) {
+  
+      
+      // if the droppable is not correct
+      if(droppable.checkDistractor()){
+        droppable.error.push(self.params.codelineIsDistractor);
+        console.log("check the droppableIsDistractor");
+      }
+      if ((!droppable.check) && (!droppable.checkDistractor()) ){
         if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
           droppable.error.push(self.params.linesNoMatching);
-        }else if (droppable.containedDraggable === null){
+        }
+        else if (droppable.containedDraggable === null){
           droppable.error.push(self.params.linesMissing);
-        }else{
+        }
+        else{
           droppable.error.push(self.params.linesWrong);
         }
       }
@@ -617,7 +632,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.showExplanation();
 
     var score = this.calculateScore();
-    var maxScore = this.droppables.length;
+    var maxScore = solution_max_score;
 
     if (!skipXapi) {
       var xAPIEvent = this.createXAPIEventTemplate('answered');
@@ -724,12 +739,10 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       'class': WORDS_CONTAINER
     });
 
-    self.$showFeedback = $('<div/>', {
-      'class': SHOW_FEEDBACK_CONTAINER
-    });
 
     const parser = new CodeParser(2);
     const ret = parser.parse(self.codeBlock, self.indentationSpacing);
+    solution_max_score = ret.solutions.length;
 
     ret.codeLines.forEach(function (codeLine) {
       const draggable = self.createDraggable(codeLine);
@@ -744,6 +757,13 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
             self.instantFeedbackEvaluation();
           });
         }
+        self.$wordContainer.append("</br>");
+      }else{
+        const solution = "";
+        const droppable = self.createDroppable(solution, solution.tip);
+        droppable.isDistractor = true;
+        droppable.checkDistractor();
+        
         self.$wordContainer.append("</br>");
       }
     });
@@ -1438,7 +1458,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    ParsonsPuzzle.prototype.addResponseToXAPI = function (xAPIEvent) {
     var self = this;
     var currentScore = self.getScore();
-    var maxScore = self.droppables.length;
+    var maxScore = this.solution_max_score;
     var duration;
 
     xAPIEvent.setScoredResult(currentScore, maxScore, self);

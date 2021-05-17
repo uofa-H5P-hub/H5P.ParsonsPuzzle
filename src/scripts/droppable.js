@@ -42,6 +42,7 @@ export default class Droppable {
     self.params = params;
     self.error= [];
     self.check= false;
+    self.isDistractor= false;
     if (self.params.indentBy2) {
       self.indentSpaces = 2;
     }
@@ -115,6 +116,21 @@ export default class Droppable {
 
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
     this.$showSolution.toggleClass('incorrect', !correct);
+    this.$showSolution.show();
+  }
+  
+  showSolution_distractor() {
+    self=this;
+      self.isDistractor= false;
+      self.checkDistractor();
+      const correct = self.checkDistractor();
+    if (!correct) {
+      this.$dropzone.css('padding-left',0);
+      this.$showSolution.css('padding-left',0);
+      this.$showSolution.css('margin-left',0);
+    }
+
+    this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
     this.$showSolution.show();
   }
    /**
@@ -237,6 +253,11 @@ export default class Droppable {
    *
    * @returns {boolean} True if this box has the correct answer.
    */
+   checkDistractor(){
+    var solution =this.solution;
+    return solution === this.text;
+   }
+
    isCorrect() {
     var solution = this.solution;
     if(this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent){

@@ -400,6 +400,15 @@
     "default": "The codeline which is chosen is incorrect."
   },
   {
+    "name": "codelineIsDistractor",
+    "label": "The codeline which is chosen is distractor",
+    "type": "text",
+    "importance": "low",
+    "optional": true,
+    "common": true,
+    "default": "The codeline which is chosen is distractor."
+  },
+  {
     "name": "noMatchingOpen",
     "label": "Feedback when code block is closed but not opened",
     "type": "text",
