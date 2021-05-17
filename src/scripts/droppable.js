@@ -91,6 +91,25 @@ export default class Droppable {
   }
 
   /**
+   * Checks if this droppable contains an error and returns a string desribing the error.
+   *
+   * @returns {string} Returns type of mistake made
+   */
+   findError() {
+    if (this.containedDraggable === null) {
+      return 'empty';
+    }
+    var solution = this.solution;
+    if (solution.code !== this.text) {
+      return 'incorrect';
+    }
+    if (solution.indent !== this.indent) {
+      return 'indent';
+    }
+    return 'correct';
+  }
+
+  /**
    * Displays the solution next to the drop box if it is not correct.
    */
    showSolution() {

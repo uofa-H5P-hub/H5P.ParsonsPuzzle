@@ -54,6 +54,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   var DROPZONE_CONTAINER = "h5p-drag-dropzone-container";
   var DRAGGABLES_CONTAINER = "h5p-drag-draggables-container";
   var CODE_LINE = "h5p-drag-code";
+  var SHOW_FEEDBACK_CONTAINER = 'h5p-drag-show-feedback-container';
 
   /**
    * Initialize module.
@@ -347,6 +348,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         self.removeAllElementsFromDragControl();
 
         if (!self.showEvaluation()) {
+          self.giveButtonFeedback();
+          self.$feedbackContainer.show();
           if (self.params.behaviour.enableRetry) {
             self.showButton('try-again');
           }
@@ -387,9 +390,40 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       self.resetTask();
       self.$draggables.css('display','inline');
       self.hideButton('try-again');
+      self.$feedbackContainer.html("");
+      self.$feedbackContainer.hide();
     }, self.initShowTryAgainButton || false, {
       'aria-label': self.params.a11yRetry,
     });
+  };
+
+  /**
+   * Gives feedback for droppables based on errors made
+   */
+   ParsonsPuzzle.prototype.giveButtonFeedback = function () {
+    var self = this;
+    var isLineMissing = false;
+    var isOrderIncorrect = false;
+    var isLinesNoMatching = false;
+    self.$feedbackContainer.html("");
+    self.droppables.forEach(function (droppable, index) {
+      const error = droppable.findError();
+      if (error === 'empty' && !isLineMissing) {
+        self.$feedbackContainer.append(self.params.linesMissing);
+        self.$feedbackContainer.append('<br/>');
+        isLineMissing = true;
+      }
+      else if (error === 'incorrect' && !isOrderIncorrect) {
+        self.$feedbackContainer.append(self.params.order);
+        self.$feedbackContainer.append('<br/>');
+        isOrderIncorrect = true;
+      }
+      else if (error === 'indent' && !isLinesNoMatching) {
+        self.$feedbackContainer.append(self.params.linesNoMatching);
+        self.$feedbackContainer.append('<br/>');
+        isLinesNoMatching = true;
+      }
+    })
   };
 
   /**
@@ -686,6 +720,10 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       'class': WORDS_CONTAINER
     });
 
+    self.$feedbackContainer = $('<div/>', {
+      'class': SHOW_FEEDBACK_CONTAINER
+    });
+
     const parser = new CodeParser(2);
     const ret = parser.parse(self.codeBlock, self.indentationSpacing);
 
@@ -693,7 +731,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       const draggable = self.createDraggable(codeLine);
       if( !codeLine.distractor) {
         const solution = ret.solutions[codeLine.lineNo];
-        const droppable = self.createDroppable(solution, solution.tip);
+        const tip = solution.tip ? solution.tip : "";
+        const droppable = self.createDroppable(solution, tip);
 
         // trigger instant feedback
         if (self.params.behaviour.instantFeedback) {
@@ -709,6 +748,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     self.shuffleAndAddDraggables(self.$draggables);
     self.$draggables.appendTo(self.$taskContainer);
     self.$wordContainer.appendTo(self.$taskContainer);
+    self.$feedbackContainer.appendTo(self.$taskContainer).hide();
     self.$taskContainer.appendTo($container);
     self.addDropzoneWidth();
   };
