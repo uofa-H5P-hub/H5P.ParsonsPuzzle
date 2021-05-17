@@ -32,7 +32,8 @@ export default class Droppable {
 
     self.solution = solution;
 
-    self.text = solution.code; // current text
+    // self.text = solution.code; // current text
+    self.text = "";
     self.indent = 0;
     self.lastIndent = 0;
     self.indentSpaces = 4;
@@ -107,7 +108,7 @@ export default class Droppable {
       self.check= false;
       self.isCorrect();
       const correct = self.check;
-    if (!correct) {
+    if ( (!correct) && (!self.isDistractor) ) {
       this.$showSolution.html(this.solution.htmlIndent());
       this.$dropzone.css('padding-left',0);
       this.$showSolution.css('padding-left',0);
@@ -118,10 +119,10 @@ export default class Droppable {
     this.$showSolution.toggleClass('incorrect', !correct);
     this.$showSolution.show();
   }
-  
+
   showSolution_distractor() {
     self=this;
-      self.isDistractor= false;
+      if(self.isDistractor){
       self.checkDistractor();
       const correct = self.checkDistractor();
     if (!correct) {
@@ -132,6 +133,7 @@ export default class Droppable {
 
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
     this.$showSolution.show();
+  }
   }
    /**
     * Displays the feedback next to the drop box if it is not correct.
@@ -257,6 +259,8 @@ export default class Droppable {
     var solution =this.solution;
     return solution === this.text;
    }
+
+   
 
    isCorrect() {
     var solution = this.solution;

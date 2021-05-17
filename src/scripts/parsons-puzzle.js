@@ -65,7 +65,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @param {Object} params Behavior settings
    * @param {Number} contentId Content identification
    * @param {Object} contentData Object containing task specific content data
-   *
+   * @param searcher
+   * 
    * @returns {Object} DragText Drag Text instance
    */
    function ParsonsPuzzle(params, contentId, contentData) {
@@ -373,12 +374,15 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     //Show Solution button
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
-        if(droppable.isDistractor ==true){
+        if(droppable.text.search(/#distractor\s*$/) >= 0){
+          droppable.isDistractor=true;
           droppable.showSolution_distractor();
-        }else{
+        }
+        else{
         droppable.showSolution();
         }
        // feedback for wrong indentation
+      //  self.check_distractor();
         self.check_indent();
         droppable.showFeedback();
         console.log("showFeedback");
@@ -395,6 +399,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     // Retry button
     self.addButton('try-again', self.params.tryAgain, function () {
+      console.log("try again");
       self.stopWatch.reset();
       self.resetTask();
       self.$draggables.css('display','inline');
@@ -404,6 +409,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     });
   };
 
+
+
   ParsonsPuzzle.prototype.check_indent = function() {
     
     this.droppables.forEach(function (droppable) {
@@ -412,11 +419,13 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   
       
       // if the droppable is not correct
-      if(droppable.checkDistractor()){
+      
+      if(droppable.text.search(/#distractor\s*$/) >= 0){
         droppable.error.push(self.params.codelineIsDistractor);
+        droppable.isDistractor=true;
         console.log("check the droppableIsDistractor");
       }
-      if ((!droppable.check) && (!droppable.checkDistractor()) ){
+      else if ((!droppable.check) && (!droppable.isDistractor) ){
         if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
           droppable.error.push(self.params.linesNoMatching);
         }
@@ -687,6 +696,12 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * Remove the explanation container
    */
    ParsonsPuzzle.prototype.hideExplanation = function () {
+    // this.setExplanation();
+    this.droppables.forEach(function (droppable) {
+      
+      droppable.solution=[];
+      console.log("clear one solution");
+    });
     this.setExplanation();
     this.trigger('resize');
   };
@@ -761,9 +776,10 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       }else{
         const solution = "";
         const droppable = self.createDroppable(solution, solution.tip);
-        droppable.isDistractor = true;
-        droppable.checkDistractor();
-        
+        // droppable.isDistractor = true;
+        // droppable.error.push(self.params.codelineIsDistractor);
+        console.log("expand the distractor container");
+       
         self.$wordContainer.append("</br>");
       }
     });
