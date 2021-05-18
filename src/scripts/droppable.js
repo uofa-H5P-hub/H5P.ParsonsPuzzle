@@ -125,10 +125,10 @@ export default class Droppable {
       if(self.isDistractor){
       self.checkDistractor();
       const correct = self.checkDistractor();
-    if (!correct) {
-      this.$dropzone.css('padding-left',0);
-      this.$showSolution.css('padding-left',0);
-      this.$showSolution.css('margin-left',0);
+        if (!correct) {
+        this.$dropzone.css('padding-left',0);
+        this.$showSolution.css('padding-left',0);
+        this.$showSolution.css('margin-left',0);
     }
 
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
