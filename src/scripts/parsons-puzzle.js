@@ -56,6 +56,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   var CODE_LINE = "h5p-drag-code";
   var saved_distractors = [];
   var student_solution = [];
+  var containedDis = false;
 
 
   var solution_max_score = 0;
@@ -377,11 +378,12 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
         // self.check_distractor();
-        // if(droppable.isDistractor=true){
+        // if(droppable.solution=""){
         //   droppable.showSolution_distractor();
         // }
         // else{
         droppable.showSolution();
+        console.log("show solution");
         // }
         self.check_indent();
         droppable.showFeedback();
@@ -410,40 +412,40 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   };
 
   // ParsonsPuzzle.prototype.check_distractor = function() {
-  //   this.droppables.forEach(function (droppable) {
-    
-  //   droppable.error=[];
+  //   // this.droppables.forEach(function (droppable) {
+  //   containedDis = false;
+  //   // droppable.error=[];
   //     for (var i = 0; i<student_solution.length; i++) {
   //       for (var j=0; j<saved_distractors.length; j++){
   //         if(student_solution[i]==saved_distractors[j]){
-  //             droppable.error.push(self.params.codelineIsDistractor);
-  //             droppable.isDistractor=true;
-  //             console.log("check the droppableIsDistractor");
+  //             containedDis =true;
   //     }
+  //    }
+  //    if((containedDis=true)&&(student_solution[i]=== droppable.solution.code)){
+  //     droppable.error.push(self.params.codelineIsDistractor);
+  //     droppable.isDistractor=true;
+  //     console.log("check the droppableIsDistractor");
   //    }
   //   }
   // });
   // };
 
   ParsonsPuzzle.prototype.check_indent = function() {
-    
-    this.droppables.forEach(function (droppable) {
+    var self = this;
+    self.droppables.forEach(function (droppable) {
       droppable.isCorrect();
       droppable.error=[];
   
       
       // if the droppable is not correct
-      
-     
-      // if ((!droppable.check) && (!droppable.isDistractor) ){
         if ((!droppable.check)  ){
         if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
           droppable.error.push(self.params.linesNoMatching);
         }
-        else if (droppable.containedDraggable === null){
+        else if ( (droppable.containedDraggable === null) && (droppable.solution != "") ){
           droppable.error.push(self.params.linesMissing);
         }
-        else{
+        else {
           droppable.error.push(self.params.linesWrong);
         }
       }
@@ -652,7 +654,9 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     this.hideEvaluation();
     this.showDropzoneFeedback();
+    console.log("showDropzoneFeedback");
     this.showExplanation();
+    console.log("showExplanation");
 
     var score = this.calculateScore();
     var maxScore = solution_max_score;
@@ -710,12 +714,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * Remove the explanation container
    */
    ParsonsPuzzle.prototype.hideExplanation = function () {
-    // this.setExplanation();
-    this.droppables.forEach(function (droppable) {
-      
-      droppable.solution=[];
-      console.log("clear one solution");
-    });
     this.setExplanation();
     this.trigger('resize');
   };
@@ -725,6 +723,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    */
    ParsonsPuzzle.prototype.hideAllSolutions = function () {
     this.droppables.forEach(function (droppable) {
+      // droppable.solution=[];
       droppable.hideSolution();
     });
     this.trigger('resize');
@@ -787,15 +786,16 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
           });
         }
         self.$wordContainer.append("</br>");
-      }else{
-        const solution = "";
-        const droppable = self.createDroppable(solution, solution.tip);
-        // droppable.isDistractor = true;
-        saved_distractors.push(codeLine.code);
-        console.log("expand the distractor container");
-       
-        self.$wordContainer.append("</br>");
       }
+      // else{
+      //   const solution = "";
+      //   const droppable = self.createDroppable(solution, solution.tip);
+      //   // droppable.isDistractor = true;
+      //   saved_distractors.push(codeLine.code);
+      //   console.log("expand the distractor container");
+       
+      //   self.$wordContainer.append("</br>");
+      // }
     });
 
     self.shuffleAndAddDraggables(self.$draggables);

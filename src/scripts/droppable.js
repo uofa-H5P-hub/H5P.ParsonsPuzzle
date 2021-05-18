@@ -108,7 +108,7 @@ export default class Droppable {
       self.check= false;
       self.isCorrect();
       const correct = self.check;
-    if ( (!correct) && (!self.isDistractor) ) {
+    if ( (!correct) ) {
       this.$showSolution.html(this.solution.htmlIndent());
       this.$dropzone.css('padding-left',0);
       this.$showSolution.css('padding-left',0);
@@ -122,7 +122,6 @@ export default class Droppable {
 
   showSolution_distractor() {
     self=this;
-      if(self.isDistractor){
       self.checkDistractor();
       const correct = self.checkDistractor();
         if (!correct) {
@@ -134,15 +133,13 @@ export default class Droppable {
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
     this.$showSolution.show();
   }
-  }
    /**
     * Displays the feedback next to the drop box if it is not correct.
    */
     showFeedback() {
       self=this;
       self.check= false;
-      self.isCorrect();
-      const correct = self.check;
+      const correct = self.isCorrect();
       if (!correct) {
           self.$showFeedback.html(self.error);
           console.log("show-droppable-feedback");
