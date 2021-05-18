@@ -377,14 +377,15 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     //Show Solution button
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
-        // self.check_distractor();
-        // if(droppable.solution=""){
-        //   droppable.showSolution_distractor();
-        // }
-        // else{
+        
+        if(droppable.isADistractor()){
+          droppable.showSolution_distractor();
+        }
+        else{
         droppable.showSolution();
         console.log("show solution");
-        // }
+        }
+        // self.check_distractor();
         self.check_indent();
         droppable.showFeedback();
         console.log("showFeedback");
@@ -412,7 +413,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   };
 
   // ParsonsPuzzle.prototype.check_distractor = function() {
-  //   // this.droppables.forEach(function (droppable) {
+  //   this.droppables.forEach(function (droppable) {
   //   containedDis = false;
   //   // droppable.error=[];
   //     for (var i = 0; i<student_solution.length; i++) {
@@ -430,6 +431,20 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   // });
   // };
 
+  ParsonsPuzzle.prototype.check_distractor = function() {
+    var self =this;
+    self.droppables.forEach(function (droppable) {
+    droppable.isCorrect;
+    droppable.error=[];
+    
+     if((droppable.containedDraggable != null) && (!droppable.checkDistractor()) && (droppable.isADistractor())){
+      droppable.error.push(self.params.codelineIsDistractor);
+      console.log("check the droppableIsDistractor");
+     }
+    
+  });
+  };
+
   ParsonsPuzzle.prototype.check_indent = function() {
     var self = this;
     self.droppables.forEach(function (droppable) {
@@ -438,14 +453,21 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   
       
       // if the droppable is not correct
-        if ((!droppable.check)  ){
-        if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
+        if ((!droppable.check) &&(!droppable.isADistractor()) ){
+        if((droppable.containedDraggable!=null)&& (droppable.isADistractor())&&(!droppable.checkDistractor())){
+          droppable.error.push(self.params.codelineIsDistractor);
+        }
+        else if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
           droppable.error.push(self.params.linesNoMatching);
         }
         else if ( (droppable.containedDraggable === null) && (droppable.solution != "") ){
           droppable.error.push(self.params.linesMissing);
         }
-        else {
+        else if(droppable.isADistractor()){
+          droppable.error.push(self.params.codelineIsDistractor);
+        }
+        
+        else  {
           droppable.error.push(self.params.linesWrong);
         }
       }
@@ -787,15 +809,14 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         }
         self.$wordContainer.append("</br>");
       }
-      // else{
-      //   const solution = "";
-      //   const droppable = self.createDroppable(solution, solution.tip);
-      //   // droppable.isDistractor = true;
-      //   saved_distractors.push(codeLine.code);
-      //   console.log("expand the distractor container");
-       
-      //   self.$wordContainer.append("</br>");
-      // }
+      else if (codeLine.distractor){
+        const solution = "";
+        const droppable = self.createDroppable(solution, solution.tip);
+        // droppable.isDistractor = true;
+        saved_distractors.push(codeLine.code);
+        console.log("expand the distractor container");
+        self.$wordContainer.append("</br>");
+      }
     });
 
     self.shuffleAndAddDraggables(self.$draggables);
