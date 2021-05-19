@@ -140,21 +140,26 @@ export default class Droppable {
       self=this;
       self.check= false;
       const correct = self.isCorrect();
+      // if(self.error===[]){
+      //   self.$dropzone.css('padding-left', 0);
+      //     self.$showFeedback.css('padding-left', 0);
+      //     self.$showFeedback.css('margin-left', 0);
+      //     self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
+      //     self.$showFeedback.hide();
+      
+      // }
       if ((!correct) && (self.error!=[])) {
           self.$showFeedback.html(self.error);
           console.log("show-droppable-feedback");
           self.$dropzone.css('padding-left', 0);
           self.$showFeedback.css('padding-left', 0);
-          self.$showFeedback.css('margin-left', 5);
-      }else if(self.error===[]){
-        self.$dropzone.css('padding-left', 0);
-          self.$showFeedback.css('padding-left', 0);
-          self.$showFeedback.css('margin-left', 5);
+          self.$showFeedback.css('margin-left', 0);
       }
   
       self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
       self.$showFeedback.toggleClass('incorrect', !correct); 
       self.$showFeedback.show();
+      
     };
 
   /**

@@ -181,7 +181,7 @@
 .h5p-parsons-puzzle .h5p-drag-show-solution-container.incorrect {
   color: #255c41;
   font-weight: bold;
-  border: 1px #255c41 dashed;
+  border: 0.5px #d4f6e6 solid;
   background-color: #d4f6e6;
   padding: 0.15em;
   margin-left: 0.5em;
@@ -197,7 +197,7 @@
 .h5p-parsons-puzzle .h5p-drag-show-feedback-container.incorrect {
   color: #1879d3;
   font-weight: bold;
-  border: 1px #1879d3 dashed;
+  border: 0.5px #c7cce4 solid;
   background-color: #c7cce4;
   padding: 0.15em;
   margin-left: 0.5em;

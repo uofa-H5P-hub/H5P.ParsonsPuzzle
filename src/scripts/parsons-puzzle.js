@@ -446,8 +446,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       else if((droppable.containedDraggable != null)&&(droppable.isDistractor)&& (!droppable.checkDistractor())){
           droppable.error.push(self.params.codelineIsDistractor);
       }
-      else{
-        droppable.error=[];
+      else if( (droppable.containedDraggable === null)&&(droppable.isDistractor) ){
+        droppable.error.pop("");
       }
       
         
