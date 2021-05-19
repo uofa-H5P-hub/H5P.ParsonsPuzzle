@@ -426,7 +426,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
          console.log("check the droppableIsDistractor");
         }
        }
-  
       // if the droppable is not correct
         if ((!droppable.check) && (!droppable.isDistractor) ){
         
@@ -446,9 +445,9 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       else if((droppable.containedDraggable != null)&&(droppable.isDistractor)&& (!droppable.checkDistractor())){
           droppable.error.push(self.params.codelineIsDistractor);
       }
-      else if( (droppable.containedDraggable === null)&&(droppable.isDistractor) ){
-        droppable.error.pop("");
-      }
+      // else if( (droppable.containedDraggable === null)&&(droppable.isDistractor) ){
+      //   droppable.error.pop("");
+      // }
       
         
       console.log("check the droppable's indent");
