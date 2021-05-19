@@ -378,7 +378,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
         
-        if(droppable.isADistractor()){
+        if(droppable.solution===""){
           droppable.showSolution_distractor();
         }
         else{
@@ -431,46 +431,57 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   // });
   // };
 
-  ParsonsPuzzle.prototype.check_distractor = function() {
-    var self =this;
-    self.droppables.forEach(function (droppable) {
-    droppable.isCorrect;
-    droppable.error=[];
-    
-     if((droppable.containedDraggable != null) && (!droppable.checkDistractor()) && (droppable.isADistractor())){
-      droppable.error.push(self.params.codelineIsDistractor);
-      console.log("check the droppableIsDistractor");
-     }
-    
-  });
-  };
+  // ParsonsPuzzle.prototype.check_distractor = function() {
+  //   var self =this;
+  //   self.droppables.forEach(function (droppable) {
+  //   droppable.isCorrect();
+  //   droppable.error=[];
+  //   for (var i =0; i< saved_distractors.length; i++){
+  //    if( ((droppable.containedDraggable != null)) && (droppable.text===saved_distractors[i])){
+  //     droppable.isDistractor=true;
+  //     // droppable.error.push(self.params.codelineIsDistractor);
+  //     console.log("check the droppableIsDistractor");
+  //    }
+  //   }
+  // });
+  // };
 
   ParsonsPuzzle.prototype.check_indent = function() {
     var self = this;
+    self.check_distractor;
     self.droppables.forEach(function (droppable) {
       droppable.isCorrect();
       droppable.error=[];
+      droppable.isDistractor=false;
+
+      for (var i =0; i< saved_distractors.length; i++){
+        if( ((droppable.containedDraggable != null)) && (droppable.text===saved_distractors[i])){
+         droppable.isDistractor=true;
+         // droppable.error.push(self.params.codelineIsDistractor);
+         console.log("check the droppableIsDistractor");
+        }
+       }
   
       
       // if the droppable is not correct
-        if ((!droppable.check) &&(!droppable.isADistractor()) ){
-        if((droppable.containedDraggable!=null)&& (droppable.isADistractor())&&(!droppable.checkDistractor())){
-          droppable.error.push(self.params.codelineIsDistractor);
-        }
-        else if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
+        if ((!droppable.check) && !(droppable.isDistractor) ){
+        
+        if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
           droppable.error.push(self.params.linesNoMatching);
         }
         else if ( (droppable.containedDraggable === null) && (droppable.solution != "") ){
           droppable.error.push(self.params.linesMissing);
         }
-        else if(droppable.isADistractor()){
-          droppable.error.push(self.params.codelineIsDistractor);
-        }
-        
         else  {
           droppable.error.push(self.params.linesWrong);
         }
       }
+      //droppable.solution  droppable应有的答案
+      else if((droppable.containedDraggable != null)&&(droppable.isDistractor)&& !(droppable.checkDistractor())){
+          droppable.error.push(self.params.codelineIsDistractor);
+      }
+      
+        
       console.log("check the droppable's indent");
     });
   };

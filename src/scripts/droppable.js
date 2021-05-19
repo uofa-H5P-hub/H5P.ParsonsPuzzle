@@ -285,14 +285,14 @@ export default class Droppable {
     return solution.code === this.text;
   }
 
-  isADistractor(){
-    var solution = this.solution;
-    if (solution===""){
-      this.isDistractor =true;
+  // isADistractor(){
+  //   var solution = this.solution;
+  //   if (solution===""){
+  //     this.isDistractor =true;
     
-   }
-    return this.isDistractor;
-  }
+  //  }
+  //   return this.isDistractor;
+  // }
 
   /**
    * Places draggables at the nearest indentation to drop location.
