@@ -385,8 +385,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         droppable.showSolution();
         console.log("show solution");
         }
-        // self.check_distractor();
-        self.check_indent();
+        self.check_answer();
         droppable.showFeedback();
         console.log("showFeedback");
       });
@@ -411,42 +410,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       'aria-label': self.params.a11yRetry,
     });
   };
-
-  // ParsonsPuzzle.prototype.check_distractor = function() {
-  //   this.droppables.forEach(function (droppable) {
-  //   containedDis = false;
-  //   // droppable.error=[];
-  //     for (var i = 0; i<student_solution.length; i++) {
-  //       for (var j=0; j<saved_distractors.length; j++){
-  //         if(student_solution[i]==saved_distractors[j]){
-  //             containedDis =true;
-  //     }
-  //    }
-  //    if((containedDis=true)&&(student_solution[i]=== droppable.solution.code)){
-  //     droppable.error.push(self.params.codelineIsDistractor);
-  //     droppable.isDistractor=true;
-  //     console.log("check the droppableIsDistractor");
-  //    }
-  //   }
-  // });
-  // };
-
-  // ParsonsPuzzle.prototype.check_distractor = function() {
-  //   var self =this;
-  //   self.droppables.forEach(function (droppable) {
-  //   droppable.isCorrect();
-  //   droppable.error=[];
-  //   for (var i =0; i< saved_distractors.length; i++){
-  //    if( ((droppable.containedDraggable != null)) && (droppable.text===saved_distractors[i])){
-  //     droppable.isDistractor=true;
-  //     // droppable.error.push(self.params.codelineIsDistractor);
-  //     console.log("check the droppableIsDistractor");
-  //    }
-  //   }
-  // });
-  // };
-
-  ParsonsPuzzle.prototype.check_indent = function() {
+ 
+  ParsonsPuzzle.prototype.check_answer = function() {
     var self = this;
     self.check_distractor;
     self.droppables.forEach(function (droppable) {
@@ -462,9 +427,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         }
        }
   
-      
       // if the droppable is not correct
-        if ((!droppable.check) && !(droppable.isDistractor) ){
+        if ((!droppable.check) && (!droppable.isDistractor) ){
         
         if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
           droppable.error.push(self.params.linesNoMatching);
@@ -479,9 +443,11 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
           droppable.error.push(self.params.linesWrong);
         }
       }
-      //droppable.solution  droppable应有的答案
-      else if((droppable.containedDraggable != null)&&(droppable.isDistractor)&& !(droppable.checkDistractor())){
+      else if((droppable.containedDraggable != null)&&(droppable.isDistractor)&& (!droppable.checkDistractor())){
           droppable.error.push(self.params.codelineIsDistractor);
+      }
+      else{
+        droppable.error=[];
       }
       
         

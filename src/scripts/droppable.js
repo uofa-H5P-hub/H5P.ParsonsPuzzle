@@ -146,6 +146,10 @@ export default class Droppable {
           self.$dropzone.css('padding-left', 0);
           self.$showFeedback.css('padding-left', 0);
           self.$showFeedback.css('margin-left', 5);
+      }else if(self.error===[]){
+        self.$dropzone.css('padding-left', 0);
+          self.$showFeedback.css('padding-left', 0);
+          self.$showFeedback.css('margin-left', 5);
       }
   
       self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
@@ -285,14 +289,6 @@ export default class Droppable {
     return solution.code === this.text;
   }
 
-  // isADistractor(){
-  //   var solution = this.solution;
-  //   if (solution===""){
-  //     this.isDistractor =true;
-    
-  //  }
-  //   return this.isDistractor;
-  // }
 
   /**
    * Places draggables at the nearest indentation to drop location.
