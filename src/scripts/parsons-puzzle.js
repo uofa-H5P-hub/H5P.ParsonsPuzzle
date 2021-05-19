@@ -432,22 +432,28 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
           droppable.error.push(self.params.linesNoMatching);
         }
-        else if ( (droppable.containedDraggable === null) && (droppable.solution != "") ){
-          droppable.error.push(self.params.linesMissing);
-        }
-        else if((droppable.containedDraggable!=null)&&(droppable.solution==="")){
-          droppable.error.push(self.params.linesTooMany);
-        }
+        // else if ( (droppable.containedDraggable === null) && (droppable.solution != "") ){
+        //   droppable.error.push(self.params.linesMissing);
+        // }
+        // else if((droppable.containedDraggable!=null)&&(droppable.solution==="")){
+        //   droppable.error.push(self.params.linesTooMany);
+        // }
         else if(droppable.solution!=""){
-          droppable.error.push(self.params.linesWrong);
+          droppable.error.push(self.params.order);
         }
       }
       else if((droppable.containedDraggable != null)&&(droppable.isDistractor)&& (!droppable.checkDistractor())){
           droppable.error.push(self.params.codelineIsDistractor);
       }
-      // else if( (droppable.containedDraggable === null)&&(droppable.isDistractor) ){
-      //   droppable.error.pop("");
-      // }
+      else if( (droppable.containedDraggable === null)&&(droppable.isDistractor) ){
+        for (var i=0; i<droppable.error.length; i++){
+          if(droppable.error[i]==""){
+            droppable.error.splice(i,1);
+            i=i-1;
+          }
+        }
+        // var r = droppable.error.filter(function(){return droppable.error});
+      }
       
         
       console.log("check the droppable's indent");

@@ -361,7 +361,7 @@
     "importance": "low",
     "common": true,
     "optional": true,
-    "default": "Code fragments in your program are wrong, or in wrong order. This can be fixed by moving, removing, or replacing highlighted fragments."
+    "default": "Code fragments in your program are wrong."
   },
   {
     "label": "Feedback for lines missing in solution",
