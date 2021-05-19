@@ -140,7 +140,7 @@ export default class Droppable {
       self=this;
       self.check= false;
       const correct = self.isCorrect();
-      if (!correct) {
+      if ((!correct) && (self.error!=[])) {
           self.$showFeedback.html(self.error);
           console.log("show-droppable-feedback");
           self.$dropzone.css('padding-left', 0);

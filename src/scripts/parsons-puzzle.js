@@ -472,7 +472,10 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         else if ( (droppable.containedDraggable === null) && (droppable.solution != "") ){
           droppable.error.push(self.params.linesMissing);
         }
-        else  {
+        else if((droppable.containedDraggable!=null)&&(droppable.solution==="")){
+          droppable.error.push(self.params.linesTooMany);
+        }
+        else if(droppable.solution!=""){
           droppable.error.push(self.params.linesWrong);
         }
       }
