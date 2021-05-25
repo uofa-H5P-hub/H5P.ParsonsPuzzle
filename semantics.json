@@ -91,6 +91,22 @@
     ]
   },
   {
+    "label": "Feedback Types",
+    "name": "feedbackTypes",
+    "optional": true,
+    "type": "select",
+    "options": [
+      {
+        "value": "general",
+        "label": "General"
+      },
+      {
+        "value": "lineByLine",
+        "label": "Line By Line"
+      }
+    ]
+  },
+  {
     "name": "overallFeedback",
     "type": "group",
     "label": "Overall Feedback",

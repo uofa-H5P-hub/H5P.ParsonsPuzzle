@@ -348,8 +348,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         self.removeAllElementsFromDragControl();
 
         if (!self.showEvaluation()) {
-          self.giveButtonFeedback();
-          self.$feedbackContainer.show();
           if (self.params.behaviour.enableRetry) {
             self.showButton('try-again');
           }
@@ -358,6 +356,14 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
           }
           self.hideButton('check-answer');
           self.disableDraggables();
+          if (self.params.feedbackTypes == "general") {
+            self.giveGeneralFeedback();
+            self.$feedbackContainer.show();
+          }
+          if (self.params.feedbackTypes == "lineByLine") {
+            self.giveLineByLineFeedback();
+            self.$feedbackContainer.show();
+          }
         } else {
           self.hideButton('show-solution');
           self.hideButton('check-answer');
@@ -400,7 +406,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Gives feedback for droppables based on errors made
    */
-   ParsonsPuzzle.prototype.giveButtonFeedback = function () {
+   ParsonsPuzzle.prototype.giveGeneralFeedback = function () {
     var self = this;
     var isLineMissing = false;
     var isOrderIncorrect = false;
@@ -422,6 +428,29 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         self.$feedbackContainer.append(self.params.linesNoMatching);
         self.$feedbackContainer.append('<br/>');
         isLinesNoMatching = true;
+      }
+    })
+  };
+
+  /**
+   * Gives feedback for droppables based on errors made
+   */
+   ParsonsPuzzle.prototype.giveLineByLineFeedback = function () {
+    var self = this;
+    self.$feedbackContainer.html("");
+    self.droppables.forEach(function (droppable, index) {
+      const error = droppable.findError();
+      if (error === 'empty') {
+        self.$feedbackContainer.append('Line ', index+1, ': ', self.params.linesMissing);
+        self.$feedbackContainer.append('<br/>');
+      }
+      else if (error === 'incorrect') {
+        self.$feedbackContainer.append('Line ', index+1, ': ', self.params.order);
+        self.$feedbackContainer.append('<br/>');
+      }
+      else if (error === 'indent') {
+        self.$feedbackContainer.append('Line ', index+1, ': ', self.params.linesNoMatching);
+        self.$feedbackContainer.append('<br/>');
       }
     })
   };
