@@ -390,7 +390,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         });
         droppable.$dropzoneContainer.mouseleave(function () {
           droppable.hideFeedback();
-        })
+        });
 
         self.check_answer();
         console.log("showFeedback");
