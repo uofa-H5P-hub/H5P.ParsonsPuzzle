@@ -46,7 +46,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
  * @external {Question} $ H5P.Question
  * @external {ConfirmationDialog} $ H5P.ConfirmationDialog
  */
- H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
+H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   //CSS Main Containers:
   var INNER_CONTAINER = "h5p-drag-inner";
   var TASK_CONTAINER = "h5p-drag-task";
@@ -72,14 +72,14 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * 
    * @returns {Object} DragText Drag Text instance
    */
-   function ParsonsPuzzle(params, contentId, contentData) {
+  function ParsonsPuzzle(params, contentId, contentData) {
     this.$ = $(this);
     this.contentId = contentId;
 
     Question.call(this, 'parsons-puzzle');
 
     // Set default behavior.
-    this.params = $.extend(true, {codeBlock: ""}, params);
+    this.params = $.extend(true, { codeBlock: "" }, params);
 
     this.contentData = contentData;
     if (this.contentData !== undefined && this.contentData.previousState !== undefined && this.contentData.previousState.length !== undefined) {
@@ -108,7 +108,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     /**
      * @type {HTMLElement} selectedElement
      */
-     this.selectedElement = undefined;
+    this.selectedElement = undefined;
 
     // Init keyboard navigation
     this.ariaDragControls = new AriaDrag();
@@ -133,7 +133,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.on('start', this.addAllDroppablesToControls, this);
     this.on('revert', this.removeControlsFromEmptyDropZones, this);
     this.on('stop', event => {
-      if(!event.data.target) {
+      if (!event.data.target) {
         this.removeControlsFromDropZonesIfAllEmpty();
       }
     }, this);
@@ -164,12 +164,12 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     this.on('drop', this.ariaDropControls.setAllToNone, this.ariaDropControls);
 
     // on drop remove element from drag controls
-    this.on('drop', function(event) {
+    this.on('drop', function (event) {
       this.dragControls.removeElement(event.data.element);
     }, this);
 
     // on revert, re add element to drag controls
-    this.on('revert', function(event) {
+    this.on('revert', function (event) {
       this.dragControls.insertElementAt(event.data.element, 0);
     }, this);
 
@@ -189,7 +189,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     // Indicate operations trough read speaker
     this.on('stop', event => {
-      if(!event.data.target) {
+      if (!event.data.target) {
         this.read(this.params.cancelledDragging);
       }
     });
@@ -208,7 +208,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @param event
    */
-   ParsonsPuzzle.prototype.updateDroppableElement = function(event) {
+  ParsonsPuzzle.prototype.updateDroppableElement = function (event) {
     const dropZone = event.data.target;
     const draggable = event.data.element;
     const droppable = this.getDroppableByElement(dropZone);
@@ -221,7 +221,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Remove controls from dropzones if all is empty
    */
-   ParsonsPuzzle.prototype.removeControlsFromDropZonesIfAllEmpty = function() {
+  ParsonsPuzzle.prototype.removeControlsFromDropZonesIfAllEmpty = function () {
     if (!this.anyDropZoneHasDraggable()) {
       this.removeAllDroppablesFromControls();
     }
@@ -230,43 +230,43 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Remove controls from dropzones without draggables
    */
-   ParsonsPuzzle.prototype.removeControlsFromEmptyDropZones = function() {
+  ParsonsPuzzle.prototype.removeControlsFromEmptyDropZones = function () {
     this.droppables
-    .filter(droppable => !droppable.hasDraggable())
-    .map(droppable => droppable.getElement())
-    .forEach(el => {
-      this.dropControls.removeElement(el);
-    });
+      .filter(droppable => !droppable.hasDraggable())
+      .map(droppable => droppable.getElement())
+      .forEach(el => {
+        this.dropControls.removeElement(el);
+      });
   };
 
   /**
    * Add all drop zones to drop keyboard controls
    */
-   ParsonsPuzzle.prototype.addAllDroppablesToControls = function() {
+  ParsonsPuzzle.prototype.addAllDroppablesToControls = function () {
     // to have a clean start, remove all first
-    if(this.dropControls.count() > 0){
+    if (this.dropControls.count() > 0) {
       this.removeAllDroppablesFromControls();
     }
 
     // add droppables in correct order
     this.droppables
-    .map(droppable => droppable.getElement())
-    .forEach(el => this.dropControls.addElement(el));
+      .map(droppable => droppable.getElement())
+      .forEach(el => this.dropControls.addElement(el));
   };
 
   /**
    * Remove all drop zones from drop keyboard controls
    */
-  ParsonsPuzzle.prototype.removeAllDroppablesFromControls = function() {
+  ParsonsPuzzle.prototype.removeAllDroppablesFromControls = function () {
     this.droppables
-    .map(droppable => droppable.getElement())
-    .forEach(el => this.dropControls.removeElement(el));
+      .map(droppable => droppable.getElement())
+      .forEach(el => this.dropControls.removeElement(el));
   };
 
   /**
    * Remove all drop zones from drop keyboard controls
    */
-  ParsonsPuzzle.prototype.anyDropZoneHasDraggable = function() {
+  ParsonsPuzzle.prototype.anyDropZoneHasDraggable = function () {
     return this.droppables.some(droppable => droppable.hasDraggable());
   };
 
@@ -277,7 +277,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @param {string} text
    * @param {number} index
    */
-   ParsonsPuzzle.prototype.setDroppableLabel = function(dropZone, text, indent, index) {
+  ParsonsPuzzle.prototype.setDroppableLabel = function (dropZone, text, indent, index) {
     const indexText = this.params.dropZoneIndex.replace('@index', index.toString());
     const correctFeedback = dropZone.classList.contains('h5p-drag-correct-feedback');
     const inCorrectFeedback = dropZone.classList.contains('h5p-drag-wrong-feedback');
@@ -300,7 +300,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         dropZone.setAttribute('aria-label', `${indexText} ${this.params.contains.replace('@index', index.toString()).replace('@draggable', text).replace('@indent', indent)}`);
       }
       else {
-        dropZone.setAttribute('aria-label',  `${indexText} ${this.params.empty.replace('@index', index.toString())}`);
+        dropZone.setAttribute('aria-label', `${indexText} ${this.params.empty.replace('@index', index.toString())}`);
       }
     }
   };
@@ -377,24 +377,33 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     //Show Solution button
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
-        
-        if(droppable.solution===""){
+
+        if (droppable.solution === "") {
           droppable.showSolution_distractor();
         }
-        else{
-        droppable.showSolution();
-        console.log("show solution");
+        else {
+          droppable.showSolution();
+          console.log("show solution");
         }
+        droppable.$dropzoneContainer.mouseenter(function () {
+          droppable.showFeedback();
+        });
+        droppable.$dropzoneContainer.mouseleave(function () {
+          droppable.hideFeedback();
+        })
+
         self.check_answer();
-        droppable.showFeedback();
         console.log("showFeedback");
       });
-     
+
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
       self.disableDraggables();
-      self.$draggables.css('display','none');
+      self.$draggables.css('display', 'none'); //hide all draggable when clicking show-solutions button
       self.removeAllDroppablesFromControls();
       self.hideButton('show-solution');
+      self.hideAllFeedbacks();                  //hide solution
+
+
     }, self.initShowShowSolutionButton || false, {
       'aria-label': self.params.a11yShowSolution,
     });
@@ -404,58 +413,52 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       console.log("try again");
       self.stopWatch.reset();
       self.resetTask();
-      self.$draggables.css('display','inline');
+      self.$draggables.css('display', 'inline');
       self.hideButton('try-again');
     }, self.initShowTryAgainButton || false, {
       'aria-label': self.params.a11yRetry,
     });
   };
- 
-  ParsonsPuzzle.prototype.check_answer = function() {
+
+  ParsonsPuzzle.prototype.check_answer = function () {
     var self = this;
     self.check_distractor;
     self.droppables.forEach(function (droppable) {
       droppable.isCorrect();
-      droppable.error=[];
-      droppable.isDistractor=false;
+      droppable.error = [];
+      droppable.error.push(droppable.index + "</br>" + " the index of codeline");
+      droppable.isDistractor = false;
 
-      for (var i =0; i< saved_distractors.length; i++){
-        if( ((droppable.containedDraggable != null)) && (droppable.text===saved_distractors[i])){
-         droppable.isDistractor=true;
-         // droppable.error.push(self.params.codelineIsDistractor);
-         console.log("check the droppableIsDistractor");
+      for (var i = 0; i < saved_distractors.length; i++) {
+        if (((droppable.containedDraggable != null)) && (droppable.text === saved_distractors[i])) {
+          droppable.isDistractor = true;
+          droppable.error.push(self.params.codelineIsDistractor + "</br>");
+          console.log("check the droppableIsDistractor");
         }
-       }
+      }
       // if the droppable is not correct
-        if ((!droppable.check) && (!droppable.isDistractor) ){
-        
+      if ((!droppable.check) && (!droppable.isDistractor)) {
         if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
-          droppable.error.push(self.params.linesNoMatching);
+          droppable.error.push(self.params.linesNoMatching + "</br>");
         }
-        // else if ( (droppable.containedDraggable === null) && (droppable.solution != "") ){
-        //   droppable.error.push(self.params.linesMissing);
-        // }
-        // else if((droppable.containedDraggable!=null)&&(droppable.solution==="")){
-        //   droppable.error.push(self.params.linesTooMany);
-        // }
-        else if(droppable.solution!=""){
-          droppable.error.push(self.params.order);
+        else if (droppable.solution != "") {
+          droppable.error.push(self.params.order + "</br>");
         }
       }
-      else if((droppable.containedDraggable != null)&&(droppable.isDistractor)&& (!droppable.checkDistractor())){
-          droppable.error.push(self.params.codelineIsDistractor);
+      else if ((droppable.containedDraggable != null) && (droppable.isDistractor) && (!droppable.checkDistractor())) {
+        droppable.error.push(self.params.codelineIsDistractor + "</br>");
       }
-      else if( (droppable.containedDraggable === null)&&(droppable.isDistractor) ){
-        for (var i=0; i<droppable.error.length; i++){
-          if(droppable.error[i]==""){
-            droppable.error.splice(i,1);
-            i=i-1;
+      else if ((droppable.containedDraggable === null) && (droppable.isDistractor)) {
+        for (var i = 0; i < droppable.error.length; i++) {
+          if (droppable.error[i] == "") {
+            droppable.error.splice(i, 1);
+            i = i - 1;
           }
         }
         // var r = droppable.error.filter(function(){return droppable.error});
       }
-      
-        
+
+
       console.log("check the droppable's indent");
     });
   };
@@ -464,7 +467,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * Removes keyboard support for all elements left in the draggables
    * list.
    */
-   ParsonsPuzzle.prototype.removeAllElementsFromDragControl = function () {
+  ParsonsPuzzle.prototype.removeAllElementsFromDragControl = function () {
     this.dragControls.elements.forEach(element => this.dragControls.removeElement(element));
   };
 
@@ -475,19 +478,19 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @fires H5P.ParsonsPuzzle#start
    */
-   ParsonsPuzzle.prototype.keyboardDraggableSelected = function (event) {
+  ParsonsPuzzle.prototype.keyboardDraggableSelected = function (event) {
     var tmp = this.selectedElement;
     var hasSelectedElement = this.selectedElement !== undefined;
-    var isSelectedElement = this.selectedElement ===  event.element;
+    var isSelectedElement = this.selectedElement === event.element;
 
     // un select the selected
-    if(hasSelectedElement){
+    if (hasSelectedElement) {
       this.selectedElement = undefined;
       this.trigger('stop', { element: tmp });
     }
 
     // no previous selected or not the selected one
-    if((!hasSelectedElement || !isSelectedElement) && !this.isElementDisabled(event.element)) {
+    if ((!hasSelectedElement || !isSelectedElement) && !this.isElementDisabled(event.element)) {
       this.selectedElement = event.element;
       this.trigger('start', { element: event.element });
       this.focusOnFirstEmptyDropZone();
@@ -497,9 +500,9 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Focuses on the first empty drop zone
    */
-   ParsonsPuzzle.prototype.focusOnFirstEmptyDropZone = function() {
+  ParsonsPuzzle.prototype.focusOnFirstEmptyDropZone = function () {
     const dropZone = this.droppables
-    .filter(droppable => !droppable.hasDraggable())[0];
+      .filter(droppable => !droppable.hasDraggable())[0];
     const element = dropZone.getElement();
 
     this.dropControls.setTabbable(element);
@@ -513,7 +516,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @return {boolean}
    */
-   ParsonsPuzzle.prototype.isElementDisabled = function (element) {
+  ParsonsPuzzle.prototype.isElementDisabled = function (element) {
     return element.getAttribute('aria-disabled') === 'true';
   };
 
@@ -536,7 +539,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @param {ControlsEvent} event
    */
-   ParsonsPuzzle.prototype.keyboardDroppableSelected = function (event) {
+  ParsonsPuzzle.prototype.keyboardDroppableSelected = function (event) {
     var self = this;
 
     var droppableElement = event.element;
@@ -547,7 +550,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     var isShowingFeedback = !this.params.behaviour.instantFeedback && droppable.hasFeedback();
 
     // if something selected
-    if(draggable && droppable && !isCorrectInstantFeedback) {
+    if (draggable && droppable && !isCorrectInstantFeedback) {
       var tmp = self.selectedElement;
       // initiate drop
       self.drop(draggable, droppable);
@@ -560,7 +563,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         target: droppable.getElement()
       });
     }
-    else if(droppable && droppable.hasDraggable() && !isShowingFeedback && !isCorrectInstantFeedback) {
+    else if (droppable && droppable.hasDraggable() && !isShowingFeedback && !isCorrectInstantFeedback) {
       var containsDropped = droppableElement.querySelector('[aria-grabbed]');
 
       this.createConfirmResetDialog(function () {
@@ -572,7 +575,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Initialize draggables
    */
-   ParsonsPuzzle.prototype.toggleDraggablesContainer = function () {
+  ParsonsPuzzle.prototype.toggleDraggablesContainer = function () {
     var isEmpty = this.$draggables.children().length === 0;
     this.$draggables.toggleClass('hide', isEmpty);
   };
@@ -585,7 +588,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {ConfirmationDialog}
    */
-   ParsonsPuzzle.prototype.createConfirmResetDialog = function (callback, scope) {
+  ParsonsPuzzle.prototype.createConfirmResetDialog = function (callback, scope) {
     var self = this;
     var dialog = new ConfirmationDialog({
       headerText: self.params.resetDropTitle,
@@ -601,7 +604,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Shows feedback for dropzones.
    */
-   ParsonsPuzzle.prototype.showDropzoneFeedback = function () {
+  ParsonsPuzzle.prototype.showDropzoneFeedback = function () {
     this.droppables.forEach(droppable => {
       droppable.addFeedback();
       const draggable = droppable.containedDraggable;
@@ -617,7 +620,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * Generates data that is used to render the explanation container
    * at the bottom of the content type
    */
-   ParsonsPuzzle.prototype.showExplanation = function () {
+  ParsonsPuzzle.prototype.showExplanation = function () {
     const self = this;
     let explanations = [];
 
@@ -640,7 +643,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
           });
         }
       }
-      if(droppable.containedDraggable != null){
+      if (droppable.containedDraggable != null) {
         student_solution.push(droppable.containedDraggable.codeLine.code);
       }
     });
@@ -657,7 +660,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {Boolean} Returns true if maxScore was achieved.
    */
-   ParsonsPuzzle.prototype.showEvaluation = function (skipXapi) {
+  ParsonsPuzzle.prototype.showEvaluation = function (skipXapi) {
 
     this.hideEvaluation();
     this.showDropzoneFeedback();
@@ -676,8 +679,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     }
 
     var scoreText = H5P.Question.determineOverallFeedback(this.params.overallFeedback, score / maxScore)
-    .replace(/@score/g, score.toString())
-    .replace(/@total/g, maxScore.toString());
+      .replace(/@score/g, score.toString())
+      .replace(/@total/g, maxScore.toString());
 
     if (score === maxScore) {
       //Hide buttons and disable task
@@ -703,7 +706,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {number}
    */
-   ParsonsPuzzle.prototype.calculateScore = function () {
+  ParsonsPuzzle.prototype.calculateScore = function () {
     return this.droppables.reduce(function (sum, entry) {
       return sum + (entry.isCorrect() ? 1 : 0);
     }, 0);
@@ -712,7 +715,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Clear the evaluation text.
    */
-   ParsonsPuzzle.prototype.hideEvaluation = function () {
+  ParsonsPuzzle.prototype.hideEvaluation = function () {
     this.removeFeedback();
     this.trigger('resize');
   };
@@ -720,7 +723,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Remove the explanation container
    */
-   ParsonsPuzzle.prototype.hideExplanation = function () {
+  ParsonsPuzzle.prototype.hideExplanation = function () {
     this.setExplanation();
     this.trigger('resize');
   };
@@ -728,7 +731,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Hides solution text for all dropzones.
    */
-   ParsonsPuzzle.prototype.hideAllSolutions = function () {
+  ParsonsPuzzle.prototype.hideAllSolutions = function () {
     this.droppables.forEach(function (droppable) {
       // droppable.solution=[];
       droppable.hideSolution();
@@ -739,14 +742,14 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   ParsonsPuzzle.prototype.hideAllFeedbacks = function () {
     this.droppables.forEach(function (droppable) {
       droppable.hideFeedback();
-      droppable.error=[];
+      //droppable.error = [];
       console.log("clear one error");
     });
     this.trigger('resize');
   };
 
 
-  ParsonsPuzzle.prototype.hideDraggables = function() {
+  ParsonsPuzzle.prototype.hideDraggables = function () {
     this.$draggables.css('display', 'none');
     this.trigger('resize');
   }
@@ -756,7 +759,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @param {jQuery} $container The object which our task will attach to.
    */
-   ParsonsPuzzle.prototype.addTaskTo = function ($container) {
+  ParsonsPuzzle.prototype.addTaskTo = function ($container) {
     var self = this;
     self.widestDraggable = 0;
     self.droppables = [];
@@ -781,20 +784,20 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     ret.codeLines.forEach(function (codeLine) {
       const draggable = self.createDraggable(codeLine);
-      if( !codeLine.distractor) {
+      if (!codeLine.distractor) {
         const solution = ret.solutions[codeLine.lineNo];
         const droppable = self.createDroppable(solution, solution.tip);
 
         // trigger instant feedback
         if (self.params.behaviour.instantFeedback) {
-          draggable.getDraggableElement().on('dragstop', function() {
+          draggable.getDraggableElement().on('dragstop', function () {
             droppable.addFeedback();
             self.instantFeedbackEvaluation();
           });
         }
         self.$wordContainer.append("</br>");
       }
-      else if (codeLine.distractor){
+      else if (codeLine.distractor) {
         const solution = "";
         const droppable = self.createDroppable(solution, solution.tip);
         // droppable.isDistractor = true;
@@ -838,11 +841,11 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     //Adjust all droppables to widest field and draggables to widest draggable.
     self.droppables.forEach(function (droppable) {
-      droppable.getDropzone().css('width', self.widestField+'ch');
+      droppable.getDropzone().css('width', self.widestField + 'ch');
     });
 
     self.draggables.forEach(function (draggable) {
-      draggable.getDraggableElement().css('width', self.widestDraggable+'ch');
+      draggable.getDraggableElement().css('width', self.widestDraggable + 'ch');
     });
 
   };
@@ -854,7 +857,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {H5P.TextDraggable}
    */
-   ParsonsPuzzle.prototype.createDraggable = function (codeLine) {
+  ParsonsPuzzle.prototype.createDraggable = function (codeLine) {
     var self = this;
     var answer = codeLine.code;
 
@@ -865,7 +868,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       'aria-grabbed': 'false',
       tabindex: '-1'
     }).draggable({
-      revert: function(isValidDrop) {
+      revert: function (isValidDrop) {
         if (!isValidDrop) {
           self.revert(draggable);
         }
@@ -916,21 +919,21 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     var $dropzone = $('<div/>', {
       'aria-dropeffect': 'none',
-      'aria-label':  this.params.dropZoneIndex.replace('@index', draggableIndex.toString()) + ' ' + this.params.empty.replace('@index', draggableIndex.toString()),
+      'aria-label': this.params.dropZoneIndex.replace('@index', draggableIndex.toString()) + ' ' + this.params.empty.replace('@index', draggableIndex.toString()),
       'tabindex': '-1'
     }).appendTo($dropzoneContainer)
-    .droppable({
-      tolerance: 'pointer',
-      drop: function (event, ui) {
-        var draggable = self.getDraggableByElement(ui.draggable[0]);
-        var droppable = self.getDroppableByElement(event.target);
+      .droppable({
+        tolerance: 'pointer',
+        drop: function (event, ui) {
+          var draggable = self.getDraggableByElement(ui.draggable[0]);
+          var droppable = self.getDroppableByElement(event.target);
 
           /**
            * Note that drop will run for all initialized dropzones globally.
            * Thus if no matching draggable or droppable is found
            * for this dropzone we must skip it.
            */
-           if (!draggable || !droppable) {
+          if (!draggable || !droppable) {
             return;
           }
           self.drop(draggable, droppable);
@@ -955,7 +958,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @function
    * @returns {boolean}
    */
-   ParsonsPuzzle.prototype.propagateDragEvent = Util.curry(function(eventName, self, event) {
+  ParsonsPuzzle.prototype.propagateDragEvent = Util.curry(function (eventName, self, event) {
     self.trigger(eventName, {
       element: event.target
     });
@@ -969,12 +972,12 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @fires H5P.ParsonsPuzzle#revert
    * @fires Question#resize
    */
-   ParsonsPuzzle.prototype.revert = function (draggable) {
+  ParsonsPuzzle.prototype.revert = function (draggable) {
     var droppable = draggable.removeFromZone();
     var target = droppable ? droppable.getElement() : undefined;
 
     draggable.revertDraggableTo(this.$draggables);
-    draggable.getDraggableElement().css('width', this.widestDraggable+'ch');
+    draggable.getDraggableElement().css('width', this.widestDraggable + 'ch');
 
     this.setDraggableAriaLabel(draggable);
 
@@ -995,15 +998,15 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   ParsonsPuzzle.prototype.drop = function (draggable, droppable) {
     var self = this;
     self.answered = true;
-    
+
     // if there is another draggable in zone, revert it back to draggables container
     if (!(droppable.containedDraggable === draggable)) {
       var revertedDraggable = droppable.appendInsideDroppableTo(this.$draggables);
-      
+
       // trigger revert, if revert was performed
-      if(revertedDraggable){
+      if (revertedDraggable) {
         revertedDraggable.removeFromZone();
-        revertedDraggable.getDraggableElement().css('width', this.widestDraggable+'ch');
+        revertedDraggable.getDraggableElement().css('width', this.widestDraggable + 'ch');
         this.setDraggableAriaLabel(revertedDraggable);
         self.trigger('revert', {
           element: revertedDraggable.getElement(),
@@ -1025,7 +1028,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
       // update draggables previous zone label if any
       if (previousDropZone) {
-       this.setDroppableLabel(previousDropZone.getElement(), draggable.getElement().textContent, previousDropZone.getIndent(), previousDropZone.getIndex());
+        this.setDroppableLabel(previousDropZone.getElement(), draggable.getElement().textContent, previousDropZone.getIndent(), previousDropZone.getIndex());
       }
 
       draggable.addToZone(droppable);
@@ -1060,12 +1063,12 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {H5P.TextDraggable[]}
    */
-   ParsonsPuzzle.prototype.shuffleAndAddDraggables = function ($container) {
+  ParsonsPuzzle.prototype.shuffleAndAddDraggables = function ($container) {
     return Util.shuffle(this.draggables)
-    .map((draggable, index) => draggable.setIndex(index))
-    .map(draggable => this.addDraggableToContainer($container, draggable))
-    .map(draggable => this.setDraggableAriaLabel(draggable))
-    .map(draggable => this.addDraggableToControls(this.dragControls, draggable));
+      .map((draggable, index) => draggable.setIndex(index))
+      .map(draggable => this.addDraggableToContainer($container, draggable))
+      .map(draggable => this.setDraggableAriaLabel(draggable))
+      .map(draggable => this.addDraggableToControls(this.dragControls, draggable));
   };
 
   /**
@@ -1075,7 +1078,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @return {H5P.TextDraggable}
    */
-   ParsonsPuzzle.prototype.setDraggableAriaLabel = function (draggable) {
+  ParsonsPuzzle.prototype.setDraggableAriaLabel = function (draggable) {
     draggable.updateAriaLabel(this.params.ariaDraggableIndex
       .replace('@index', (draggable.getIndex() + 1).toString())
       .replace('@count', this.draggables.length.toString()));
@@ -1089,7 +1092,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @param {HTMLElement} element
    * @returns {boolean}
    */
-   ParsonsPuzzle.prototype.isGrabbed = function (element) {
+  ParsonsPuzzle.prototype.isGrabbed = function (element) {
     return element.getAttribute("aria-grabbed") === 'true';
   };
 
@@ -1101,7 +1104,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {H5P.TextDraggable}
    */
-   ParsonsPuzzle.prototype.addDraggableToContainer = function ($container, draggable) {
+  ParsonsPuzzle.prototype.addDraggableToContainer = function ($container, draggable) {
     draggable.getDraggableElement().addClass(CODE_LINE);
     draggable.appendDraggableTo($container);
     return draggable;
@@ -1115,7 +1118,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {H5P.TextDraggable}
    */
-   ParsonsPuzzle.prototype.addDraggableToControls = function (controls, draggable) {
+  ParsonsPuzzle.prototype.addDraggableToControls = function (controls, draggable) {
     controls.addElement(draggable.getElement());
     return draggable;
   };
@@ -1123,7 +1126,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Feedback function for checking if all fields are filled, and show evaluation if that is the case.
    */
-   ParsonsPuzzle.prototype.instantFeedbackEvaluation = function () {
+  ParsonsPuzzle.prototype.instantFeedbackEvaluation = function () {
     var self = this;
     var allFilled = self.isAllAnswersFilled();
 
@@ -1155,8 +1158,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {boolean} allFilled Returns true if all answers are answered
    */
-   ParsonsPuzzle.prototype.isAllAnswersFilled = function () {
-    return this.draggables.every(function(draggable){
+  ParsonsPuzzle.prototype.isAllAnswersFilled = function () {
+    return this.draggables.every(function (draggable) {
       return draggable.isInsideDropZone();
     });
   };
@@ -1164,7 +1167,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Enables all dropzones and all draggables.
    */
-   ParsonsPuzzle.prototype.enableAllDropzonesAndDraggables = function () {
+  ParsonsPuzzle.prototype.enableAllDropzonesAndDraggables = function () {
     this.enableDraggables();
     this.droppables.forEach(function (droppable) {
       droppable.enableDropzone();
@@ -1174,7 +1177,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Disables all draggables, user will not be able to interact with them any more.
    */
-   ParsonsPuzzle.prototype.disableDraggables = function () {
+  ParsonsPuzzle.prototype.disableDraggables = function () {
     this.draggables.forEach(function (entry) {
       entry.disableDraggable();
     });
@@ -1183,7 +1186,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Enables all draggables, user will be able to interact with them again.
    */
-   ParsonsPuzzle.prototype.enableDraggables = function () {
+  ParsonsPuzzle.prototype.enableDraggables = function () {
     this.draggables.forEach(function (entry) {
       entry.enableDraggable();
     });
@@ -1195,7 +1198,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {Boolean} true
    */
-   ParsonsPuzzle.prototype.getAnswerGiven = function () {
+  ParsonsPuzzle.prototype.getAnswerGiven = function () {
     return this.answered;
   };
 
@@ -1205,7 +1208,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {Number} The current score.
    */
-   ParsonsPuzzle.prototype.getScore = function () {
+  ParsonsPuzzle.prototype.getScore = function () {
     return this.calculateScore();
   };
 
@@ -1215,7 +1218,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {Number} The maximum score.
    */
-   ParsonsPuzzle.prototype.getMaxScore = function () {
+  ParsonsPuzzle.prototype.getMaxScore = function () {
     return this.droppables.length;
   };
 
@@ -1224,14 +1227,14 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {string} title
    */
-   ParsonsPuzzle.prototype.getTitle = function () {
+  ParsonsPuzzle.prototype.getTitle = function () {
     return H5P.createTitle((this.contentData && this.contentData.metadata && this.contentData.metadata.title) ? this.contentData.metadata.title : 'Parsons Puzzle');
   };
 
   /**
    * Toogles the drop effect based on if an element is selected
    */
-   ParsonsPuzzle.prototype.toggleDropEffect = function () {
+  ParsonsPuzzle.prototype.toggleDropEffect = function () {
     var hasSelectedElement = this.selectedElement !== undefined;
     this.ariaDropControls[hasSelectedElement ? 'setAllToMove' : 'setAllToNone']();
   };
@@ -1243,8 +1246,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {H5P.TextDraggable}
    */
-   ParsonsPuzzle.prototype.getDraggableByElement = function (el) {
-    return this.draggables.filter(function(draggable){
+  ParsonsPuzzle.prototype.getDraggableByElement = function (el) {
+    return this.draggables.filter(function (draggable) {
       return draggable.$draggable.get(0) === el;
     }, this)[0];
   };
@@ -1256,8 +1259,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {H5P.TextDroppable}
    */
-   ParsonsPuzzle.prototype.getDroppableByElement = function (el) {
-    return this.droppables.filter(function(droppable){
+  ParsonsPuzzle.prototype.getDroppableByElement = function (el) {
+    return this.droppables.filter(function (droppable) {
       return droppable.$dropzone.get(0) === el;
     }, this)[0];
   };
@@ -1266,7 +1269,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * Used for contracts.
    * Sets feedback on the dropzones.
    */
-   ParsonsPuzzle.prototype.showSolutions = function () {
+  ParsonsPuzzle.prototype.showSolutions = function () {
     this.showEvaluation(true);
 
     this.droppables.forEach(function (droppable) {
@@ -1290,9 +1293,9 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * Used for contracts.
    * Resets the complete task back to its' initial state.
    */
-   ParsonsPuzzle.prototype.resetTask = function () {
+  ParsonsPuzzle.prototype.resetTask = function () {
     var self = this;
-    student_solution=[];
+    student_solution = [];
     // Reset task answer
     self.answered = false;
     self.instantFeedbackEvaluationFilled = false;
@@ -1312,8 +1315,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     }
     self.hideAllSolutions();
     self.hideAllFeedbacks();
-    self.droppables.forEach(function(droppable){
-      droppable.error=[];
+    self.droppables.forEach(function (droppable) {
+      droppable.error = [];
     });
     console.log("CLEAR ERROR");
     this.trigger('resize');
@@ -1322,10 +1325,10 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
   /**
    * Resets the position of all draggables shuffled.
    */
-   ParsonsPuzzle.prototype.resetDraggables = function () {
+  ParsonsPuzzle.prototype.resetDraggables = function () {
     Util.shuffle(this.draggables).forEach(this.revert, this);
     this.draggables.forEach(function (draggable) {
-      draggable.getDraggableElement().css('width', self.widestDraggable+'ch');
+      draggable.getDraggableElement().css('width', self.widestDraggable + 'ch');
     });
   };
 
@@ -1340,24 +1343,24 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {object} containing indexes of dropped words
    */
-   ParsonsPuzzle.prototype.getCurrentState = function () {
+  ParsonsPuzzle.prototype.getCurrentState = function () {
     // Return undefined if task is not initialized
     if (this.draggables === undefined) {
       return undefined;
     }
 
     return this.draggables
-    .filter(draggable => (draggable.getInsideDropzone() !== null))
-    .map(draggable => ({
-      draggable: draggable.getInitialIndex(),
-      droppable: this.droppables.indexOf(draggable.getInsideDropzone())
-    }));
+      .filter(draggable => (draggable.getInsideDropzone() !== null))
+      .map(draggable => ({
+        draggable: draggable.getInitialIndex(),
+        droppable: this.droppables.indexOf(draggable.getInsideDropzone())
+      }));
   };
 
   /**
    * Sets answers to current user state
    */
-   ParsonsPuzzle.prototype.setH5PUserState = function () {
+  ParsonsPuzzle.prototype.setH5PUserState = function () {
     const self = this;
 
     // Do nothing if user state is undefined
@@ -1421,7 +1424,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @param {number} index
    * @return {boolean}
    */
-   ParsonsPuzzle.prototype.isValidIndex = function(index) {
+  ParsonsPuzzle.prototype.isValidIndex = function (index) {
     return !isNaN(index) && (index < this.draggables.length) && (index >= 0);
   };
 
@@ -1431,7 +1434,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @param {number} initialIndex
    * @return {Draggable}
    */
-   ParsonsPuzzle.prototype.getDraggableByInitialIndex = function(initialIndex) {
+  ParsonsPuzzle.prototype.getDraggableByInitialIndex = function (initialIndex) {
     return this.draggables.filter(draggable => draggable.hasInitialIndex(initialIndex))[0];
   };
 
@@ -1440,10 +1443,10 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * Contract used by report rendering engine.
    *
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-6}
-	 *
+   *
    * @returns {Object} xAPI data
    */
-   ParsonsPuzzle.prototype.getXAPIData = function () {
+  ParsonsPuzzle.prototype.getXAPIData = function () {
     var xAPIEvent = this.createXAPIEventTemplate('answered');
     this.addQuestionToXAPI(xAPIEvent);
     this.addResponseToXAPI(xAPIEvent);
@@ -1458,8 +1461,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @param xAPIEvent
    */
-   ParsonsPuzzle.prototype.addQuestionToXAPI = function (xAPIEvent) {
-    var definition = xAPIEvent.getVerifiedStatementValue(['object','definition']);
+  ParsonsPuzzle.prototype.addQuestionToXAPI = function (xAPIEvent) {
+    var definition = xAPIEvent.getVerifiedStatementValue(['object', 'definition']);
     $.extend(definition, this.getxAPIDefinition());
   };
 
@@ -1468,7 +1471,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {Object}
    */
-   ParsonsPuzzle.prototype.getxAPIDefinition = function () {
+  ParsonsPuzzle.prototype.getxAPIDefinition = function () {
     var definition = {};
     definition.interactionType = 'fill-in';
     definition.type = 'http://adlnet.gov/expapi/activities/cmi.interaction';
@@ -1492,7 +1495,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    * @param {H5P.XAPIEvent} xAPIEvent
    *  The xAPI event we will add a response to
    */
-   ParsonsPuzzle.prototype.addResponseToXAPI = function (xAPIEvent) {
+  ParsonsPuzzle.prototype.addResponseToXAPI = function (xAPIEvent) {
     var self = this;
     var currentScore = self.getScore();
     var maxScore = this.solution_max_score;
@@ -1507,7 +1510,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       scaled: Math.round(currentScore / maxScore * 10000) / 10000
     };
 
-    if(self.stopWatch) {
+    if (self.stopWatch) {
       duration = 'PT' + self.stopWatch.stop() + 'S';
     }
 
@@ -1524,11 +1527,11 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    *
    * @returns {string} User answers separated by the "[,]" pattern
    */
-   ParsonsPuzzle.prototype.getXAPIResponse = function () {
-     return this.droppables
-     .map(droppable => droppable.hasDraggable() ? droppable.containedDraggable.text : '')
-     .join('[,]');
-   };
+  ParsonsPuzzle.prototype.getXAPIResponse = function () {
+    return this.droppables
+      .map(droppable => droppable.hasDraggable() ? droppable.containedDraggable.text : '')
+      .join('[,]');
+  };
 
   return ParsonsPuzzle;
 
