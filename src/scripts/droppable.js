@@ -42,8 +42,9 @@ export default class Droppable {
     self.index = index;
     self.params = params;
     self.error = [];
-    self.check = false;           //check if the droppable is distractor
-    self.isDistractor = false;
+    self.check = false;
+    self.wrongOrder = true;      //chek if the droppable in the wrong order.
+    self.isDistractor = false;    //check if the droppable is distractor
     if (self.params.indentBy2) {
       self.indentSpaces = 2;
     }

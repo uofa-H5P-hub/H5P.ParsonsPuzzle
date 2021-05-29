@@ -426,38 +426,47 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     self.droppables.forEach(function (droppable) {
       //droppable.isCorrect();
       droppable.error = [];
-      droppable.error.push(droppable.index + "</br>" + " the index of codeline");
+      droppable.error.push(droppable.index + " the index of codeline" + "</br>");
       //droppable.isDistractor = false;
       if (droppable.containedDraggable != null) {
         self.check_distractor(droppable);
-
+        self.check_order(droppable);
       }
 
       // if the droppable is not correct
-      if ((!droppable.check) && (!droppable.isDistractor)) {
-        if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
-          droppable.error.push(self.params.linesNoMatching + "</br>");
-        }
-        else if (droppable.solution != "") {
-          droppable.error.push(self.params.order + "</br>");
-        }
-      }
-      else if ((droppable.containedDraggable != null) && (droppable.isDistractor) && (!droppable.checkDistractor())) {
-        //droppable.error.push(self.params.codelineIsDistractor + "</br>");
-      }
-      else if ((droppable.containedDraggable === null) && (droppable.isDistractor)) {
-        for (var i = 0; i < droppable.error.length; i++) {
-          if (droppable.error[i] == "") {
-            droppable.error.splice(i, 1);
-            i = i - 1;
-          }
-        }
-        // var r = droppable.error.filter(function(){return droppable.error});
-      }
+      //if ((!droppable.check) && (!droppable.isDistractor)) {
+      //  if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
+      //    droppable.error.push(self.params.linesNoMatching + "</br>");
+      //  }
+      //  else if (droppable.solution != "") {
+      //    droppable.error.push(self.params.order + "</br>");
+      //  }
+      //}
+      //else if ((droppable.containedDraggable != null) && (droppable.isDistractor) && (!droppable.checkDistractor())) {
+      //  //droppable.error.push(self.params.codelineIsDistractor + "</br>");
+      //}
+      //else if ((droppable.containedDraggable === null) && (droppable.isDistractor)) {
+      //  for (var i = 0; i < droppable.error.length; i++) {
+      //    if (droppable.error[i] == "") {
+      //      droppable.error.splice(i, 1);
+      //      i = i - 1;
+      //    }
+      //  }
+      // var r = droppable.error.filter(function(){return droppable.error});
+      //}
 
       console.log("check the droppable's indent");
     });
   };
+
+  //function to check order
+  ParsonsPuzzle.prototype.check_order = function (droppable) {
+    var self = this;
+    if (!droppable.isCorrect_noIndent()) {
+      droppable.wrongOrder = false;
+      droppable.error.push(self.params.order + "</br>");
+    }
+  }
 
   //function to check the distractors.
   ParsonsPuzzle.prototype.check_distractor = function (droppable) {
