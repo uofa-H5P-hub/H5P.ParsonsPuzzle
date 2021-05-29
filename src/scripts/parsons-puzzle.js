@@ -422,20 +422,17 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
   ParsonsPuzzle.prototype.check_answer = function () {
     var self = this;
-    self.check_distractor;
+    //self.check_distractor; ?
     self.droppables.forEach(function (droppable) {
-      droppable.isCorrect();
+      //droppable.isCorrect();
       droppable.error = [];
       droppable.error.push(droppable.index + "</br>" + " the index of codeline");
-      droppable.isDistractor = false;
+      //droppable.isDistractor = false;
+      if (droppable.containedDraggable != null) {
+        self.check_distractor(droppable);
 
-      for (var i = 0; i < saved_distractors.length; i++) {
-        if (((droppable.containedDraggable != null)) && (droppable.text === saved_distractors[i])) {
-          droppable.isDistractor = true;
-          droppable.error.push(self.params.codelineIsDistractor + "</br>");
-          console.log("check the droppableIsDistractor");
-        }
       }
+
       // if the droppable is not correct
       if ((!droppable.check) && (!droppable.isDistractor)) {
         if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
@@ -446,7 +443,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         }
       }
       else if ((droppable.containedDraggable != null) && (droppable.isDistractor) && (!droppable.checkDistractor())) {
-        droppable.error.push(self.params.codelineIsDistractor + "</br>");
+        //droppable.error.push(self.params.codelineIsDistractor + "</br>");
       }
       else if ((droppable.containedDraggable === null) && (droppable.isDistractor)) {
         for (var i = 0; i < droppable.error.length; i++) {
@@ -458,9 +455,19 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         // var r = droppable.error.filter(function(){return droppable.error});
       }
 
-
       console.log("check the droppable's indent");
     });
+  };
+
+  //function to check the distractors.
+  ParsonsPuzzle.prototype.check_distractor = function (droppable) {
+    var self = this;
+    for (var i = 0; i < saved_distractors.length; i++) {
+      if (droppable.text == saved_distractors[i]) {
+        droppable.isDistractor = true;
+        droppable.error.push(self.params.codelineIsDistractor + "</br>");
+      }
+    }
   };
 
   /**

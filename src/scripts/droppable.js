@@ -122,6 +122,7 @@ export default class Droppable {
 
 
   //do not know what is this for
+  //#############################################
   showSolution_distractor() {
     self = this;
     self.checkDistractor();
@@ -135,6 +136,8 @@ export default class Droppable {
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
     this.$showSolution.show();
   }
+  //#############################################
+
   /**
    * Displays the feedback next to the drop box if it is not correct.
   */
@@ -151,18 +154,6 @@ export default class Droppable {
       self.$showFeedback.css('padding-left', 0);
       self.$showFeedback.css('margin-left', 0);
       self.$showFeedback.css({ top: '-20px', left: '-20px', position: 'float' });
-      //self.$showFeedback.show();
-      //self.$dropzoneContainer.mouseenter(function () {
-      //  self.$showFeedback.show();
-      //})
-      //self.$dropzoneContainer.mouseleave(function () {
-      //  self.$showFeedback.hide();
-      //})
-      //self.$(".h5p-drag-wrong-feedback").hover(function () {
-      //  alert("hover on this container");
-      //});
-      //self.$showFeedback.css('width', autoWidth);
-
     }
 
     self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
@@ -264,22 +255,34 @@ export default class Droppable {
     this.$dropzone.show();
   }
 
-  /**
-   * Checks if this drop box contains the correct draggable.
-   *
-   * @returns {boolean} True if this box has the correct answer.
-   */
+
   checkDistractor() {
     var solution = this.solution;
     return solution === this.text;
   }
 
+  /**
+   * Checks if this drop box contains the correct draggable.
+   *
+   * @returns {boolean} True if this box has the correct answer.
+   */
+  // do not know why change
+  //isCorrect() {
+  //  var solution = this.solution;
+  //  if (this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent) {
+  //    this.check = true;
+  //  }
+  //  return this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent;
+  //}
+
   isCorrect() {
-    var solution = this.solution;
-    if (this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent) {
-      this.check = true;
+    if (this.containedDraggable === null) {
+      return false;
     }
-    return this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent;
+    var solution = this.solution;
+    var answerIndentation = solution.indent;
+
+    return solution.code === this.text && answerIndentation == this.indent;
   }
 
 
