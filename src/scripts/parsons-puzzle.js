@@ -431,6 +431,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       if (droppable.containedDraggable != null) {
         self.check_distractor(droppable);
         self.check_order(droppable);
+        if (droppable.order) {
+          self.check_indent(droppable);
+        }
       }
 
       // if the droppable is not correct
@@ -459,14 +462,23 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     });
   };
 
+  //function to check indent
+  ParsonsPuzzle.prototype.check_indent = function (droppable) {
+    var self = this;
+    if (!droppable.isCorrect_noText()) {
+      droppable.indentCheck = false;
+      droppable.error.push(self.params.linesNoMatching + "</br>");
+    }
+  };
+
   //function to check order
   ParsonsPuzzle.prototype.check_order = function (droppable) {
     var self = this;
     if (!droppable.isCorrect_noIndent()) {
-      droppable.wrongOrder = false;
+      droppable.order = false;
       droppable.error.push(self.params.order + "</br>");
     }
-  }
+  };
 
   //function to check the distractors.
   ParsonsPuzzle.prototype.check_distractor = function (droppable) {
