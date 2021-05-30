@@ -46,8 +46,6 @@ export default class Droppable {
     self.order = true;                //chek if the droppable in the wrong order.
     self.isDistractor = false;        //check if the droppable is distractor.
     self.indentCheck = true;          //check if the indent is correct.
-    self.blockMissingOpen = false;    //check if block is missing open.
-    self.blockMissingClose = false;   //check if block is missing close
     if (self.params.indentBy2) {
       self.indentSpaces = 2;
     }
@@ -150,18 +148,19 @@ export default class Droppable {
     self.check = false;
     const correct = self.isCorrect();
 
-    if ((!correct) && (self.error != [])) {
+    if ((!correct) && (self.error.length != 0)) {
       self.$showFeedback.html(self.error);
       console.log("show-droppable-feedback");
       self.$dropzone.css('padding-left', 0);
-      //self.$dropzone.css('background-color', black);
       self.$showFeedback.css('padding-left', 0);
       self.$showFeedback.css('margin-left', 0);
+
+      self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
+      self.$showFeedback.toggleClass('incorrect', !correct);
+      self.$showFeedback.fadeIn();
     }
 
-    self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
-    self.$showFeedback.toggleClass('incorrect', !correct);
-    self.$showFeedback.fadeIn();
+
   };
 
   /**
@@ -287,7 +286,6 @@ export default class Droppable {
 
     return solution.code === this.text && answerIndentation == this.indent;
   }
-
 
   isCorrect_noText() {
     if (this.containedDraggable === null) {

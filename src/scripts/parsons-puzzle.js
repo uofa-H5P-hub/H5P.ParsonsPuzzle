@@ -446,8 +446,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
         if (droppable.text === "}") {
           if (index_curly_open.length === 0) {
-            //index_curly_end.push(droppable.index);
-            droppable.blockMissingOpen = true;
             droppable.error.push(self.params.noMatchingOpen + "</br>");
           } else {
             droppable.error.push(index_curly_open.length + " length of the culrly </br>");
@@ -485,7 +483,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     for (var i = 0; i < this.droppables.length; i++) {
       if (index_curly_open.includes(self.droppables[i].index)) {
         self.droppables[i].error.push(self.params.noMatchingClose + "</br>");
-        droppable.blockMissingClose = true;
       }
     }
   };
