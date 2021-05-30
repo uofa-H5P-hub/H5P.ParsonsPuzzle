@@ -57,6 +57,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var saved_distractors = [];
   var student_solution = [];
   var containedDis = false;
+  var index_curly_open = [];
+  //var index_curly_end = [];
 
 
   var solution_max_score = 0;
@@ -426,13 +428,31 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     self.droppables.forEach(function (droppable) {
       //droppable.isCorrect();
       droppable.error = [];
-      droppable.error.push(droppable.index + " the index of codeline" + "</br>");
       //droppable.isDistractor = false;
+
+      //if the dropdone has contained droppable check the answer
       if (droppable.containedDraggable != null) {
+        droppable.error.push(droppable.index + " the index of codeline" + "</br>");
         self.check_distractor(droppable);
         self.check_order(droppable);
         if (droppable.order) {
           self.check_indent(droppable);
+        }
+
+        //check the brace conditions
+        if (droppable.text === "{") {
+          index_curly_open.push(droppable.index);
+        }
+
+        if (droppable.text === "}") {
+          if (index_curly_open.length === 0) {
+            //index_curly_end.push(droppable.index);
+            droppable.blockMissingOpen = true;
+            droppable.error.push(self.params.noMatchingOpen + "</br>");
+          } else {
+            droppable.error.push(index_curly_open.length + " length of the culrly </br>");
+            index_curly_open.pop();
+          }
         }
       }
 
@@ -460,6 +480,14 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
       console.log("check the droppable's indent");
     });
+
+    //update the error information of no matching close
+    for (var i = 0; i < this.droppables.length; i++) {
+      if (index_curly_open.includes(self.droppables[i].index)) {
+        self.droppables[i].error.push(self.params.noMatchingClose + "</br>");
+        droppable.blockMissingClose = true;
+      }
+    }
   };
 
   //function to check indent

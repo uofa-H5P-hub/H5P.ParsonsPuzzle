@@ -43,9 +43,11 @@ export default class Droppable {
     self.params = params;
     self.error = [];
     self.check = false;
-    self.order = true;            //chek if the droppable in the wrong order.
-    self.isDistractor = false;    //check if the droppable is distractor.
-    self.indentCheck = true;      //check if the indent is correct.
+    self.order = true;                //chek if the droppable in the wrong order.
+    self.isDistractor = false;        //check if the droppable is distractor.
+    self.indentCheck = true;          //check if the indent is correct.
+    self.blockMissingOpen = false;    //check if block is missing open.
+    self.blockMissingClose = false;   //check if block is missing close
     if (self.params.indentBy2) {
       self.indentSpaces = 2;
     }
@@ -155,12 +157,11 @@ export default class Droppable {
       //self.$dropzone.css('background-color', black);
       self.$showFeedback.css('padding-left', 0);
       self.$showFeedback.css('margin-left', 0);
-      self.$showFeedback.css({ top: '-20px', left: '-20px', position: 'float' });
     }
 
     self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
     self.$showFeedback.toggleClass('incorrect', !correct);
-    self.$showFeedback.show();
+    self.$showFeedback.fadeIn();
   };
 
   /**
@@ -176,7 +177,7 @@ export default class Droppable {
    */
   hideFeedback() {
     //this.$showFeedback.html('');
-    this.$showFeedback.hide();
+    this.$showFeedback.fadeOut();
   }
 
 

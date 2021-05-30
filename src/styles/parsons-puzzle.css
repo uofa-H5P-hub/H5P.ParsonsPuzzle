@@ -198,7 +198,10 @@
   color: #1879d3;
   font-weight: bold;
   border: 0.5px #c7cce4 solid;
-  background-color: #c7cce4;
+  /*background-color: #c7cce4;*/
+  background-color: lightpink;
+  position: absolute;
+  z-index: 5;
   padding: 0.15em;
   margin-left: 0.5em;
 }
