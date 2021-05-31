@@ -448,7 +448,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           if (index_curly_open.length === 0) {
             droppable.error.push(self.params.noMatchingOpen + "</br>");
           } else {
-            droppable.error.push(index_curly_open.length + " length of the culrly </br>");
+            //droppable.error.push(index_curly_open.length + " length of the culrly </br>");
             index_curly_open.pop();
           }
         }

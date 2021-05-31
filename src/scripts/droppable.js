@@ -123,8 +123,6 @@ export default class Droppable {
   }
 
 
-  //do not know what is this for
-  //#############################################
   showSolution_distractor() {
     self = this;
     self.checkDistractor();
@@ -138,7 +136,6 @@ export default class Droppable {
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
     this.$showSolution.show();
   }
-  //#############################################
 
   /**
    * Displays the feedback next to the drop box if it is not correct.
@@ -268,14 +265,6 @@ export default class Droppable {
    *
    * @returns {boolean} True if this box has the correct answer.
    */
-  // do not know why change
-  //isCorrect() {
-  //  var solution = this.solution;
-  //  if (this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent) {
-  //    this.check = true;
-  //  }
-  //  return this.containedDraggable != null && solution.code === this.text && solution.indent == this.indent;
-  //}
 
   isCorrect() {
     if (this.containedDraggable === null) {
