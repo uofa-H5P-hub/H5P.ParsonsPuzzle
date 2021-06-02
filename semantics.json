@@ -165,6 +165,14 @@
     "common": true
   },
   {
+    "label": "Text for \"Show Feedback\" button",
+    "importance": "low",
+    "name": "showFeedback",
+    "type": "text",
+    "default": "Show feedback",
+    "common": true
+  },
+  {
     "label": "Text for \"Show Solution\" button",
     "importance": "low",
     "name": "showSolution",
@@ -297,6 +305,13 @@
         "default": true
       },
       {
+        "label": "Enable \"Show Feedback\" button",
+        "importance": "low",
+        "name": "enableFeedbackButton",
+        "type": "boolean",
+        "default": true
+      },
+      {
         "label": "Enable \"Show Solution\" button",
         "importance": "low",
         "name": "enableSolutionsButton",
@@ -347,6 +362,14 @@
     "common": true
   },
   {
+    "name": "a11yShowFeedback",
+    "type": "text",
+    "label": "Assistive technology label for \"Show Feedback\" button",
+    "default": "Show the Feedback. The task will be marked with its correct solution.",
+    "importance": "low",
+    "common": true
+  },
+  {
     "name": "a11yRetry",
     "type": "text",
     "label": "Assistive technology label for \"Retry\" button",
@@ -361,7 +384,7 @@
     "importance": "low",
     "common": true,
     "optional": true,
-    "default": "Code fragments in your program are wrong."
+    "default": "Code fragments in your program are wrong, or in wrong order. This can be fixed by moving, removing, or replacing highlighted fragments."
   },
   {
     "label": "Feedback for lines missing in solution",
@@ -388,25 +411,16 @@
     "importance": "low",
     "optional": true,
     "common": true,
-    "default": "The highlighted fragment is not correctly indented."
+    "default": "Based on language syntax, the highlighted fragment is not correctly indented."
   },
   {
-    "name": "linesWrong",
-    "label": "The codeline which is chosen is incorrect",
+    "name": "haveDistractor",
+    "label": "Feedback when containing a distractor",
     "type": "text",
     "importance": "low",
     "optional": true,
     "common": true,
-    "default": "The codeline which is chosen is incorrect."
-  },
-  {
-    "name": "codelineIsDistractor",
-    "label": "The codeline which is chosen is distractor",
-    "type": "text",
-    "importance": "low",
-    "optional": true,
-    "common": true,
-    "default": "The codeline which is chosen is distractor."
+    "default": "Your program has contained a distractor or distractors."
   },
   {
     "name": "noMatchingOpen",

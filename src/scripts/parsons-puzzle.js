@@ -52,13 +52,37 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   var TASK_CONTAINER = "h5p-drag-task";
   var WORDS_CONTAINER = "h5p-drag-droppable-words";
   var DROPZONE_CONTAINER = "h5p-drag-dropzone-container";
+  var SHOW_FEEDBACK_CONTAINER = "h5p-drag-show-feedback-container";
   var DRAGGABLES_CONTAINER = "h5p-drag-draggables-container";
   var CODE_LINE = "h5p-drag-code";
   var saved_distractors = [];
   var student_solution = [];
-  var containedDis = false;
   var index_curly_open = [];
-  //var index_curly_end = [];
+  
+  var save_ret;
+  var error = [];
+  error.push("Feedback:" + "<br/>");
+  var error_no = 1;
+  var wrong_indent = false;
+  var wrong_order = false;
+  var line_missing = false;
+  var line_too_many = false;
+  var contain_distractor = false;
+  var totallines = 0;
+  var right_length = 0;
+  var count_open = 0;
+  var count_close = 0;
+  var count_correct_open = 0;
+  var count_correct_close = 0;
+  var count_total = 0;
+  var correct_solution = [];
+  var correct_total = 0;
+  var index_open = [];
+  var index_close = [];
+  var index_correct_open = [];
+  var index_correct_close = [];
+  var block_mismatch = false;
+
 
 
   var solution_max_score = 0;
@@ -359,6 +383,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           if (self.params.behaviour.enableRetry) {
             self.showButton('try-again');
           }
+          if (self.params.behaviour.enableFeedbackButton) {
+            self.showButton('show-feedback');
+          }
           if (self.params.behaviour.enableSolutionsButton) {
             self.showButton('show-solution');
           }
@@ -366,6 +393,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           self.disableDraggables();
         } else {
           self.hideButton('show-solution');
+          self.hideButton('show-feedback');
           self.hideButton('check-answer');
         }
 
@@ -376,16 +404,81 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       });
     }
 
+    //Show Feedback button
+    self.addButton('show-feedback', self.params.showFeedback, function () {
+
+      // feedback for containing distractors
+      self.check_distractor();
+      if (contain_distractor) {
+        error.push(error_no + ". " + self.params.haveDistractor + "</br>");
+        error_no ++;
+      }
+      // feedback for wrong order
+      self.check_wrong_order();
+      if (totallines == save_ret.solutions.length) {
+        if (wrong_order) {
+          error.push(error_no + ". " + self.params.order + "</br>");
+          error_no ++;
+        }
+      }
+      // feedback for lines too much
+      else if (totallines > save_ret.solutions.length) {
+        line_too_many = true;
+        error.push(error_no + ". " + self.params.linesTooMany + "</br>");
+        error_no ++;      
+      } 
+      // feedback for lines missing
+      else if (totallines < save_ret.solutions.length) {
+        line_missing = true;
+        error.push(error_no + ". " + self.params.linesMissing + "</br>");
+        error_no ++;
+      }
+      // feedback for wrong indentation
+      self.check_indent();
+      if (wrong_indent) {
+        error.push(error_no + ". " + self.params.linesNoMatching + "</br>");
+        error_no ++;
+      }
+      // feedback for no matching open and no matching close
+      self.check_open_brackets();
+      self.check_close_brackets();
+      count_total = count_open + count_close;
+      if (count_open < count_close) {
+        error.push(error_no + ". " + self.params.noMatchingOpen + "</br>");
+        error_no ++;
+      } else if (count_open > count_close) {
+        error.push(error_no + ". " + self.params.noMatchingClose + "</br>");
+        error_no ++;
+      }
+      // feedback for block close mismatch
+      else if ((count_open === count_close) && (count_total === correct_total)) {
+        self.check_block_mismatch();
+        if (block_mismatch) {
+          error.push(error_no + ". " + self.params.blockCloseMismatch + "</br>");
+          error_no ++;
+        }
+      }
+
+      self.showFeedback();
+
+      self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
+      self.disableDraggables();
+      self.$draggables.css('display', 'none');
+      self.removeAllDroppablesFromControls();
+      self.hideButton('show-feedback');
+      self.hideAllSolutions();
+      self.hideAllFeedbacks();
+    }, self.initShowShowFeedbackButton || false, {
+      'aria-label': self.params.a11yShowFeedback,
+    });
+
     //Show Solution button
     self.addButton('show-solution', self.params.showSolution, function () {
       self.droppables.forEach(function (droppable) {
-
-        if (droppable.solution === "") {
-          droppable.showSolution_distractor();
-        }
-        else {
+        if (droppable.check == true) {
+          droppable.showSolutionDistractor();
+        } else {
           droppable.showSolution();
-          console.log("show solution");
         }
         droppable.$dropzoneContainer.mouseenter(function () {
           droppable.showFeedback();
@@ -395,7 +488,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         });
 
         self.check_answer();
-        console.log("showFeedback");
       });
 
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
@@ -404,7 +496,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       self.removeAllDroppablesFromControls();
       self.hideButton('show-solution');
       self.hideAllFeedbacks();                  //hide solution
-
+      self.hideFeedback();
 
     }, self.initShowShowSolutionButton || false, {
       'aria-label': self.params.a11yShowSolution,
@@ -412,7 +504,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     // Retry button
     self.addButton('try-again', self.params.tryAgain, function () {
-      console.log("try again");
       self.stopWatch.reset();
       self.resetTask();
       self.$draggables.css('display', 'inline');
@@ -421,6 +512,110 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       'aria-label': self.params.a11yRetry,
     });
   };
+
+  ParsonsPuzzle.prototype.check_indent = function() {
+    var self = this;
+    self.droppables.forEach(function (droppable) {
+      if (!droppable.check) {
+        if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText())) {
+          wrong_indent = true;
+        }
+      }
+    });
+  };
+
+  ParsonsPuzzle.prototype.check_wrong_order = function() {
+    var self = this;
+    self.droppables.forEach(function (droppable) {
+      if (!droppable.check) {
+        if (!droppable.isCorrect_noIndent()) {
+          wrong_order = true;
+        }
+      }
+    });
+  };
+
+  ParsonsPuzzle.prototype.check_distractor = function() {
+    for (var i = 0; i < student_solution.length; i++) {
+      for (var j = 0; j < saved_distractors.length; j++) {
+        if (student_solution[i] == saved_distractors[j]) {
+          contain_distractor = true;
+        }
+      }
+    }
+  };
+
+  ParsonsPuzzle.prototype.check_open_brackets = function() {
+    for (var i = 0; i < student_solution.length; i++) {
+      if (student_solution[i] === "{") {
+        count_open ++;
+        index_open.push(i);
+      }
+    }
+  };
+
+  ParsonsPuzzle.prototype.check_close_brackets = function() {
+    for (var i = 0; i < student_solution.length; i++) {
+      if (student_solution[i] === "}") {
+        count_close ++;
+        index_close.push(i);
+      }
+    }
+  };
+
+  ParsonsPuzzle.prototype.check_correct_open_brackets = function() {
+    for (var i = 0; i < correct_solution.length; i++) {
+      if (correct_solution[i] === "{") {
+        count_correct_open ++;
+        index_correct_open.push(i);
+      }
+    }
+  };
+
+  ParsonsPuzzle.prototype.check_correct_close_brackets = function() {
+    for (var i = 0; i < correct_solution.length; i++) {
+      if (correct_solution[i] === "}") {
+        count_correct_close ++;
+        index_correct_close.push(i);
+      }
+    }
+  };
+
+  ParsonsPuzzle.prototype.check_block_mismatch = function() {
+    const equals = (index_open, index_correct_open) => JSON.stringify(index_open) === JSON.stringify(index_correct_open);
+    if (equals) {
+      for (var i = 0; i < index_close.length; i++) {
+       if (index_close[i] < index_correct_close[i]) {
+         block_mismatch = true;
+         break;
+       }
+      }
+    }
+
+  }
+
+  ParsonsPuzzle.prototype.showFeedback = function () {
+    var self = this;
+
+    self.$showFeedback.html(error);
+    self.$showFeedback.css('padding-left', 0);
+    self.$showFeedback.css('margin-left', 0);
+
+    self.$showFeedback.addClass('incorrect');
+    self.$showFeedback.show();
+  };
+
+  ParsonsPuzzle.prototype.hideFeedback = function () {
+      error = ["Feedback:"];
+      error.push("<br/>");
+      error_no = 1;
+      totallines = 0;
+      wrong_order = false;
+      wrong_indent = false;
+      this.$showFeedback.html('');
+      this.$showFeedback.hide();
+      this.trigger('resize');
+  }
 
   ParsonsPuzzle.prototype.check_answer = function () {
     var self = this;
@@ -433,10 +628,10 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       //if the dropdone has contained droppable check the answer
       if (droppable.containedDraggable != null) {
         droppable.error.push(droppable.index + " the index of codeline" + "</br>");
-        self.check_distractor(droppable);
-        self.check_order(droppable);
+        self.check_distractors(droppable);
+        self.check_orders(droppable);
         if (droppable.order) {
-          self.check_indent(droppable);
+          self.check_indents(droppable);
         }
 
         //check the brace conditions
@@ -454,29 +649,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         }
       }
 
-      // if the droppable is not correct
-      //if ((!droppable.check) && (!droppable.isDistractor)) {
-      //  if ((droppable.containedDraggable != null) && (!droppable.isCorrect_noText()) && (droppable.isCorrect_noIndent())) {
-      //    droppable.error.push(self.params.linesNoMatching + "</br>");
-      //  }
-      //  else if (droppable.solution != "") {
-      //    droppable.error.push(self.params.order + "</br>");
-      //  }
-      //}
-      //else if ((droppable.containedDraggable != null) && (droppable.isDistractor) && (!droppable.checkDistractor())) {
-      //  //droppable.error.push(self.params.codelineIsDistractor + "</br>");
-      //}
-      //else if ((droppable.containedDraggable === null) && (droppable.isDistractor)) {
-      //  for (var i = 0; i < droppable.error.length; i++) {
-      //    if (droppable.error[i] == "") {
-      //      droppable.error.splice(i, 1);
-      //      i = i - 1;
-      //    }
-      //  }
-      // var r = droppable.error.filter(function(){return droppable.error});
-      //}
-
-      console.log("check the droppable's indent");
     });
 
     //update the error information of no matching close
@@ -488,7 +660,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   };
 
   //function to check indent
-  ParsonsPuzzle.prototype.check_indent = function (droppable) {
+  ParsonsPuzzle.prototype.check_indents = function (droppable) {
     var self = this;
     if (!droppable.isCorrect_noText()) {
       droppable.indentCheck = false;
@@ -497,7 +669,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   };
 
   //function to check order
-  ParsonsPuzzle.prototype.check_order = function (droppable) {
+  ParsonsPuzzle.prototype.check_orders = function (droppable) {
     var self = this;
     if (!droppable.isCorrect_noIndent()) {
       droppable.order = false;
@@ -506,12 +678,12 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   };
 
   //function to check the distractors.
-  ParsonsPuzzle.prototype.check_distractor = function (droppable) {
+  ParsonsPuzzle.prototype.check_distractors = function (droppable) {
     var self = this;
     for (var i = 0; i < saved_distractors.length; i++) {
       if (droppable.text == saved_distractors[i]) {
         droppable.isDistractor = true;
-        droppable.error.push(self.params.codelineIsDistractor + "</br>");
+        droppable.error.push(self.params.haveDistractor + "</br>");
       }
     }
   };
@@ -697,6 +869,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         }
       }
       if (droppable.containedDraggable != null) {
+        totallines++;
+      }
+      if (droppable.containedDraggable != null) {
         student_solution.push(droppable.containedDraggable.codeLine.code);
       }
     });
@@ -717,9 +892,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
     this.hideEvaluation();
     this.showDropzoneFeedback();
-    console.log("showDropzoneFeedback");
     this.showExplanation();
-    console.log("showExplanation");
 
     var score = this.calculateScore();
     var maxScore = solution_max_score;
@@ -735,23 +908,22 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       .replace(/@score/g, score.toString())
       .replace(/@total/g, maxScore.toString());
 
-    if (score === maxScore) {
-      //Hide buttons and disable task
-      this.hideButton('check-answer');
-      this.hideButton('show-solution');
-      // this.hideButton('try-again');
-      if (this.params.behaviour.enableRetry) {
-        this.showButton('try-again');
+    
+      if ((score === maxScore) && (totallines === save_ret.solutions.length)) {
+        //Hide buttons and disable task
+        this.hideButton('check-answer');
+        this.hideButton('show-solution');
+        this.hideButton('show-feedback');
+        //this.hideButton('try-again');
+        this.disableDraggables();
       }
-      console.log("show try again");
-      this.disableDraggables();
-    }
+      
     this.trigger('resize');
 
     // Set feedback score
     this.setFeedback(scoreText, score, maxScore, this.params.scoreBarLabel);
 
-    return score === maxScore;
+    return score === maxScore && totallines === save_ret.solutions.length;
   };
 
   /**
@@ -796,7 +968,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.droppables.forEach(function (droppable) {
       droppable.hideFeedback();
       //droppable.error = [];
-      console.log("clear one error");
     });
     this.trigger('resize');
   };
@@ -829,11 +1000,16 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     self.$wordContainer = $('<div/>', {
       'class': WORDS_CONTAINER
     });
+    self.$showFeedback = $('<div/>', {
+      'class': SHOW_FEEDBACK_CONTAINER
+    });
 
 
     const parser = new CodeParser(2);
     const ret = parser.parse(self.codeBlock, self.indentationSpacing);
+    save_ret = ret;
     solution_max_score = ret.solutions.length;
+    
 
     ret.codeLines.forEach(function (codeLine) {
       const draggable = self.createDraggable(codeLine);
@@ -849,18 +1025,22 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           });
         }
         self.$wordContainer.append("</br>");
+        correct_solution.push(codeLine.code);
       }
-      else if (codeLine.distractor) {
+      else  {
         const solution = "";
         const droppable = self.createDroppable(solution, solution.tip);
-        // droppable.isDistractor = true;
+        droppable.check = true;
         saved_distractors.push(codeLine.code);
-        console.log("expand the distractor container");
         self.$wordContainer.append("</br>");
       }
     });
+    self.check_correct_open_brackets();
+    self.check_correct_close_brackets();
+    correct_total = count_correct_open + count_correct_close;
 
     self.shuffleAndAddDraggables(self.$draggables);
+    self.$showFeedback.appendTo(self.$wordContainer).hide(); 
     self.$draggables.appendTo(self.$taskContainer);
     self.$wordContainer.appendTo(self.$taskContainer);
     self.$taskContainer.appendTo($container);
@@ -1191,6 +1371,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       if (self.params.behaviour.enableRetry) {
         self.showButton('try-again');
       }
+      if (self.params.behaviour.enableFeedbackButton) {
+        self.showButton('show-feedback');
+      }
 
       // Shows evaluation text
       self.showEvaluation(!self.instantFeedbackEvaluationFilled);
@@ -1200,6 +1383,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       //Hides "retry" and "show solution" buttons.
       self.hideButton('try-again');
       self.hideButton('show-solution');
+      self.hideButton('show-feedback')
 
       //Hides evaluation text.
       self.hideEvaluation();
@@ -1335,6 +1519,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     this.disableDraggables();
     //Remove all buttons in "show solution" mode.
     this.hideButton('try-again');
+    this.hideButton('show-feedback');
     this.hideButton('show-solution');
     this.hideButton('check-answer');
 
@@ -1348,7 +1533,20 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
    */
   ParsonsPuzzle.prototype.resetTask = function () {
     var self = this;
+    error_no = 1;
+    wrong_order = false;
+    wrong_indent = false;
+    line_missing = false;
+    line_too_many = false;
+    contain_distractor = false;
+    totallines = 0;
     student_solution = [];
+    count_open = 0;
+    count_close = 0;
+    count_total = 0;
+    index_open = [];
+    index_close = [];
+    block_mismatch = false;
     // Reset task answer
     self.answered = false;
     self.instantFeedbackEvaluationFilled = false;
@@ -1360,18 +1558,22 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
     self.hideExplanation();
     self.enableAllDropzonesAndDraggables();
     //Show and hide buttons
-    self.hideButton('try-again');
+    // self.hideButton('try-again');
     self.hideButton('show-solution');
-
+    self.hideButton('show-feedback');
     if (!self.params.behaviour.instantFeedback) {
       self.showButton('check-answer');
     }
     self.hideAllSolutions();
     self.hideAllFeedbacks();
+    self.hideFeedback();
     self.droppables.forEach(function (droppable) {
       droppable.error = [];
+      droppable.isDistractor = false;
+      droppable.order=true;
+      droppable.indentCheck = true;
+      // droppable.
     });
-    console.log("CLEAR ERROR");
     this.trigger('resize');
   };
 
@@ -1457,6 +1659,9 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         }
         if (self.params.behaviour.enableRetry) {
           self.initShowTryAgainButton = true;
+        }
+        if (self.params.behaviour.enableFeedbackButton) {
+          self.initShowShowFeedbackButton = true;
         }
       }
       // Show buttons if  max score and all answers filled

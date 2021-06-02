@@ -27,6 +27,9 @@
 .h5p-parsons-puzzle .h5p-drag-retry-button:before {
   content: "\f021";
 }
+.h5p-parsons-puzzle .h5p-drag-show-feedback-button:before {
+  content: "\f0eb";
+}
 .h5p-parsons-puzzle .h5p-drag-show-solution-button:before {
   content: "\f06e";
 }
@@ -36,6 +39,9 @@
   display: inline-block;
 }
 .h5p-parsons-puzzle .h5p-drag-retry-button {
+  display: none;
+}
+.h5p-parsons-puzzle .h5p-drag-show-feedback-button {
   display: none;
 }
 .h5p-parsons-puzzle .h5p-drag-show-solution-button {
@@ -193,8 +199,12 @@
   display: inline;
   float: right;
 }
-
-.h5p-parsons-puzzle .h5p-drag-show-feedback-container.incorrect {
+.h5p-parsons-puzzle .h5p-drag-show-feedback-container-in-solution {
+  position: relative;
+  display: inline;
+  float: right;
+}
+.h5p-parsons-puzzle .h5p-drag-show-feedback-container-in-solution.incorrect {
   color: #1879d3;
   font-weight: bold;
   border: 0.5px #c7cce4 solid;
@@ -205,6 +215,15 @@
   padding: 0.15em;
   margin-left: 0.5em;
 }
+.h5p-parsons-puzzle .h5p-drag-show-feedback-container.incorrect {
+  color: #242324;
+  font-weight: bold;
+  border: 1px #242324 none;
+  background-color: #d4f6e6;
+  padding: 0.15em;
+  margin-left: 0.5em;
+}
+
 
 .h5p-parsons-puzzle .h5p-drag-droppable-words {
   background-color: lightyellow;
