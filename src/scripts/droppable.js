@@ -4,7 +4,7 @@ H5P.TextDroppable = (function ($) {
   //CSS Main Containers:
   //Special Sub-containers:
   var SHOW_SOLUTION_CONTAINER = "h5p-drag-show-solution-container";
-  var SHOW_FEEDBACK_CONTAINER = "h5p-drag-show-feedback-container";
+  //var SHOW_FEEDBACK_CONTAINER = "h5p-drag-show-feedback-container";
 
   //CSS Dropzone feedback:
   var CORRECT_FEEDBACK = 'h5p-drag-correct-feedback';
@@ -71,9 +71,9 @@ H5P.TextDroppable = (function ($) {
       'class': 'correct-answer'
     });
 
-    self.$showFeedback = $('<div/>', {
-      'class': SHOW_FEEDBACK_CONTAINER
-    }).appendTo(self.$dropzoneContainer).hide();
+    // self.$showFeedback = $('<div/>', {
+    //   'class': SHOW_FEEDBACK_CONTAINER
+    // }).appendTo(self.$dropzoneContainer).hide();
     
     self.$showSolution = $('<div/>', {
       'class': SHOW_SOLUTION_CONTAINER
@@ -89,22 +89,22 @@ H5P.TextDroppable = (function ($) {
       }
     }, 0);
   };
-  /**
-    * Displays the feedback next to the drop box if it is not correct.
-   */
-  Droppable.prototype.showFeedback = function () {
-    const correct = this.isCorrect();
-    if (!correct) {
-        this.$showFeedback.html("sssss.");
-        this.$dropzone.css('padding-left', 0);
-        this.$showFeedback.css('padding-left', 0);
-        this.$showFeedback.css('margin-left', 0);
-    }
+  // /**
+  //   * Displays the feedback next to the drop box if it is not correct.
+  //  */
+  // Droppable.prototype.showFeedback = function () {
+  //   const correct = this.isCorrect();
+  //   if (!correct) {
+  //       this.$showFeedback.html("sssss.");
+  //       this.$dropzone.css('padding-left', 0);
+  //       this.$showFeedback.css('padding-left', 0);
+  //       this.$showFeedback.css('margin-left', 0);
+  //   }
 
-    this.$showFeedback.prepend(correct ? this.$correctText : this.$incorrectText);
-    this.$showFeedback.toggleClass('incorrect', !correct); 
-    this.$showFeedback.show();
-  };
+  //   this.$showFeedback.prepend(correct ? this.$correctText : this.$incorrectText);
+  //   this.$showFeedback.toggleClass('incorrect', !correct); 
+  //   this.$showFeedback.show();
+  // };
 
   /**
    * Displays the solution next to the drop box if it is not correct.
@@ -134,13 +134,13 @@ H5P.TextDroppable = (function ($) {
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
     this.$showSolution.show();
   };
-  /**
-   * Hides the feedback.
-   */
-   Droppable.prototype.hideFeedback = function () {
-    this.$showFeedback.html('');
-    this.$showFeedback.hide();
-  };
+  // /**
+  //  * Hides the feedback.
+  //  */
+  //  Droppable.prototype.hideFeedback = function () {
+  //   this.$showFeedback.html('');
+  //   this.$showFeedback.hide();
+  // };
   
   /**
    * Hides the solution.
@@ -228,8 +228,8 @@ H5P.TextDroppable = (function ($) {
     this.$dropzone.css('padding-left',"");
     this.$showSolution.css('padding-left',"");
     this.$showSolution.css('margin-left',"");
-    this.$showFeedback.css('padding-left',"");
-    this.$showFeedback.css('margin-left',"");
+    // this.$showFeedback.css('padding-left',"");
+    // this.$showFeedback.css('margin-left',"");
     this.$dropzone.show();
   };
 
