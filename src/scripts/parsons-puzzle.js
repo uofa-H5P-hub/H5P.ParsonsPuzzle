@@ -413,6 +413,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         error.push(error_no + ". " + self.params.haveDistractor + "</br>");
         error_no++;
       }
+
       // feedback for wrong order
       self.check_wrong_order();
       if (totallines == save_ret.solutions.length) {
@@ -421,24 +422,28 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           error_no++;
         }
       }
+
       // feedback for lines too much
       else if (totallines > save_ret.solutions.length) {
         line_too_many = true;
         error.push(error_no + ". " + self.params.linesTooMany + "</br>");
         error_no++;
       }
+
       // feedback for lines missing
       else if (totallines < save_ret.solutions.length) {
         line_missing = true;
         error.push(error_no + ". " + self.params.linesMissing + "</br>");
         error_no++;
       }
+
       // feedback for wrong indentation
       self.check_indent();
       if (wrong_indent) {
         error.push(error_no + ". " + self.params.linesNoMatching + "</br>");
         error_no++;
       }
+
       // feedback for no matching open and no matching close
       self.check_open_brackets();
       self.check_close_brackets();
@@ -450,6 +455,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         error.push(error_no + ". " + self.params.noMatchingClose + "</br>");
         error_no++;
       }
+
       // feedback for block close mismatch
       else if ((count_open === count_close) && (count_total === correct_total)) {
         self.check_block_mismatch();
@@ -492,10 +498,10 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
       self.draggables.forEach(draggable => self.setDraggableAriaLabel(draggable));
       self.disableDraggables();
-      self.$draggables.css('display', 'none'); //hide all draggable when clicking show-solutions button
+      self.$draggables.css('display', 'none');
       self.removeAllDroppablesFromControls();
       self.hideButton('show-solution');
-      self.hideAllFeedbacks();                  //hide solution
+      self.hideAllFeedbacks();
       self.hideFeedback();
 
     }, self.initShowShowSolutionButton || false, {
@@ -591,7 +597,6 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
         }
       }
     }
-
   }
 
   ParsonsPuzzle.prototype.showFeedback = function () {
@@ -620,9 +625,8 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   ParsonsPuzzle.prototype.check_answer = function () {
     var self = this;
     self.droppables.forEach(function (droppable) {
-      
       droppable.error = [];
-      index_curly_open =[];
+      index_curly_open = [];
 
       //if the dropdone has contained droppable check the answer
       if (droppable.containedDraggable != null) {
@@ -642,12 +646,11 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           if (index_curly_open.length === 0) {
             droppable.error.push(self.params.noMatchingOpen + "</br>");
           } else {
-            droppable.error.push("pop length"+index_correct_open.length + "</br>");
+            droppable.error.push("pop length" + index_correct_open.length + "</br>");
             index_curly_open.pop();
           }
         }
       }
-
     });
 
     //update the error information of no matching close
@@ -1571,7 +1574,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       droppable.isDistractor = false;
       droppable.order = true;
       droppable.indentCheck = true;
-      index_curly_open =[];
+      index_curly_open = [];
     });
     this.trigger('resize');
   };

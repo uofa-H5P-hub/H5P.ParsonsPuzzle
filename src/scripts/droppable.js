@@ -102,12 +102,12 @@ export default class Droppable {
   /**
    * Displays the solution next to the drop box if it is not correct.
    */
-   showSolutionDistractor () {
+  showSolutionDistractor() {
     const correct = this.isCorrect_Distractor();
     if (!correct) {
-      this.$dropzone.css('padding-left',0);
-      this.$showSolution.css('padding-left',0);
-      this.$showSolution.css('margin-left',0);
+      this.$dropzone.css('padding-left', 0);
+      this.$showSolution.css('padding-left', 0);
+      this.$showSolution.css('margin-left', 0);
     }
 
     this.$showSolution.prepend(correct ? this.$correctText : this.$incorrectText);
@@ -127,9 +127,6 @@ export default class Droppable {
     this.$showSolution.toggleClass('incorrect', !correct);
     this.$showSolution.show();
   }
-
-  
-
 
   /**
    * Displays the feedback next to the drop box if it is not correct.
@@ -241,9 +238,6 @@ export default class Droppable {
     this.$dropzone.show();
   }
 
-
-  
-
   /**
    * Checks if this drop box contains the correct draggable.
    *
@@ -260,8 +254,8 @@ export default class Droppable {
     return solution.code === this.text && answerIndentation == this.indent;
   }
 
-  isCorrect_Distractor () {
-    var solution = this.solution; 
+  isCorrect_Distractor() {
+    var solution = this.solution;
     return solution === this.text;
   }
 
@@ -283,7 +277,6 @@ export default class Droppable {
 
     return solution.code === this.text;
   }
-
 
   /**
    * Places draggables at the nearest indentation to drop location.
@@ -405,8 +398,6 @@ export default class Droppable {
     var newWidth = this.$dropzone.prop('style').width - 2;
     this.$dropzone.css('width', newWidth + 'ch');
   }
-
-
 
   /**
    * Returns true if the dropzone has visible feedback
