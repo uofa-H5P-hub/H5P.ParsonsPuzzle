@@ -619,11 +619,10 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
 
   ParsonsPuzzle.prototype.check_answer = function () {
     var self = this;
-    //self.check_distractor; ?
     self.droppables.forEach(function (droppable) {
-      //droppable.isCorrect();
+      
       droppable.error = [];
-      //droppable.isDistractor = false;
+      index_curly_open =[];
 
       //if the dropdone has contained droppable check the answer
       if (droppable.containedDraggable != null) {
@@ -643,7 +642,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
           if (index_curly_open.length === 0) {
             droppable.error.push(self.params.noMatchingOpen + "</br>");
           } else {
-            //droppable.error.push(index_curly_open.length + " length of the culrly </br>");
+            droppable.error.push("pop length"+index_correct_open.length + "</br>");
             index_curly_open.pop();
           }
         }
@@ -1572,7 +1571,7 @@ H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
       droppable.isDistractor = false;
       droppable.order=true;
       droppable.indentCheck = true;
-      // droppable.
+      index_curly_open =[];
     });
     this.trigger('resize');
   };

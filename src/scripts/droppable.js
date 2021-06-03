@@ -105,7 +105,6 @@ export default class Droppable {
    showSolutionDistractor () {
     const correct = this.isCorrect_Distractor();
     if (!correct) {
-      // this.$showSolution.html("this.solution.code");
       this.$dropzone.css('padding-left',0);
       this.$showSolution.css('padding-left',0);
       this.$showSolution.css('margin-left',0);
@@ -140,11 +139,9 @@ export default class Droppable {
     const correct = self.isCorrect();
     if ((!correct) && (self.error.length != 0)) {
       self.$showFeedback.html(self.error);
-      console.log("show-droppable-feedback");
       self.$dropzone.css('padding-left', 0);
       self.$showFeedback.css('padding-left', 0);
       self.$showFeedback.css('margin-left', 0);
-
       self.$showFeedback.prepend(correct ? self.$correctText : self.$incorrectText);
       self.$showFeedback.toggleClass('incorrect', !correct);
       self.$showFeedback.fadeIn();
