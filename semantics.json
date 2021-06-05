@@ -91,22 +91,6 @@
     ]
   },
   {
-    "label": "Feedback Types",
-    "name": "feedbackTypes",
-    "optional": true,
-    "type": "select",
-    "options": [
-      {
-        "value": "general",
-        "label": "General"
-      },
-      {
-        "value": "lineByLine",
-        "label": "Line By Line"
-      }
-    ]
-  },
-  {
     "name": "overallFeedback",
     "type": "group",
     "label": "Overall Feedback",
@@ -329,12 +313,31 @@
         "optional": true
       },
       {
-        "label": "Instant feedback",
-        "importance": "low",
-        "name": "instantFeedback",
+        "name": "enableFeedback",
+        "label": "Feedback",
         "type": "boolean",
-        "default": false,
-        "optional": true
+        "importance": "low",
+        "default": false
+      },
+      {
+        "label": "Feedback Types",
+        "name": "feedbackTypes",
+        "type": "select",
+        "options": [
+          {
+            "value": "instantFeedback",
+            "label": "Instant Feedback"
+          },
+          {
+            "value": "general",
+            "label": "General"
+          },
+          {
+            "value": "lineByLine",
+            "label": "Line By Line"
+          }
+        ],
+        "default": "general"
       }
     ]
   },

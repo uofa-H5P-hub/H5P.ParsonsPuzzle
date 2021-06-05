@@ -356,13 +356,11 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
           }
           self.hideButton('check-answer');
           self.disableDraggables();
-          if (self.params.feedbackTypes == "general") {
+          if (self.params.behaviour.feedbackTypes == "general") {
             self.giveGeneralFeedback();
-            self.$feedbackContainer.show();
           }
-          if (self.params.feedbackTypes == "lineByLine") {
+          if (self.params.behaviour.feedbackTypes == "lineByLine") {
             self.giveLineByLineFeedback();
-            self.$feedbackContainer.show();
           }
         } else {
           self.hideButton('show-solution');
@@ -430,6 +428,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         isLinesNoMatching = true;
       }
     })
+    self.$feedbackContainer.show();
   };
 
   /**
@@ -453,6 +452,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
         self.$feedbackContainer.append('<br/>');
       }
     })
+    self.$feedbackContainer.show();
   };
 
   /**
