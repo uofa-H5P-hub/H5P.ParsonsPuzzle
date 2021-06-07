@@ -117,7 +117,8 @@ export default class Droppable {
   showSolution() {
     const correct = this.isCorrect();
     if ((!correct)) {
-      this.$showSolution.html(this.solution.code);
+      // this.$showSolution.html(this.solution.code);
+      this.$showSolution.html(this.solution.htmlIndent());
       this.$dropzone.css('padding-left', 0);
       this.$showSolution.css('padding-left', 0);
       this.$showSolution.css('margin-left', 0);
