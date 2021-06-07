@@ -22,7 +22,7 @@ class CodeParser {
       lines = codeString.split("\n");
 
     // process each code line and put in indented (normal) or distractor lists
-    lines.forEach(function(item, index) {
+    lines.forEach(function (item, index) {
       lineObject = new CodeLine(item, index - distractors.length, defaultIndentation);
 
       if (item.search(/#distractor\s*$/) >= 0) {
@@ -43,7 +43,7 @@ class CodeParser {
 
     // remove extra indentations of blocks 
     var normalized = this.normalizeIndents(indented);
-    normalized.forEach(function(item) {
+    normalized.forEach(function (item) {
       if (item.indent < 0) {
         // Indentation error
         errors.push(this.translations.no_matching(normalized.lineNo));
@@ -61,18 +61,9 @@ class CodeParser {
       codeLines.push(distractors[permutation[i]]);
     }
 
-    /*
-    var modifiedLines = [];
-    codeLines.forEach(function( item ){
-      var cl = item.clone();
-    //  cl.indent = 0;
-      modifiedLines.push(cl);
-    });
-    */
-
     return {
       // an array of line objects specifying  the solution
-      solutions:  normalized,
+      solutions: normalized,
       // an array of line objects specifying the requested number
       // of distractors (not all possible alternatives)
       distractors: selectedDistractors,
@@ -120,9 +111,9 @@ class CodeParser {
     var newLine;
 
     // returns level of indent for matching line or -1 if none matching
-    var matchIndent = function(index) {
+    var matchIndent = function (index) {
       //return line index from the previous lines with matching indentation
-      for (var i = index-1; i >= 0; i--) {
+      for (var i = index - 1; i >= 0; i--) {
         if (lines[i].indent == lines[index].indent) {
           return normalized[i].indent;
         }
@@ -130,7 +121,7 @@ class CodeParser {
       return -1;
     };
 
-    for ( var i = 0; i < lines.length; i++ ) {
+    for (var i = 0; i < lines.length; i++) {
       //create shallow copy from the line object
       newLine = lines[i].clone();
       if (i === 0) {
@@ -138,10 +129,10 @@ class CodeParser {
         if (lines[i].indent !== 0) {
           newLine.indent = -1;
         }
-      } else if (lines[i].indent == lines[i-1].indent) {
-        newLine.indent = normalized[i-1].indent;
-      } else if (lines[i].indent > lines[i-1].indent) {
-        newLine.indent = normalized[i-1].indent + 1;
+      } else if (lines[i].indent == lines[i - 1].indent) {
+        newLine.indent = normalized[i - 1].indent;
+      } else if (lines[i].indent > lines[i - 1].indent) {
+        newLine.indent = normalized[i - 1].indent + 1;
       } else {
         // indentation can be -1 if no matching indentation exists, i.e. IndentationError in Python
         newLine.indent = matchIndent(i);
