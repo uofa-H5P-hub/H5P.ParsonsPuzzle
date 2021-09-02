@@ -850,8 +850,8 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       var progressedEvent = this.createXAPIEventTemplate('progressed');
       //progressedEvent.data.statement.object.definition.extensions['http://id.tincanapi.com/extension/ending-point']
       //this.addQuestionToXAPI(progressedEvent);
-      this.trigger(progressedEvent);
-      //self.triggerXAPI('interacted',{action:'Indent'});
+      //this.trigger(progressedEvent);
+      self.triggerXAPI('interacted',{action:'Indent'});
     });
 
     self.droppables.push(droppable);
