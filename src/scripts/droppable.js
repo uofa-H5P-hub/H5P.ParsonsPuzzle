@@ -12,7 +12,7 @@ const DRAGGABLE_FEEDBACK_CORRECT = 'h5p-drag-draggable-correct';
 const DRAGGABLE_FEEDBACK_WRONG = 'h5p-drag-draggable-wrong';
 
 /** Class represents a dropzone for code lines */
-export default class Droppable {
+export default class Droppable extends H5P.EventDispatcher {
 
   /**
    * Private class for keeping track of droppable zones.
@@ -26,8 +26,11 @@ export default class Droppable {
    * @param {Object} params Behavior settings
    */
    constructor(solution, tip, dropzone, dropzoneContainer, index, params) {
+    super()
+    
     var self = this;
     const $ = H5P.jQuery;
+    //EventDispatcher.call(self);
 
     self.solution = solution;
 
@@ -241,6 +244,7 @@ export default class Droppable {
  shiftLeft() {
   if( this.indent >= 1 ){
     this.indent = this.indent - 1;
+    this.trigger('indent');
     var shift = this.indent * this.indentSpaces;
     this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
     this.currentLeft = this.containedDraggable.getDraggableElement().offset().left;
@@ -255,6 +259,7 @@ export default class Droppable {
    **/
    shiftRight() {
     this.indent = this.indent + 1;
+    this.trigger('indent');
     var shift = this.indent * this.indentSpaces;
     this.containedDraggable.getDraggableElement().css('left', shift + 'ch');
     this.currentLeft = this.containedDraggable.getDraggableElement().offset().left;
@@ -391,7 +396,11 @@ export default class Droppable {
    * @returns {number}
    */
    getIndent()  {
+    //self.triggerXAPI('interacted', {action:'Indentation'});
     return this.indent;
   }
+
+  //Droppable.prototype = Object.create(EventDispatcher.prototype);
+  //Droppable.prototype.constructor = Droppable;
 }
 

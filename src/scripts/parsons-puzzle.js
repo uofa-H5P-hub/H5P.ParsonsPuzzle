@@ -10,6 +10,8 @@ import AriaDrag from 'h5p-lib-controls/src/scripts/aria/drag';
 import AriaDrop from 'h5p-lib-controls/src/scripts/aria/drop';
 import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
+
+
 /**
  * @typedef {object} H5P.ParsonsPuzzleEvent
  * @property {HTMLElement} element The element being dragged
@@ -48,6 +50,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
  */
  H5P.ParsonsPuzzle = (function ($, Question, ConfirmationDialog) {
   //CSS Main Containers:
+  //$.getScript("cryptojs_v3.1.2");
   var INNER_CONTAINER = "h5p-drag-inner";
   var TASK_CONTAINER = "h5p-drag-task";
   var WORDS_CONTAINER = "h5p-drag-droppable-words";
@@ -79,7 +82,6 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     if (this.contentData !== undefined && this.contentData.previousState !== undefined && this.contentData.previousState.length !== undefined) {
       this.previousState = this.contentData.previousState;
     }
-
     // Keeps track of if Question has been answered
     this.answered = false;
     this.instantFeedbackEvaluationFilled = false;
@@ -95,7 +97,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
     else {
       this.indentationSpacing = 4;
     }
-
+    
     // introduction field id
     this.introductionId = 'h5p-parsons-puzzle-' + contentId + '-introduction';
 
@@ -369,6 +371,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     //Show Solution button
     self.addButton('show-solution', self.params.showSolution, function () {
+      self.triggerXAPI('interacted',{action:'Show solution'});
       self.droppables.forEach(function (droppable) {
         droppable.showSolution();
       });
@@ -383,6 +386,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     // Retry button
     self.addButton('try-again', self.params.tryAgain, function () {
+    self.triggerXAPI('interacted',{action:'Retry'});
       self.stopWatch.reset();
       self.resetTask();
       self.$draggables.css('display','inline');
@@ -496,6 +500,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
       var containsDropped = droppableElement.querySelector('[aria-grabbed]');
 
       this.createConfirmResetDialog(function () {
+        //xapi call
         self.revert(self.getDraggableByElement(containsDropped));
       }).show();
     }
@@ -526,7 +531,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     dialog.appendTo(document.body);
     dialog.on('confirmed', callback, scope || this);
-
+    self.triggerXAPI('interacted',{action:'Confirm reset'});
     return dialog;
   };
 
@@ -841,6 +846,13 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
 
     var droppable = new Droppable(solution, tip, $dropzone, $dropzoneContainer, draggableIndex, self.params);
     droppable.appendDroppableTo(self.$wordContainer);
+    droppable.on('indent', function () {
+      var progressedEvent = this.createXAPIEventTemplate('progressed');
+      //progressedEvent.data.statement.object.definition.extensions['http://id.tincanapi.com/extension/ending-point']
+      //this.addQuestionToXAPI(progressedEvent);
+      //this.trigger(progressedEvent);
+      self.triggerXAPI('interacted',{action:'Indent'});
+    });
 
     self.droppables.push(droppable);
 
@@ -1411,7 +1423,7 @@ import Mouse from 'h5p-lib-controls/src/scripts/ui/mouse';
    */
    ParsonsPuzzle.prototype.getXAPIResponse = function () {
      return this.droppables
-     .map(droppable => droppable.hasDraggable() ? droppable.containedDraggable.text : '')
+     .map(droppable => droppable.hasDraggable() ? droppable.containedDraggable.text : 'Empty')
      .join('[,]');
    };
 

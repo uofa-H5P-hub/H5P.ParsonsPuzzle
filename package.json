@@ -15,6 +15,9 @@
   "author": "University of Adelaide, Parsons Hub Team",
   "license": "MIT",
   "homepage": "https://github.com/uofa-Parsons-hub/H5P.ParsonsPuzzle",
+  "dependencies": {
+    "xapiwrapper": "^1.11.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
